@@ -1,0 +1,177 @@
+# enable_gtkdoc: Toggle if gtkdoc stuff should be rebuilt
+#	0 = no
+#	1 = yes
+%define enable_gtkdoc	0
+
+
+# Note that this is NOT a relocatable package
+%define api_version	2.0
+%define lib_major	0
+%define lib_name	%mklibname %{name}_ %{lib_major}
+
+Summary:   GIMP Toolkit and GIMP Drawing Kit support library
+Name:      glib%{api_version}
+Version:   2.12.11
+Release: %mkrel 1
+License:   LGPL
+Group:     System/Libraries
+Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
+Source1:   glib20.sh
+Source2:   glib20.csh
+Patch0:    glib-2.12.4-ppc.patch
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
+URL:       http://www.gtk.org
+Requires:  common-licenses
+BuildRequires:  gettext
+BuildRequires:	libtool >= 1.4.2-2mdk
+BuildRequires: locales-en
+%if %enable_gtkdoc
+BuildRequires:	gtk-doc >= 0.10
+%endif
+
+
+%description
+Glib is a handy library of utility functions. This C
+library is designed to solve some portability problems
+and provide other useful functionality which most
+programs require.
+
+Glib is used by GDK, GTK+ and many applications.
+You should install Glib because many of your applications
+will depend on this library.
+
+%package common
+Summary: data files used by glib
+Group: System/Libraries
+Conflicts:  %{_lib}glib2.0_0 < 2.12.3-2mdv2007.0
+
+%description common
+Glib is a handy library of utility functions. This C
+library is designed to solve some portability problems
+and provide other useful functionality which most
+programs require.
+
+This package contains data used by glib library.
+
+%package -n %{lib_name}
+Summary: %{summary}
+Group: %{group}
+Provides:	glib2 = %{version}-%{release}
+Provides:	libglib2 = %{version}-%{release}
+Provides:	lib%{name} = %{version}-%{release}
+Conflicts:  libglib1.3_13
+Requires:	%{name}-common >= %{version}-%{release}
+
+%description -n %{lib_name}
+Glib is a handy library of utility functions. This C
+library is designed to solve some portability problems
+and provide other useful functionality which most
+programs require.
+
+Glib is used by GDK, GTK+ and many applications.
+You should install Glib because many of your applications
+will depend on this library.
+
+This package contains the library needed to run programs dynamically
+linked with the glib.
+
+%package -n %{lib_name}-devel
+Summary: Static libraries and header files of %{name}
+Group:   Development/C
+Provides:	glib2-devel = %{version}-%{release}
+Provides:	libglib2-devel = %{version}-%{release}
+Provides:	lib%{name}-devel = %{version}-%{release}
+Requires:	%{lib_name} = %{version}
+Requires:	glib-gettextize >= %{version}
+Conflicts:  libglib1.3_13-devel
+
+%description -n %{lib_name}-devel
+Static libraries and header files for the support library for the GIMP's X
+libraries, which are available as public libraries.  GLIB includes generally
+useful data structures.
+
+
+%package -n glib-gettextize
+Summary: Gettextize replacement
+Group: Development/Other
+
+%description -n glib-gettextize
+%{name} package is designed to replace gettextize completely.
+Various gettext related files are modified in glib and gtk+ to
+allow better and more flexible i18n; however gettextize overwrites
+them with its own copy of files, thus nullifying the changes.
+If this replacement of gettextize is run instead, then all gnome
+packages can potentially benefict from the changes.
+
+%prep
+%setup -n glib-%{version} -q
+%patch0 -p1 -b .ppc
+
+%build
+
+%configure2_5x \
+	--enable-static \
+%if !%enable_gtkdoc
+	--enable-gtk-doc=no
+%endif
+
+%make
+
+%check
+make check
+
+%install
+rm -rf $RPM_BUILD_ROOT
+
+
+%makeinstall_std
+
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
+install -m 755 %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d/glib20.sh
+install -m 755 %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d/glib20.csh
+
+%find_lang glib20
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%post -n %{lib_name} -p /sbin/ldconfig
+
+%postun -n %{lib_name} -p /sbin/ldconfig
+
+%files common -f glib20.lang
+%defattr(-, root, root)
+%doc README
+%config(noreplace) %{_sysconfdir}/profile.d/*
+
+%files -n %{lib_name}
+%defattr(-, root, root)
+%doc README
+%{_libdir}/libglib-%{api_version}.so.*
+%{_libdir}/libgmodule-%{api_version}.so.*
+%{_libdir}/libgthread-%{api_version}.so.*
+%{_libdir}/libgobject-%{api_version}.so.*
+
+%files -n %{lib_name}-devel
+%defattr(-, root, root)
+%doc AUTHORS ChangeLog NEWS
+%doc %{_datadir}/gtk-doc/html/*
+%{_libdir}/lib*.so
+%{_libdir}/lib*.la
+%{_libdir}/lib*.a
+%{_libdir}/glib-%{api_version}
+%{_libdir}/pkgconfig/*
+%{_includedir}/*
+%{_mandir}/man1/*
+%{_datadir}/aclocal/glib-%{api_version}.m4
+%{_bindir}/glib-genmarshal
+%{_bindir}/glib-mkenums
+%{_bindir}/gobject-query
+
+%files -n glib-gettextize
+%defattr(-, root, root)
+%{_bindir}/glib-gettextize
+%{_datadir}/aclocal/glib-gettext.m4
+%{_datadir}/glib-%{api_version}
+
+
