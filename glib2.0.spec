@@ -12,13 +12,14 @@
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
 Version:   2.13.7
-Release: %mkrel 1
+Release: %mkrel 2
 License:   LGPL
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
 Source1:   glib20.sh
 Source2:   glib20.csh
-Patch0:    glib-2.12.4-ppc.patch
+# (cjw) from gnome svn
+Patch0:    glib-2.13.7-atomic-ops-pointer-cast-fixes.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 URL:       http://www.gtk.org
 Requires:  common-licenses
