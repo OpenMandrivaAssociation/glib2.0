@@ -23,6 +23,7 @@ Source2:   glib20.csh
 # Invalid configuration `noarch-mandriva-linux-gnu': machine `noarch-mandriva' not recognized"
 # when trying to build noarch packages: see GNOME bug #385132
 Patch0:    glib2.0-noarch-regression.patch
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
 URL:       http://www.gtk.org
 Requires:  common-licenses
 BuildRequires:	fam-devel
