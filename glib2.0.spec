@@ -11,7 +11,7 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.14.4
+Version:   2.15.0
 Release: %mkrel 1
 License:   LGPL
 Group:     System/Libraries
@@ -24,6 +24,7 @@ Source2:   glib20.csh
 Patch0:    glib2.0-noarch-regression.patch
 URL:       http://www.gtk.org
 Requires:  common-licenses
+BuildRequires:	fam-devel
 BuildRequires:  gettext
 BuildRequires:	libtool >= 1.4.2-2mdk
 BuildRequires: locales-en
@@ -132,8 +133,9 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
 install -m 755 %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d/glib20.sh
 install -m 755 %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d/glib20.csh
-
 %find_lang glib20
+
+rm -f %buildroot%_libdir/gio/modules/lib*a
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -154,6 +156,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libgmodule-%{api_version}.so.*
 %{_libdir}/libgthread-%{api_version}.so.*
 %{_libdir}/libgobject-%{api_version}.so.*
+%{_libdir}/libgio-%{api_version}.so.*
+%dir %_libdir/gio/
+%dir %_libdir/gio/modules/
+%_libdir/gio/modules/libgiofam.so
 
 %files -n %{lib_name}-devel
 %defattr(-, root, root)
@@ -170,6 +176,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/glib-genmarshal
 %{_bindir}/glib-mkenums
 %{_bindir}/gobject-query
+%_bindir/gtester*
 
 %files -n glib-gettextize
 %defattr(-, root, root)
