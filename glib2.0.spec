@@ -8,6 +8,7 @@
 %define api_version	2.0
 %define lib_major	0
 %define lib_name	%mklibname %{name}_ %{lib_major}
+%define develname %mklibname -d %name
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
@@ -78,7 +79,7 @@ will depend on this library.
 This package contains the library needed to run programs dynamically
 linked with the glib.
 
-%package -n %{lib_name}-devel
+%package -n %develname
 Summary: Static libraries and header files of %{name}
 Group:   Development/C
 Provides:	glib2-devel = %{version}-%{release}
@@ -87,8 +88,8 @@ Provides:	lib%{name}-devel = %{version}-%{release}
 Requires:	%{lib_name} = %{version}
 Requires:	glib-gettextize >= %{version}
 Conflicts:  libglib1.3_13-devel
-
-%description -n %{lib_name}-devel
+Obsoletes: %mklibname -d %{name}_ 0
+%description -n %develname
 Static libraries and header files for the support library for the GIMP's X
 libraries, which are available as public libraries.  GLIB includes generally
 useful data structures.
@@ -161,7 +162,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %_libdir/gio/modules/
 %_libdir/gio/modules/libgiofam.so
 
-%files -n %{lib_name}-devel
+%files -n %develname
 %defattr(-, root, root)
 %doc AUTHORS ChangeLog NEWS
 %doc %{_datadir}/gtk-doc/html/*
