@@ -12,17 +12,13 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.15.3
+Version:   2.15.4
 Release: %mkrel 1
 License:   LGPL
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
 Source1:   glib20.sh
 Source2:   glib20.csh
-# Fixes an upstream regression which causes errors like:
-# Invalid configuration `noarch-mandriva-linux-gnu': machine `noarch-mandriva' not recognized"
-# when trying to build noarch packages: see GNOME bug #385132
-Patch0:    glib2.0-noarch-regression.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 URL:       http://www.gtk.org
 Requires:  common-licenses
@@ -111,7 +107,6 @@ packages can potentially benefict from the changes.
 
 %prep
 %setup -n glib-%{version} -q
-%patch0 -p1 -b .noarch
 
 %build
 
