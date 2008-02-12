@@ -12,15 +12,13 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.15.4
-Release: %mkrel 3
+Version:   2.15.5
+Release: %mkrel 1
 License:   LGPL
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
 Source1:   glib20.sh
 Source2:   glib20.csh
-# (fc) 2.15.4-2mdv fix text sniffing (Mdv bug #37506) (SVN)
-Patch0: glib-2.15.4-fixtextsniffing.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 URL:       http://www.gtk.org
 Requires:  common-licenses
@@ -110,7 +108,6 @@ packages can potentially benefict from the changes.
 
 %prep
 %setup -n glib-%{version} -q
-%patch0 -p1 -b .fixtextsniffing
 
 %build
 
