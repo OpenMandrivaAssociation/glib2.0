@@ -8,12 +8,13 @@
 %define api_version	2.0
 %define lib_major	0
 %define lib_name	%mklibname %{name}_ %{lib_major}
+%define libgio_name	%mklibname gio%{api_version}_ %{lib_major}
 %define develname %mklibname -d %name
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
 Version:   2.15.5
-Release: %mkrel 1
+Release: %mkrel 2
 License:   LGPL
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
@@ -63,7 +64,6 @@ Provides:	libglib2 = %{version}-%{release}
 Provides:	lib%{name} = %{version}-%{release}
 Conflicts:  libglib1.3_13
 Requires:	%{name}-common >= %{version}-%{release}
-Suggests:	%mklibname gvfs 0
 
 %description -n %{lib_name}
 Glib is a handy library of utility functions. This C
@@ -77,6 +77,19 @@ will depend on this library.
 
 This package contains the library needed to run programs dynamically
 linked with the glib.
+
+%package -n %{libgio_name}
+Summary: GIO is the input, output and streaming API of glib
+Group: %{group}
+Requires:	%{lib_name} = %{version}
+Suggests:	%mklibname gvfs 0
+
+%description -n %{libgio_name}
+GIO is the input, output and streaming API of glib. It on the one hand
+provides a set of various streaming classes to access data from different
+sources in a convenient way and on the other hand it provides a high level
+file system abstraction to access file and directories not only local but also
+on the network. For the latter you need to install gvfs.
 
 %package -n %develname
 Summary: Static libraries and header files of %{name}
@@ -144,6 +157,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun -n %{lib_name} -p /sbin/ldconfig
 
+%post -n %{libgio_name} -p /sbin/ldconfig
+
+%postun -n %{libgio_name} -p /sbin/ldconfig
+
 %files common -f glib20.lang
 %defattr(-, root, root)
 %doc README
@@ -156,6 +173,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libgmodule-%{api_version}.so.*
 %{_libdir}/libgthread-%{api_version}.so.*
 %{_libdir}/libgobject-%{api_version}.so.*
+
+%files -n %{libgio_name}
+%defattr(-, root, root)
 %{_libdir}/libgio-%{api_version}.so.*
 %dir %_libdir/gio/
 %dir %_libdir/gio/modules/
