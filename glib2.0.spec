@@ -14,7 +14,7 @@
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
 Version:   2.15.6
-Release: %mkrel 1
+Release: %mkrel 2
 License:   LGPL
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
@@ -98,6 +98,7 @@ Provides:	glib2-devel = %{version}-%{release}
 Provides:	libglib2-devel = %{version}-%{release}
 Provides:	lib%{name}-devel = %{version}-%{release}
 Requires:	%{lib_name} = %{version}
+Requires:	%{libgio_name} = %{version}
 Requires:	glib-gettextize >= %{version}
 Conflicts:  libglib1.3_13-devel
 Obsoletes: %mklibname -d %{name}_ 0
