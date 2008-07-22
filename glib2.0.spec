@@ -13,15 +13,13 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.17.3
-Release: %mkrel 2
-License:   LGPL
+Version:   2.17.4
+Release: %mkrel 1
+License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
 Source1:   glib20.sh
 Source2:   glib20.csh
-#gw from svn: fix crash in gio
-Patch: glib-r7155-gio-crash.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 URL:       http://www.gtk.org
 Requires:  common-licenses
@@ -124,7 +122,6 @@ packages can potentially benefict from the changes.
 
 %prep
 %setup -n glib-%{version} -q
-%patch -p1
 
 %build
 
