@@ -13,15 +13,13 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.19.10
-Release: %mkrel 2
+Version:   2.20.0
+Release: %mkrel 1
 License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
 Source1:   glib20.sh
 Source2:   glib20.csh
-# (pt) https://qa.mandriva.com/show_bug.cgi?id=47762
-Patch0:    glib-gunixvolumemonitor-crash.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 URL:       http://www.gtk.org
 Requires:  common-licenses
@@ -124,7 +122,6 @@ packages can potentially benefict from the changes.
 
 %prep
 %setup -n glib-%{version} -q
-%patch0 -p0 -b .gunixvolumemonitor
 
 %build
 
