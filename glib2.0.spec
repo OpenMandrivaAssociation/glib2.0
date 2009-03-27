@@ -128,6 +128,7 @@ packages can potentially benefict from the changes.
 %configure2_5x \
 	--with-pcre=system \
 	--enable-static \
+	--disable-selinux \
 %if !%enable_gtkdoc
 	--enable-gtk-doc=no
 %endif
