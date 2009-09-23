@@ -207,7 +207,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/glib-mkenums
 %{_bindir}/gobject-query
 %_bindir/gtester*
-%_datadir/gdb/auto-load/usr/lib/lib*-gdb.py
+%_datadir/gdb/auto-load/%_libdir/lib*-gdb.py
 
 %files -n glib-gettextize
 %defattr(-, root, root)
