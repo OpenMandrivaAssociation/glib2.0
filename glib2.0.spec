@@ -26,6 +26,7 @@ Requires:  common-licenses
 Requires:  shared-mime-info >= 0.70
 BuildRequires:	fam-devel
 BuildRequires:	libpcre-devel
+BuildRequires:	zlib-devel
 BuildRequires:  gettext
 BuildRequires:	libtool >= 1.4.2-2mdk
 BuildRequires: locales-en
