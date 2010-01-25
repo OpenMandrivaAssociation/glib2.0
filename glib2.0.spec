@@ -13,7 +13,7 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.23.1
+Version:   2.23.2
 Release:   %mkrel 1
 License:   LGPLv2+
 Group:     System/Libraries
@@ -154,6 +154,12 @@ install -m 644 %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d/50glib20.csh
 
 rm -f %buildroot%_libdir/gio/modules/lib*a
 
+%if %_lib != lib
+ mv $RPM_BUILD_ROOT%{_bindir}/gio-querymodules $RPM_BUILD_ROOT%{_bindir}/gio-querymodules-64
+%else
+ mv  $RPM_BUILD_ROOT%{_bindir}/gio-querymodules $RPM_BUILD_ROOT%{_bindir}/gio-querymodules-32
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -173,10 +179,19 @@ rm -rf $RPM_BUILD_ROOT
 %postun -n %{libgio_name} -p /sbin/ldconfig
 %endif
 
+%post common
+%if %_lib != lib
+ %{_bindir}/gio-querymodules-64 %{_libdir}/gio/modules 
+%else
+ %{_bindir}/gio-querymodules-32 %{_libdir}/gio/modules
+%endif
+
+
 %files common -f glib20.lang
 %defattr(-, root, root)
 %doc README
 %config(noreplace) %{_sysconfdir}/profile.d/*
+%_bindir/gio-querymodules-*
 
 %files -n %{lib_name}
 %defattr(-, root, root)
