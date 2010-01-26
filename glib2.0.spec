@@ -213,7 +213,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libgio-%{api_version}.so.*
 %dir %_libdir/gio/
 %dir %_libdir/gio/modules/
+%if !%bootstap
 %_libdir/gio/modules/libgiofam.so
+%endif
 
 %files -n %develname
 %defattr(-, root, root)
