@@ -167,6 +167,9 @@ rm -f %buildroot%_libdir/gio/modules/lib*a
  mv  $RPM_BUILD_ROOT%{_bindir}/gio-querymodules $RPM_BUILD_ROOT%{_bindir}/gio-querymodules-32
 %endif
 
+#ghost file
+touch %buildroot%_libdir/gio/modules/giomodule.cache
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -216,6 +219,7 @@ rm -rf $RPM_BUILD_ROOT
 %if !%bootstrap
 %_libdir/gio/modules/libgiofam.so
 %endif
+%ghost %_libdir/gio/modules/giomodule.cache
 
 %files -n %develname
 %defattr(-, root, root)
