@@ -3,6 +3,8 @@
 #	1 = yes
 %define enable_gtkdoc	0
 
+# gw bootstrap: fam pulls glib2, so build without fam
+%define bootstrap 1
 
 # Note that this is NOT a relocatable package
 %define api_version	2.0
@@ -24,7 +26,9 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-root
 URL:       http://www.gtk.org
 Requires:  common-licenses
 Requires:  shared-mime-info >= 0.70
+%if !%bootstrap
 BuildRequires:	fam-devel
+%endif
 BuildRequires:	libpcre-devel
 BuildRequires:	zlib-devel
 BuildRequires:  gettext
@@ -33,6 +37,8 @@ BuildRequires: locales-en
 %if %enable_gtkdoc
 BuildRequires:	gtk-doc >= 0.10
 %endif
+
+#gw this was required since 2.23.2 (new atomic OPs?)
 %define _requires_exceptions GLIBC_PRIVATE
 
 
