@@ -4,7 +4,7 @@
 %define enable_gtkdoc	0
 
 # gw bootstrap: fam pulls glib2, so build without fam
-%define bootstrap 0
+%define bootstrap 1
 
 # Note that this is NOT a relocatable package
 %define api_version	2.0
@@ -16,7 +16,7 @@
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
 Version:   2.23.2
-Release:   %mkrel 3
+Release:   %mkrel 2
 License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
