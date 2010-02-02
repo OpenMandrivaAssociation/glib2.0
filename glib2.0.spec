@@ -16,7 +16,7 @@
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
 Version:   2.23.2
-Release:   %mkrel 5
+Release:   %mkrel 6
 License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
@@ -56,6 +56,7 @@ will depend on this library.
 Summary: data files used by glib
 Group: System/Libraries
 Conflicts:  %{_lib}glib2.0_0 < 2.12.3-2mdv2007.0
+Requires(post): %{libgio_name} >= %{version}
 
 %description common
 Glib is a handy library of utility functions. This C
