@@ -16,7 +16,7 @@
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
 Version:   2.23.4
-Release:   %mkrel 1
+Release:   %mkrel 2
 License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
@@ -56,7 +56,7 @@ will depend on this library.
 Summary: data files used by glib
 Group: System/Libraries
 Conflicts:  %{_lib}glib2.0_0 < 2.12.3-2mdv2007.0
-Requires(post): %{libgio_name} >= %{version}
+Requires(post): %{libgio_name} >= %{version}-%release
 
 %description common
 Glib is a handy library of utility functions. This C
@@ -91,6 +91,7 @@ linked with the glib.
 %package -n %{libgio_name}
 Summary: GIO is the input, output and streaming API of glib
 Group: %{group}
+Conflicts:	%{name}-common < 2.23.4-2mdv2010.1
 Requires:	%{lib_name} = %{version}
 Suggests:	%mklibname gvfs 0
 
@@ -182,15 +183,10 @@ rm -rf $RPM_BUILD_ROOT
 %postun -n %{lib_name} -p /sbin/ldconfig
 %endif
 
+%post -n %{libgio_name}
 %if %mdkversion < 200900
-%post -n %{libgio_name} -p /sbin/ldconfig
+/sbin/ldconfig
 %endif
-
-%if %mdkversion < 200900
-%postun -n %{libgio_name} -p /sbin/ldconfig
-%endif
-
-%post common
 %if %_lib != lib
  %{_bindir}/gio-querymodules-64 %{_libdir}/gio/modules 
 %else
@@ -198,11 +194,14 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 
+%if %mdkversion < 200900
+%postun -n %{libgio_name} -p /sbin/ldconfig
+%endif
+
 %files common -f glib20.lang
 %defattr(-, root, root)
 %doc README
 %config(noreplace) %{_sysconfdir}/profile.d/*
-%_bindir/gio-querymodules-*
 
 %files -n %{lib_name}
 %defattr(-, root, root)
@@ -214,6 +213,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n %{libgio_name}
 %defattr(-, root, root)
+%_bindir/gio-querymodules-*
 %{_libdir}/libgio-%{api_version}.so.*
 %dir %_libdir/gio/
 %dir %_libdir/gio/modules/
