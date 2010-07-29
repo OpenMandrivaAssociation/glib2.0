@@ -15,7 +15,7 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.24.1
+Version:   2.25.11
 Release:   %mkrel 1
 License:   LGPLv2+
 Group:     System/Libraries
@@ -31,6 +31,7 @@ BuildRequires:	fam-devel
 %endif
 BuildRequires:	libpcre-devel
 BuildRequires:	zlib-devel
+BuildRequires:  dbus-devel
 BuildRequires:  gettext
 BuildRequires:	libtool >= 1.4.2-2mdk
 BuildRequires: locales-en
@@ -112,6 +113,8 @@ Requires:	%{lib_name} = %{version}
 Requires:	%{libgio_name} = %{version}
 Requires:	glib-gettextize >= %{version}
 Conflicts:  libglib1.3_13-devel
+#gw for %{_datadir}/glib-%{api_version}/gdb
+Conflicts:  glib-gettextize < 2.25.3
 Obsoletes: %mklibname -d %{name}_ 0
 %description -n %develname
 Static libraries and header files for the support library for the GIMP's X
@@ -169,39 +172,51 @@ rm -f %buildroot%_libdir/gio/modules/lib*a
  mv  $RPM_BUILD_ROOT%{_bindir}/gio-querymodules $RPM_BUILD_ROOT%{_bindir}/gio-querymodules-32
 %endif
 
-#ghost file
-touch %buildroot%_libdir/gio/modules/giomodule.cache
+# automatic gschema compilation on rpm installs/removals 
+# (see http://wiki.mandriva.com/en/Rpm_filetriggers) 
+install -d %buildroot%{_var}/lib/rpm/filetriggers 
+cat > %buildroot%{_var}/lib/rpm/filetriggers/glib-compile-schemas.filter << EOF
+^.%_datadir/glib-2.0/schemas/[^/]*\.xml$
+EOF
+cat > %buildroot%{_var}/lib/rpm/filetriggers/glib-compile-schemas.script << EOF
+#!/bin/sh
+if [ -x /usr/bin/glib-compile-schemas ]; then
+  /usr/bin/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
+fi
+EOF
+chmod 755 %buildroot%{_var}/lib/rpm/filetriggers/glib-compile-schemas.script 
+
+#ghost files
+touch %buildroot%_libdir/gio/modules/giomodule.cache \
+      %buildroot%_datadir/glib-2.0/schemas/gschemas.compiled
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%if %mdkversion < 200900
-%post -n %{lib_name} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{lib_name} -p /sbin/ldconfig
-%endif
-
 %post -n %{libgio_name}
-%if %mdkversion < 200900
-/sbin/ldconfig
-%endif
 %if %_lib != lib
  %{_bindir}/gio-querymodules-64 %{_libdir}/gio/modules 
 %else
  %{_bindir}/gio-querymodules-32 %{_libdir}/gio/modules
 %endif
 
-
-%if %mdkversion < 200900
-%postun -n %{libgio_name} -p /sbin/ldconfig
-%endif
-
 %files common -f glib20.lang
 %defattr(-, root, root)
 %doc README
 %config(noreplace) %{_sysconfdir}/profile.d/*
+%_sysconfdir/bash_completion.d/gdbus-bash-completion.sh
+%_sysconfdir/bash_completion.d/gsettings-bash-completion.sh
+%_bindir/gdbus
+%{_bindir}/glib-compile-schemas
+%{_bindir}/gsettings
+%_mandir/man1/glib-compile-schemas.1*
+%_mandir/man1/gsettings.1*
+%{_mandir}/man1/gdbus.1*
+%dir %_datadir/glib-2.0/
+%dir %_datadir/glib-2.0/schemas/
+%_datadir/glib-2.0/schemas/gschema.dtd
+%ghost %_datadir/glib-2.0/schemas/gschemas.compiled
+%{_var}/lib/rpm/filetriggers/glib-compile-schemas.*
 
 %files -n %{lib_name}
 %defattr(-, root, root)
@@ -214,6 +229,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n %{libgio_name}
 %defattr(-, root, root)
 %_bindir/gio-querymodules-*
+%{_mandir}/man1/gio-querymodules.1*
 %{_libdir}/libgio-%{api_version}.so.*
 %dir %_libdir/gio/
 %dir %_libdir/gio/modules/
@@ -232,18 +248,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/glib-%{api_version}
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
-%{_mandir}/man1/*
+%{_mandir}/man1/glib-genmarshal.1*
+%{_mandir}/man1/glib-mkenums.1*
+%{_mandir}/man1/gobject-query.1*
+%{_mandir}/man1/gtester-report.1*
+%{_mandir}/man1/gtester.1*
 %{_datadir}/aclocal/glib-%{api_version}.m4
+%{_datadir}/aclocal/gsettings.m4
 %{_bindir}/glib-genmarshal
 %{_bindir}/glib-mkenums
 %{_bindir}/gobject-query
-%_bindir/gtester*
-%_datadir/gdb/auto-load/%_libdir/lib*-gdb.py
+%{_bindir}/gtester*
+%{_datadir}/gdb/auto-load/%_libdir/lib*-gdb.py
+%{_datadir}/glib-%{api_version}/gdb
 
 %files -n glib-gettextize
 %defattr(-, root, root)
 %{_bindir}/glib-gettextize
+%_mandir/man1/glib-gettextize.1*
 %{_datadir}/aclocal/glib-gettext.m4
-%{_datadir}/glib-%{api_version}
+%{_datadir}/glib-%{api_version}/gettext
 
 
