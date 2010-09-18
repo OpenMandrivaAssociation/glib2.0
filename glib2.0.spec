@@ -15,7 +15,7 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.25.15
+Version:   2.25.16
 Release:   %mkrel 1
 License:   LGPLv2+
 Group:     System/Libraries
@@ -23,6 +23,7 @@ Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
 Source1:   glib20.sh
 Source2:   glib20.csh
 Patch0: glib-2.25.13-format-strings.patch
+Patch1: glib-fix-headers.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 URL:       http://www.gtk.org
 Requires:  common-licenses
@@ -137,7 +138,9 @@ packages can potentially benefict from the changes.
 
 %prep
 %setup -n glib-%{version} -q
-%apply_patches
+#apply_patches
+%patch0 -p1
+%patch1 -p1 -R
 
 %build
 
