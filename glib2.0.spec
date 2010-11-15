@@ -16,7 +16,7 @@
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
 Version:   2.26.1
-Release:   %mkrel 1
+Release:   %mkrel 2
 License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
@@ -145,6 +145,7 @@ packages can potentially benefict from the changes.
 	--with-pcre=system \
 	--enable-static \
 	--disable-selinux \
+	-with-runtime-libdir=../../%_lib \
 %if !%enable_gtkdoc
 	--enable-gtk-doc=no
 %endif
@@ -223,16 +224,16 @@ rm -rf $RPM_BUILD_ROOT
 %files -n %{lib_name}
 %defattr(-, root, root)
 %doc README
-%{_libdir}/libglib-%{api_version}.so.*
-%{_libdir}/libgmodule-%{api_version}.so.*
-%{_libdir}/libgthread-%{api_version}.so.*
-%{_libdir}/libgobject-%{api_version}.so.*
+/%{_lib}/libglib-%{api_version}.so.*
+/%{_lib}/libgmodule-%{api_version}.so.*
+/%{_lib}/libgthread-%{api_version}.so.*
+/%{_lib}/libgobject-%{api_version}.so.*
 
 %files -n %{libgio_name}
 %defattr(-, root, root)
 %_bindir/gio-querymodules-*
 %{_mandir}/man1/gio-querymodules.1*
-%{_libdir}/libgio-%{api_version}.so.*
+/%{_lib}/libgio-%{api_version}.so.*
 %dir %_libdir/gio/
 %dir %_libdir/gio/modules/
 %if !%bootstrap
@@ -261,7 +262,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/glib-mkenums
 %{_bindir}/gobject-query
 %{_bindir}/gtester*
-%{_datadir}/gdb/auto-load/%_libdir/lib*-gdb.py
+%{_datadir}/gdb/auto-load/%_lib/lib*-gdb.py
 %{_datadir}/glib-%{api_version}/gdb
 
 %files -n glib-gettextize
