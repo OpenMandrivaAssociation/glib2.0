@@ -16,7 +16,7 @@
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
 Version:   2.26.1
-Release:   %mkrel 3
+Release:   %mkrel 4
 License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
@@ -193,6 +193,15 @@ chmod 755 %buildroot%{_var}/lib/rpm/filetriggers/glib-compile-schemas.script
 touch %buildroot%_libdir/gio/modules/giomodule.cache \
       %buildroot%_datadir/glib-2.0/schemas/gschemas.compiled
 
+# use consistent naming and permissions for completion scriplets
+mv %{buildroot}%{_sysconfdir}/bash_completion.d/gdbus-bash-completion.sh \
+    %{buildroot}%{_sysconfdir}/bash_completion.d/gdbus
+
+mv %{buildroot}%{_sysconfdir}/bash_completion.d/gsettings-bash-completion.sh \
+    %{buildroot}%{_sysconfdir}/bash_completion.d/gsettings
+
+chmod 644 %{buildroot}%{_sysconfdir}/bash_completion.d/*
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -207,8 +216,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 %doc README
 %config(noreplace) %{_sysconfdir}/profile.d/*
-%_sysconfdir/bash_completion.d/gdbus-bash-completion.sh
-%_sysconfdir/bash_completion.d/gsettings-bash-completion.sh
+%_sysconfdir/bash_completion.d/gdbus
+%_sysconfdir/bash_completion.d/gsettings
 %_bindir/gdbus
 %{_bindir}/glib-compile-schemas
 %{_bindir}/gsettings
