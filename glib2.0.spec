@@ -16,7 +16,7 @@
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
 Version:   2.26.1
-Release:   %mkrel 4
+Release:   %mkrel 5
 License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
@@ -175,20 +175,6 @@ rm -f %buildroot%_libdir/gio/modules/lib*a
  mv  $RPM_BUILD_ROOT%{_bindir}/gio-querymodules $RPM_BUILD_ROOT%{_bindir}/gio-querymodules-32
 %endif
 
-# automatic gschema compilation on rpm installs/removals 
-# (see http://wiki.mandriva.com/en/Rpm_filetriggers) 
-install -d %buildroot%{_var}/lib/rpm/filetriggers 
-cat > %buildroot%{_var}/lib/rpm/filetriggers/glib-compile-schemas.filter << EOF
-^.%_datadir/glib-2.0/schemas/[^/]*\.xml$
-EOF
-cat > %buildroot%{_var}/lib/rpm/filetriggers/glib-compile-schemas.script << EOF
-#!/bin/sh
-if [ -x /usr/bin/glib-compile-schemas ]; then
-  /usr/bin/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
-fi
-EOF
-chmod 755 %buildroot%{_var}/lib/rpm/filetriggers/glib-compile-schemas.script 
-
 #ghost files
 touch %buildroot%_libdir/gio/modules/giomodule.cache \
       %buildroot%_datadir/glib-2.0/schemas/gschemas.compiled
@@ -212,6 +198,12 @@ rm -rf $RPM_BUILD_ROOT
  %{_bindir}/gio-querymodules-32 %{_libdir}/gio/modules
 %endif
 
+%triggerin -n common -- %_datadir/glib-2.0/schemas/*.xml
+%{_bindir}/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
+
+%triggerpostun -n common -- %_datadir/glib-2.0/schemas/*.xml
+%{_bindir}/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
+
 %files common -f glib20.lang
 %defattr(-, root, root)
 %doc README
@@ -228,7 +220,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %_datadir/glib-2.0/schemas/
 %_datadir/glib-2.0/schemas/gschema.dtd
 %ghost %_datadir/glib-2.0/schemas/gschemas.compiled
-%{_var}/lib/rpm/filetriggers/glib-compile-schemas.*
 
 %files -n %{lib_name}
 %defattr(-, root, root)
