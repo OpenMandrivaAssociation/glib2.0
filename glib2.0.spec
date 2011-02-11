@@ -198,6 +198,9 @@ rm -rf $RPM_BUILD_ROOT
  %{_bindir}/gio-querymodules-32 %{_libdir}/gio/modules
 %endif
 
+%post common
+%{_bindir}/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
+
 %triggerin common -- %_datadir/glib-2.0/schemas/*.xml
 %{_bindir}/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
 
