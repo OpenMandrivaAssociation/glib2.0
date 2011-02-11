@@ -198,10 +198,10 @@ rm -rf $RPM_BUILD_ROOT
  %{_bindir}/gio-querymodules-32 %{_libdir}/gio/modules
 %endif
 
-%triggerin -n common -- %_datadir/glib-2.0/schemas/*.xml
+%triggerin common -- %_datadir/glib-2.0/schemas/*.xml
 %{_bindir}/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
 
-%triggerpostun -n common -- %_datadir/glib-2.0/schemas/*.xml
+%triggerpostun common -- %_datadir/glib-2.0/schemas/*.xml
 %{_bindir}/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
 
 %files common -f glib20.lang
