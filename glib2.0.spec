@@ -108,14 +108,9 @@ Summary: Static libraries and header files of %{name}
 Group:   Development/C
 Provides:	glib2-devel = %{version}-%{release}
 Provides:	libglib2-devel = %{version}-%{release}
-Provides:	lib%{name}-devel = %{version}-%{release}
 Requires:	%{lib_name} = %{version}
 Requires:	%{libgio_name} = %{version}
 Requires:	glib-gettextize >= %{version}
-#(proyvind): temporary workaround for odd rpm issue...
-%if "%{_lib}" == "lib"
-Provides:	devel(libglib-2.0)
-%endif
 Conflicts:  libglib1.3_13-devel
 #gw for %{_datadir}/glib-%{api_version}/gdb
 Conflicts:  glib-gettextize < 2.25.3
