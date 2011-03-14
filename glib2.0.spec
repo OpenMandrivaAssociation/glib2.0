@@ -186,6 +186,9 @@ mv %{buildroot}%{_sysconfdir}/bash_completion.d/gsettings-bash-completion.sh \
 
 chmod 644 %{buildroot}%{_sysconfdir}/bash_completion.d/*
 
+#gw at the moment, don't ship these:
+rm -f %buildroot%_datadir/systemtap/tagset/{glib,gobject}.stp
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
