@@ -15,7 +15,7 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.28.3
+Version:   2.28.4
 Release:   %mkrel 1
 License:   LGPLv2+
 Group:     System/Libraries
@@ -187,7 +187,7 @@ mv %{buildroot}%{_sysconfdir}/bash_completion.d/gsettings-bash-completion.sh \
 chmod 644 %{buildroot}%{_sysconfdir}/bash_completion.d/*
 
 #gw at the moment, don't ship these:
-rm -f %buildroot%_datadir/systemtap/tagset/{glib,gobject}.stp
+rm -f %buildroot%_datadir/systemtap/tapset/{glib,gobject}.stp
 
 %clean
 rm -rf $RPM_BUILD_ROOT
