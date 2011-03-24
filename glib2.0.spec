@@ -16,7 +16,7 @@
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
 Version:   2.28.4
-Release:   %mkrel 1
+Release:   %mkrel 2
 License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
@@ -231,6 +231,7 @@ rm -rf $RPM_BUILD_ROOT
 %_bindir/gdbus
 %{_bindir}/glib-compile-schemas
 %{_bindir}/gsettings
+%{_mandir}/man1/gio-querymodules.1*
 %_mandir/man1/glib-compile-schemas.1*
 %_mandir/man1/gsettings.1*
 %{_mandir}/man1/gdbus.1*
@@ -250,7 +251,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -n %{libgio_name}
 %defattr(-, root, root)
 %_bindir/gio-querymodules-*
-%{_mandir}/man1/gio-querymodules.1*
 /%{_lib}/libgio-%{api_version}.so.*
 %dir %_libdir/gio/
 %dir %_libdir/gio/modules/
