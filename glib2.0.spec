@@ -222,7 +222,6 @@ rm -rf $RPM_BUILD_ROOT
 %_bindir/gdbus
 %{_bindir}/glib-compile-schemas
 %{_bindir}/gsettings
-%{_mandir}/man1/gio-querymodules.1*
 %_mandir/man1/glib-compile-schemas.1*
 %_mandir/man1/gsettings.1*
 %{_mandir}/man1/gdbus.1*
