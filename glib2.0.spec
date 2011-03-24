@@ -10,7 +10,12 @@
 %define api_version	2.0
 %define lib_major	0
 %define lib_name	%mklibname %{name}_ %{lib_major}
-%define libgio_name	%mklibname gio%{api_version}_ %{lib_major}
+%if %_lib == lib
+%define	bit	32
+%else
+%define	bit	64
+%endif
+%define gio	gio2.0-%{bit}
 %define develname %mklibname -d %name
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
@@ -57,7 +62,7 @@ will depend on this library.
 Summary: data files used by glib
 Group: System/Libraries
 Conflicts:  %{_lib}glib2.0_0 < 2.12.3-2mdv2007.0
-Requires(post): %{libgio_name} >= %{version}-%release
+Requires(post): %{gio} >= %{version}-%release
 
 %description common
 Glib is a handy library of utility functions. This C
@@ -89,14 +94,16 @@ will depend on this library.
 This package contains the library needed to run programs dynamically
 linked with the glib.
 
-%package -n %{libgio_name}
+%package -n %{gio}
 Summary: GIO is the input, output and streaming API of glib
 Group: %{group}
 Conflicts:	%{name}-common < 2.23.4-2mdv2010.1
 Requires:	%{lib_name} = %{version}
 Suggests:	%mklibname gvfs 0
+%define	oldname	%{mklibname gio%{api_version}_ %{lib_major}}
+%rename %oldname
 
-%description -n %{libgio_name}
+%description -n %{gio}
 GIO is the input, output and streaming API of glib. It on the one hand
 provides a set of various streaming classes to access data from different
 sources in a convenient way and on the other hand it provides a high level
@@ -109,7 +116,6 @@ Group:   Development/C
 Provides:	glib2-devel = %{version}-%{release}
 Provides:	libglib2-devel = %{version}-%{release}
 Requires:	%{lib_name} = %{version}
-Requires:	%{libgio_name} = %{version}
 Requires:	glib-gettextize >= %{version}
 Conflicts:  libglib1.3_13-devel
 #gw for %{_datadir}/glib-%{api_version}/gdb
@@ -167,11 +173,8 @@ install -m 644 %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d/50glib20.csh
 
 rm -f %buildroot%_libdir/gio/modules/lib*a
 
-%if %_lib != lib
- mv $RPM_BUILD_ROOT%{_bindir}/gio-querymodules $RPM_BUILD_ROOT%{_bindir}/gio-querymodules-64
-%else
- mv  $RPM_BUILD_ROOT%{_bindir}/gio-querymodules $RPM_BUILD_ROOT%{_bindir}/gio-querymodules-32
-%endif
+mv $RPM_BUILD_ROOT%{_bindir}/gio-querymodules $RPM_BUILD_ROOT%{_bindir}/gio-querymodules-%{bit}
+mv $RPM_BUILD_ROOT%{_mandir}/man1/gio-querymodules.1 $RPM_BUILD_ROOT%{_mandir}/man1/gio-querymodules-%{bit}.1
 
 #ghost files
 touch %buildroot%_libdir/gio/modules/giomodule.cache \
@@ -192,26 +195,14 @@ rm -f %buildroot%_datadir/systemtap/tapset/{glib,gobject}.stp
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -n %{libgio_name}
-%if %_lib != lib
- %{_bindir}/gio-querymodules-64 %{_libdir}/gio/modules 
-%else
- %{_bindir}/gio-querymodules-32 %{_libdir}/gio/modules
-%endif
+%post -n %{gio}
+%{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules 
 
-%triggerin -n %{libgio_name} -- %{_libdir}/gio/modules/*.so
-%if %_lib != lib
- %{_bindir}/gio-querymodules-64 %{_libdir}/gio/modules
-%else
- %{_bindir}/gio-querymodules-32 %{_libdir}/gio/modules
-%endif
+%triggerin -n %{gio} -- %{_libdir}/gio/modules/*.so
+%{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules
 
-%triggerpostun -n %{libgio_name} -- %{_libdir}/gio/modules/*.so
-%if %_lib != lib
- %{_bindir}/gio-querymodules-64 %{_libdir}/gio/modules
-%else
- %{_bindir}/gio-querymodules-32 %{_libdir}/gio/modules
-%endif
+%triggerpostun -n %{gio} -- %{_libdir}/gio/modules/*.so
+%{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules
 
 %post common
 %{_bindir}/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
@@ -243,15 +234,16 @@ rm -rf $RPM_BUILD_ROOT
 %files -n %{lib_name}
 %defattr(-, root, root)
 %doc README
+/%{_lib}/libgio-%{api_version}.so.*
 /%{_lib}/libglib-%{api_version}.so.*
 /%{_lib}/libgmodule-%{api_version}.so.*
 /%{_lib}/libgthread-%{api_version}.so.*
 /%{_lib}/libgobject-%{api_version}.so.*
 
-%files -n %{libgio_name}
+%files -n %{gio}
 %defattr(-, root, root)
-%_bindir/gio-querymodules-*
-/%{_lib}/libgio-%{api_version}.so.*
+%_bindir/gio-querymodules-%{bit}
+%{_mandir}/man1/gio-querymodules-%{bit}.1*
 %dir %_libdir/gio/
 %dir %_libdir/gio/modules/
 %if !%bootstrap
@@ -289,5 +281,3 @@ rm -rf $RPM_BUILD_ROOT
 %_mandir/man1/glib-gettextize.1*
 %{_datadir}/aclocal/glib-gettext.m4
 %{_datadir}/glib-%{api_version}/gettext
-
-
