@@ -149,7 +149,7 @@ packages can potentially benefict from the changes.
 	--with-pcre=system \
 	--enable-static \
 	--disable-selinux \
-	-with-runtime-libdir=../../%_lib \
+	--with-runtime-libdir=../../%_lib \
 %if !%enable_gtkdoc
 	--enable-gtk-doc=no
 %endif
