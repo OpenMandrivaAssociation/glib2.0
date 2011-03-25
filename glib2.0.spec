@@ -21,7 +21,7 @@
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
 Version:   2.28.4
-Release:   %mkrel 2
+Release:   %mkrel 3
 License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.bz2
@@ -62,7 +62,7 @@ will depend on this library.
 Summary: data files used by glib
 Group: System/Libraries
 Conflicts:  %{_lib}glib2.0_0 < 2.12.3-2mdv2007.0
-Requires(post): %{gio} >= %{version}-%release
+Conflicts:  gio2.0_0 < 2.28.4-2
 
 %description common
 Glib is a handy library of utility functions. This C
@@ -121,11 +121,11 @@ Conflicts:  libglib1.3_13-devel
 #gw for %{_datadir}/glib-%{api_version}/gdb
 Conflicts:  glib-gettextize < 2.25.3
 Obsoletes: %mklibname -d %{name}_ 0
+
 %description -n %develname
 Static libraries and header files for the support library for the GIMP's X
 libraries, which are available as public libraries.  GLIB includes generally
 useful data structures.
-
 
 %package -n glib-gettextize
 Summary: Gettextize replacement
