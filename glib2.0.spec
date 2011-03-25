@@ -78,7 +78,8 @@ Group: %{group}
 Provides:	glib2 = %{version}-%{release}
 Provides:	libglib2 = %{version}-%{release}
 Provides:	lib%{name} = %{version}-%{release}
-Conflicts:  libglib1.3_13
+Conflicts:	libglib1.3_13
+Conflicts:	%{_lib}gio2.0_0 < 2.28.4-2
 Requires:	%{name}-common >= %{version}-%{release}
 
 %description -n %{lib_name}
