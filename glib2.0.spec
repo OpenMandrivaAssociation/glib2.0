@@ -34,7 +34,7 @@ Requires:  shared-mime-info >= 0.70
 %if !%bootstrap
 BuildRequires:	fam-devel
 %endif
-BuildRequires:	libpcre-devel
+BuildRequires:	libpcre-devel >= 8.11
 BuildRequires:	zlib-devel
 BuildRequires:  dbus-devel
 BuildRequires:  gettext
