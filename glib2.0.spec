@@ -20,23 +20,23 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.28.8
-Release:   %mkrel 1
+Version:   2.31.0
+Release:   1
 License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.xz
 Source1:   glib20.sh
 Source2:   glib20.csh
-BuildRoot: %{_tmppath}/%{name}-%{version}-root
 URL:       http://www.gtk.org
 Requires:  common-licenses
 Requires:  shared-mime-info >= 0.70
 %if !%bootstrap
 BuildRequires:	fam-devel
 %endif
-BuildRequires:	libpcre-devel >= 8.11
+BuildRequires:	libpcre-devel
 BuildRequires:	zlib-devel
 BuildRequires:  dbus-devel
+BuildRequires:  ffi5-devel
 BuildRequires:  gettext
 BuildRequires:	libtool >= 1.4.2-2mdk
 BuildRequires: locales-en
@@ -259,6 +259,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/lib*.la
 %{_libdir}/lib*.a
 %{_libdir}/glib-%{api_version}
+%{_libdir}/gdbus-%{api_version}/codegen
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
 %{_mandir}/man1/glib-genmarshal.1*
@@ -266,12 +267,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/gobject-query.1*
 %{_mandir}/man1/gtester-report.1*
 %{_mandir}/man1/gtester.1*
+%{_mandir}/man1/gdbus-codegen.1*
 %{_datadir}/aclocal/glib-%{api_version}.m4
 %{_datadir}/aclocal/gsettings.m4
 %{_bindir}/glib-genmarshal
 %{_bindir}/glib-mkenums
 %{_bindir}/gobject-query
 %{_bindir}/gtester*
+%{_bindir}/gdbus-codegen
 %{_datadir}/gdb/auto-load/%_lib/lib*-gdb.py
 %{_datadir}/glib-%{api_version}/gdb
 
