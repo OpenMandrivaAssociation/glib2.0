@@ -20,12 +20,12 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.28.8
+Version:   2.31.0
 Release:   1
 Epoch:     1
 License:   LGPLv2+
 Group:     System/Libraries
-Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.xz
+Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/%{version}/glib-%{version}.tar.xz
 Source1:   glib20.sh
 Source2:   glib20.csh
 URL:       http://www.gtk.org
@@ -250,9 +250,11 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_libdir}/lib*.so
 %{_libdir}/lib*.la
 %{_libdir}/lib*.a
-%{_libdir}/glib-%{api_version}
+%{_libdir}/glib-%{api_version}/include/
+%{_libdir}/gdbus-%{api_version}/codegen/
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
+%{_mandir}/man1/gdbus-codegen.1*
 %{_mandir}/man1/glib-genmarshal.1*
 %{_mandir}/man1/glib-mkenums.1*
 %{_mandir}/man1/gobject-query.1*
@@ -260,6 +262,7 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_mandir}/man1/gtester.1*
 %{_datadir}/aclocal/glib-%{api_version}.m4
 %{_datadir}/aclocal/gsettings.m4
+%{_bindir}/gdbus-codegen
 %{_bindir}/glib-genmarshal
 %{_bindir}/glib-mkenums
 %{_bindir}/gobject-query
