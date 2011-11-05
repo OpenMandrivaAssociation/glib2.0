@@ -20,20 +20,19 @@
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.31.0
+Version:   2.28.8
 Release:   1
+Epoch:     1
 License:   LGPLv2+
 Group:     System/Libraries
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.xz
 Source1:   glib20.sh
 Source2:   glib20.csh
 URL:       http://www.gtk.org
-Requires:  common-licenses
-Requires:  shared-mime-info >= 0.70
 %if !%bootstrap
 BuildRequires:	fam-devel
 %endif
-BuildRequires:	libpcre-devel
+BuildRequires:	libpcre-devel >= 8.11
 BuildRequires:	zlib-devel
 BuildRequires:  dbus-devel
 BuildRequires:  ffi5-devel
@@ -43,6 +42,8 @@ BuildRequires: locales-en
 %if %enable_gtkdoc
 BuildRequires:	gtk-doc >= 0.10
 %endif
+Requires:  common-licenses
+Requires:  shared-mime-info >= 0.70
 
 #gw this was required since 2.23.2 (new atomic OPs?)
 %define _requires_exceptions GLIBC_PRIVATE
@@ -59,10 +60,10 @@ You should install Glib because many of your applications
 will depend on this library.
 
 %package common
-Summary: data files used by glib
-Group: System/Libraries
-Conflicts:  %{_lib}glib2.0_0 < 2.12.3-2mdv2007.0
-Conflicts:  gio2.0_0 < 2.28.4-2
+Summary:		data files used by glib
+Group:		System/Libraries
+Conflicts:	%{_lib}glib2.0_0 < 2.12.3-2mdv2007.0
+Conflicts:	gio2.0_0 < 2.28.4-2
 
 %description common
 Glib is a handy library of utility functions. This C
@@ -73,14 +74,14 @@ programs require.
 This package contains data used by glib library.
 
 %package -n %{lib_name}
-Summary: %{summary}
-Group: %{group}
-Provides:	glib2 = %{version}-%{release}
-Provides:	libglib2 = %{version}-%{release}
-Provides:	lib%{name} = %{version}-%{release}
+Summary:		%{summary}
+Group:		%{group}
+Requires:	%{name}-common = %{epoch}:%{version}
+Provides:	glib2 = %{epoch}:%{version}-%{release}
+Provides:	libglib2 = %{epoch}:%{version}-%{release}
+Provides:	lib%{name} = %{epoch}:%{version}-%{release}
 Conflicts:	libglib1.3_13
 Conflicts:	%{_lib}gio2.0_0 < 2.28.4-2
-Requires:	%{name}-common >= %{version}-%{release}
 
 %description -n %{lib_name}
 Glib is a handy library of utility functions. This C
@@ -96,10 +97,10 @@ This package contains the library needed to run programs dynamically
 linked with the glib.
 
 %package -n %{gio}
-Summary: GIO is the input, output and streaming API of glib
-Group: %{group}
+Summary:		GIO is the input, output and streaming API of glib
+Group:		%{group}
 Conflicts:	%{name}-common < 2.23.4-2mdv2010.1
-Requires:	%{lib_name} = %{version}
+Requires:	%{lib_name} = %{epoch}:%{version}
 Suggests:	%mklibname gvfs 0
 %define	oldname	%{mklibname gio%{api_version}_ %{lib_major}}
 %rename %oldname
@@ -112,12 +113,12 @@ file system abstraction to access file and directories not only local but also
 on the network. For the latter you need to install gvfs.
 
 %package -n %develname
-Summary: Static libraries and header files of %{name}
-Group:   Development/C
-Provides:	glib2-devel = %{version}-%{release}
-Provides:	libglib2-devel = %{version}-%{release}
-Requires:	%{lib_name} = %{version}
-Requires:	glib-gettextize >= %{version}
+Summary:		Static libraries and header files of %{name}
+Group:		Development/C
+Requires:	%{lib_name} = %{epoch}:%{version}
+Requires:	glib-gettextize = %{epoch}:%{version}
+Provides:	glib2-devel = %{epoch}:%{version}-%{release}
+Provides:	libglib2-devel = %{epoch}:%{version}-%{release}
 Conflicts:  libglib1.3_13-devel
 #gw for %{_datadir}/glib-%{api_version}/gdb
 Conflicts:  glib-gettextize < 2.25.3
@@ -129,8 +130,8 @@ libraries, which are available as public libraries.  GLIB includes generally
 useful data structures.
 
 %package -n glib-gettextize
-Summary: Gettextize replacement
-Group: Development/Other
+Summary:		Gettextize replacement
+Group:		Development/Other
 
 %description -n glib-gettextize
 %{name} package is designed to replace gettextize completely.
@@ -141,11 +142,10 @@ If this replacement of gettextize is run instead, then all gnome
 packages can potentially benefict from the changes.
 
 %prep
-%setup -n glib-%{version} -q
+%setup -qn glib-%{version}
 %apply_patches
 
 %build
-
 %configure2_5x \
 	--with-pcre=system \
 	--enable-static \
@@ -162,24 +162,22 @@ packages can potentially benefict from the changes.
 #make check
 
 %install
-rm -rf $RPM_BUILD_ROOT
-
-
+rm -rf %{buildroot}
 %makeinstall_std
 
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
-install -m 644 %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d/50glib20.sh
-install -m 644 %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d/50glib20.csh
+mkdir -p %{buildroot}%{_sysconfdir}/profile.d
+install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/50glib20.sh
+install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
 %find_lang glib20
 
 rm -f %buildroot%_libdir/gio/modules/lib*a
 
-mv $RPM_BUILD_ROOT%{_bindir}/gio-querymodules $RPM_BUILD_ROOT%{_bindir}/gio-querymodules-%{bit}
-mv $RPM_BUILD_ROOT%{_mandir}/man1/gio-querymodules.1 $RPM_BUILD_ROOT%{_mandir}/man1/gio-querymodules-%{bit}.1
+mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-%{bit}
+mv %{buildroot}%{_mandir}/man1/gio-querymodules.1 %{buildroot}%{_mandir}/man1/gio-querymodules-%{bit}.1
 
 #ghost files
-touch %buildroot%_libdir/gio/modules/giomodule.cache \
-      %buildroot%_datadir/glib-2.0/schemas/gschemas.compiled
+touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache \
+      %{buildroot}%{_datadir}/glib-2.0/schemas/gschemas.compiled
 
 # use consistent naming and permissions for completion scriplets
 mv %{buildroot}%{_sysconfdir}/bash_completion.d/gdbus-bash-completion.sh \
@@ -191,10 +189,8 @@ mv %{buildroot}%{_sysconfdir}/bash_completion.d/gsettings-bash-completion.sh \
 chmod 644 %{buildroot}%{_sysconfdir}/bash_completion.d/*
 
 #gw at the moment, don't ship these:
-rm -f %buildroot%_datadir/systemtap/tapset/{glib,gobject}.stp
+rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %post -n %{gio}
 %{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules 
@@ -206,33 +202,31 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules
 
 %post common
-%{_bindir}/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
+%{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
 
-%triggerin common -- %_datadir/glib-2.0/schemas/*.xml
-%{_bindir}/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
+%triggerin common -- %{_datadir}/glib-2.0/schemas/*.xml
+%{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
 
-%triggerpostun common -- %_datadir/glib-2.0/schemas/*.xml
-%{_bindir}/glib-compile-schemas --allow-any-name %_datadir/glib-2.0/schemas/
+%triggerpostun common -- %{_datadir}/glib-2.0/schemas/*.xml
+%{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
 
 %files common -f glib20.lang
-%defattr(-, root, root)
 %doc README
 %config(noreplace) %{_sysconfdir}/profile.d/*
-%_sysconfdir/bash_completion.d/gdbus
-%_sysconfdir/bash_completion.d/gsettings
-%_bindir/gdbus
+%{_sysconfdir}/bash_completion.d/gdbus
+%{_sysconfdir}/bash_completion.d/gsettings
+%{_bindir}/gdbus
 %{_bindir}/glib-compile-schemas
 %{_bindir}/gsettings
-%_mandir/man1/glib-compile-schemas.1*
-%_mandir/man1/gsettings.1*
+%{_mandir}/man1/glib-compile-schemas.1*
+%{_mandir}/man1/gsettings.1*
 %{_mandir}/man1/gdbus.1*
-%dir %_datadir/glib-2.0/
-%dir %_datadir/glib-2.0/schemas/
-%_datadir/glib-2.0/schemas/gschema.dtd
-%ghost %_datadir/glib-2.0/schemas/gschemas.compiled
+%dir %{_datadir}/glib-2.0/
+%dir %{_datadir}/glib-2.0/schemas/
+%{_datadir}/glib-2.0/schemas/gschema.dtd
+%ghost %{_datadir}/glib-2.0/schemas/gschemas.compiled
 
 %files -n %{lib_name}
-%defattr(-, root, root)
 %doc README
 /%{_lib}/libgio-%{api_version}.so.*
 /%{_lib}/libglib-%{api_version}.so.*
@@ -241,25 +235,22 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libgobject-%{api_version}.so.*
 
 %files -n %{gio}
-%defattr(-, root, root)
-%_bindir/gio-querymodules-%{bit}
+%{_bindir}/gio-querymodules-%{bit}
 %{_mandir}/man1/gio-querymodules-%{bit}.1*
-%dir %_libdir/gio/
-%dir %_libdir/gio/modules/
+%dir %{_libdir}/gio/
+%dir %{_libdir}/gio/modules/
 %if !%bootstrap
-%_libdir/gio/modules/libgiofam.so
+%{_libdir}/gio/modules/libgiofam.so
 %endif
-%ghost %_libdir/gio/modules/giomodule.cache
+%ghost %{_libdir}/gio/modules/giomodule.cache
 
 %files -n %develname
-%defattr(-, root, root)
 %doc AUTHORS ChangeLog NEWS
 %doc %{_datadir}/gtk-doc/html/*
 %{_libdir}/lib*.so
 %{_libdir}/lib*.la
 %{_libdir}/lib*.a
 %{_libdir}/glib-%{api_version}
-%{_libdir}/gdbus-%{api_version}/codegen
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
 %{_mandir}/man1/glib-genmarshal.1*
@@ -267,20 +258,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/gobject-query.1*
 %{_mandir}/man1/gtester-report.1*
 %{_mandir}/man1/gtester.1*
-%{_mandir}/man1/gdbus-codegen.1*
 %{_datadir}/aclocal/glib-%{api_version}.m4
 %{_datadir}/aclocal/gsettings.m4
 %{_bindir}/glib-genmarshal
 %{_bindir}/glib-mkenums
 %{_bindir}/gobject-query
 %{_bindir}/gtester*
-%{_bindir}/gdbus-codegen
 %{_datadir}/gdb/auto-load/%_lib/lib*-gdb.py
 %{_datadir}/glib-%{api_version}/gdb
 
 %files -n glib-gettextize
-%defattr(-, root, root)
 %{_bindir}/glib-gettextize
-%_mandir/man1/glib-gettextize.1*
+%{_mandir}/man1/glib-gettextize.1*
 %{_datadir}/aclocal/glib-gettext.m4
 %{_datadir}/glib-%{api_version}/gettext
