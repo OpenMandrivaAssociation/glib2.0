@@ -1,6 +1,3 @@
-# enable_gtkdoc: Toggle if gtkdoc stuff should be rebuilt
-#	0 = no
-#	1 = yes
 %define enable_gtkdoc	0
 
 # gw bootstrap: fam pulls glib2, so build without fam
@@ -10,25 +7,31 @@
 %define api_version	2.0
 %define lib_major	0
 %define lib_name	%mklibname %{name}_ %{lib_major}
+%define libgio		%mklibname gio%{api_version}_ %{lib_major}
+%define libgmodule	%mklibname gmodule%{api_version}_ %{lib_major}
+%define libgthread	%mklibname gthread%{api_version}_ %{lib_major}
+%define libgobject	%mklibname gobject%{api_version}_ %{lib_major}
+%define develname	%mklibname -d %{name}
 %if %_lib == lib
 %define	bit	32
 %else
 %define	bit	64
 %endif
 %define gio	gio2.0-%{bit}
-%define develname %mklibname -d %name
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Name:      glib%{api_version}
-Version:   2.31.0
-Release:   1
 Epoch:     1
+Version:   2.31.2
+Release:   1
 License:   LGPLv2+
 Group:     System/Libraries
+URL:       http://www.gtk.org
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/%{version}/glib-%{version}.tar.xz
 Source1:   glib20.sh
 Source2:   glib20.csh
-URL:       http://www.gtk.org
+Patch0:    glib-2.31.2-fix-str-fmt.patch
+
 %if !%bootstrap
 BuildRequires:	fam-devel
 %endif
@@ -37,12 +40,11 @@ BuildRequires:	zlib-devel
 BuildRequires:  dbus-devel
 BuildRequires:  ffi5-devel
 BuildRequires:  gettext
-BuildRequires:	libtool >= 1.4.2-2mdk
+BuildRequires:	libtool >= 1.4.2-2
 BuildRequires: locales-en
 %if %enable_gtkdoc
 BuildRequires:	gtk-doc >= 0.10
 %endif
-Requires:  common-licenses
 Requires:  shared-mime-info >= 0.70
 
 #gw this was required since 2.23.2 (new atomic OPs?)
@@ -60,30 +62,11 @@ You should install Glib because many of your applications
 will depend on this library.
 
 %package common
-Summary:		data files used by glib
+Summary:	data files used by glib
 Group:		System/Libraries
-Conflicts:	%{_lib}glib2.0_0 < 2.12.3-2mdv2007.0
 Conflicts:	gio2.0_0 < 2.28.4-2
 
 %description common
-Glib is a handy library of utility functions. This C
-library is designed to solve some portability problems
-and provide other useful functionality which most
-programs require.
-
-This package contains data used by glib library.
-
-%package -n %{lib_name}
-Summary:		%{summary}
-Group:		%{group}
-Requires:	%{name}-common = %{epoch}:%{version}
-Provides:	glib2 = %{epoch}:%{version}-%{release}
-Provides:	libglib2 = %{epoch}:%{version}-%{release}
-Provides:	lib%{name} = %{epoch}:%{version}-%{release}
-Conflicts:	libglib1.3_13
-Conflicts:	%{_lib}gio2.0_0 < 2.28.4-2
-
-%description -n %{lib_name}
 Glib is a handy library of utility functions. This C
 library is designed to solve some portability problems
 and provide other useful functionality which most
@@ -93,15 +76,59 @@ Glib is used by GDK, GTK+ and many applications.
 You should install Glib because many of your applications
 will depend on this library.
 
+This package contains data used by glib library.
+
+%package -n %{lib_name}
+Summary:	%{summary}
+Group:		%{group}
+Provides:	glib2 = %{epoch}:%{version}-%{release}
+Provides:	lib%{name} = %{epoch}:%{version}-%{release}
+Conflicts:	%{_lib}gio2.0_0 < 2.28.4-2
+
+%description -n %{lib_name}
 This package contains the library needed to run programs dynamically
-linked with the glib.
+linked with libglib.
+
+%package -n %{libgio}
+Summary:	%{summary}
+Group:		%{group}
+Conflicts:	%mklibname glib2.0 < 2.31.2-1
+
+%description -n %{libgio}
+This package contains the library needed to run programs dynamically
+linked with libgio.
+
+%package -n %{libgmodule}
+Summary:	%{summary}
+Group:		%{group}
+Conflicts:	%mklibname glib2.0 < 2.31.2-1
+
+%description -n %{libgmodule}
+This package contains the library needed to run programs dynamically
+linked with libgmodule.
+
+%package -n %{libgobject}
+Summary:	%{summary}
+Group:		%{group}
+Conflicts:	%mklibname glib2.0 < 2.31.2-1
+
+%description -n %{libgobject}
+This package contains the library needed to run programs dynamically
+linked with libgobject.
+
+%package -n %{libgthread}
+Summary:	%{summary}
+Group:		%{group}
+Conflicts:	%mklibname glib2.0 < 2.31.2-1
+
+%description -n %{libgthread}
+This package contains the library needed to run programs dynamically
+linked with libgthread.
 
 %package -n %{gio}
-Summary:		GIO is the input, output and streaming API of glib
+Summary:	GIO is the input, output and streaming API of glib
 Group:		%{group}
 Conflicts:	%{name}-common < 2.23.4-2mdv2010.1
-Requires:	%{lib_name} = %{epoch}:%{version}
-Suggests:	%mklibname gvfs 0
 %define	oldname	%{mklibname gio%{api_version}_ %{lib_major}}
 %rename %oldname
 
@@ -112,25 +139,27 @@ sources in a convenient way and on the other hand it provides a high level
 file system abstraction to access file and directories not only local but also
 on the network. For the latter you need to install gvfs.
 
-%package -n %develname
-Summary:		Static libraries and header files of %{name}
+%package -n %{develname}
+Summary:	Static libraries and header files of %{name}
 Group:		Development/C
-Requires:	%{lib_name} = %{epoch}:%{version}
 Requires:	glib-gettextize = %{epoch}:%{version}
+Requires:	%{lib_name} = %{epoch}:%{version}
+Requires:	%{libgio} = %{epoch}:%{version}
+Requires:	%{libgmodule} = %{epoch}:%{version}
+Requires:	%{libgobject} = %{epoch}:%{version}
+Requires:	%{libgthread} = %{epoch}:%{version}
 Provides:	glib2-devel = %{epoch}:%{version}-%{release}
-Provides:	libglib2-devel = %{epoch}:%{version}-%{release}
-Conflicts:  libglib1.3_13-devel
 #gw for %{_datadir}/glib-%{api_version}/gdb
 Conflicts:  glib-gettextize < 2.25.3
-Obsoletes: %mklibname -d %{name}_ 0
+Obsoletes:	%mklibname -d %{name}_ 0
 
-%description -n %develname
+%description -n %{develname}
 Static libraries and header files for the support library for the GIMP's X
 libraries, which are available as public libraries.  GLIB includes generally
 useful data structures.
 
 %package -n glib-gettextize
-Summary:		Gettextize replacement
+Summary:	Gettextize replacement
 Group:		Development/Other
 
 %description -n glib-gettextize
@@ -170,7 +199,9 @@ install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/50glib20.sh
 install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
 %find_lang glib20
 
-rm -f %buildroot%_libdir/gio/modules/lib*a
+# remove files
+find %{buildroot} -name "*.la" -delete
+rm -f %{buildroot}%{_libdir}/gio/modules/lib*a
 
 mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-%{bit}
 mv %{buildroot}%{_mandir}/man1/gio-querymodules.1 %{buildroot}%{_mandir}/man1/gio-querymodules-%{bit}.1
@@ -226,12 +257,19 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_datadir}/glib-2.0/schemas/gschema.dtd
 %ghost %{_datadir}/glib-2.0/schemas/gschemas.compiled
 
-%files -n %{lib_name}
-%doc README
+%files -n %{libgio}
 /%{_lib}/libgio-%{api_version}.so.*
+
+%files -n %{lib_name}
 /%{_lib}/libglib-%{api_version}.so.*
+
+%files -n %{libgmodule}
 /%{_lib}/libgmodule-%{api_version}.so.*
+
+%files -n %{libgthread}
 /%{_lib}/libgthread-%{api_version}.so.*
+
+%files -n %{libgobject}
 /%{_lib}/libgobject-%{api_version}.so.*
 
 %files -n %{gio}
@@ -244,11 +282,10 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %endif
 %ghost %{_libdir}/gio/modules/giomodule.cache
 
-%files -n %develname
+%files -n %{develname}
 %doc AUTHORS ChangeLog NEWS
 %doc %{_datadir}/gtk-doc/html/*
 %{_libdir}/lib*.so
-%{_libdir}/lib*.la
 %{_libdir}/lib*.a
 %{_libdir}/glib-%{api_version}/include/
 %{_libdir}/gdbus-%{api_version}/codegen/
