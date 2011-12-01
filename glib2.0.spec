@@ -64,6 +64,8 @@ will depend on this library.
 %package common
 Summary:	data files used by glib
 Group:		System/Libraries
+Requires(pre): %{gio}
+Requires(postun): %{gio}
 Conflicts:	gio2.0_0 < 2.28.4-2
 
 %description common
