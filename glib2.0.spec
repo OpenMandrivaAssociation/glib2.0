@@ -23,7 +23,7 @@ Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Group:     System/Libraries
 Name:      glib%{api_version}
 Version:   2.31.2
-Release:   2
+Release:   3
 Epoch:     1
 License:   LGPLv2+
 URL:       http://www.gtk.org
@@ -63,7 +63,6 @@ will depend on this library.
 %package common
 Summary:	data files used by glib
 Group:		System/Libraries
-Requires:	%{gio}
 Conflicts:	gio2.0_0 < 2.28.4-2
 
 %description common
@@ -149,10 +148,8 @@ Requires:	%{libgmodule} = %{epoch}:%{version}
 Requires:	%{libgobject} = %{epoch}:%{version}
 Requires:	%{libgthread} = %{epoch}:%{version}
 Provides:	glib2-devel = %{epoch}:%{version}-%{release}
-Provides:	libglib2-devel = %{epoch}:%{version}-%{release}
-Provides:	lib%{name}-devel = %{epoch}:%{version}-%{release}
 #gw for %{_datadir}/glib-%{api_version}/gdb
-Conflicts:  glib-gettextize < 2.25.3
+Conflicts:	glib-gettextize < 2.25.3
 Obsoletes:	%mklibname -d %{name}_ 0
 
 %description -n %{develname}
