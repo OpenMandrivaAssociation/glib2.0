@@ -83,6 +83,7 @@ Group:		%{group}
 Provides:	glib2 = %{epoch}:%{version}-%{release}
 Provides:	lib%{name} = %{epoch}:%{version}-%{release}
 Conflicts:	%{_lib}gio2.0_0 < 2.28.4-2
+Conflicts:	%{develname} < 1:2.31.2
 
 %description -n %{lib_name}
 This package contains the library needed to run programs dynamically
