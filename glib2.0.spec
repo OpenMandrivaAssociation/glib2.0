@@ -129,8 +129,8 @@ linked with libgthread.
 Summary:	GIO is the input, output and streaming API of glib
 Group:		%{group}
 Conflicts:	%{name}-common < 2.23.4-2mdv2010.1
-%define	oldname	%{mklibname gio%{api_version}_ %{lib_major}}
-%rename %oldname
+Provides:	gio2.0
+Obsoletes:	%{libgio} < 2.28.4-3
 
 %description -n %{gio}
 GIO is the input, output and streaming API of glib. It on the one hand
