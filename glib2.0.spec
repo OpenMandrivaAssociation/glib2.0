@@ -12,7 +12,7 @@
 %define libgthread	%mklibname gthread%{api_version}_ %{lib_major}
 %define libgobject	%mklibname gobject%{api_version}_ %{lib_major}
 %define develname	%mklibname -d %{name}
-%if %_lib == lib
+%if %{_lib} == lib
 %define	bit	32
 %else
 %define	bit	64
@@ -41,11 +41,11 @@ BuildRequires:  dbus-devel
 BuildRequires:  ffi5-devel
 BuildRequires:  gettext
 BuildRequires:	libtool >= 1.4.2-2
-BuildRequires: locales-en
+BuildRequires:	locales-en
 %if %enable_gtkdoc
 BuildRequires:	gtk-doc >= 0.10
 %endif
-Requires:  shared-mime-info >= 0.70
+Requires:	shared-mime-info >= 0.70
 
 #gw this was required since 2.23.2 (new atomic OPs?)
 %define _requires_exceptions GLIBC_PRIVATE
@@ -64,8 +64,7 @@ will depend on this library.
 %package common
 Summary:	data files used by glib
 Group:		System/Libraries
-Requires(pre): %{gio}
-Requires(postun): %{gio}
+Requires:	%{gio}
 Conflicts:	gio2.0_0 < 2.28.4-2
 
 %description common
@@ -151,6 +150,8 @@ Requires:	%{libgmodule} = %{epoch}:%{version}
 Requires:	%{libgobject} = %{epoch}:%{version}
 Requires:	%{libgthread} = %{epoch}:%{version}
 Provides:	glib2-devel = %{epoch}:%{version}-%{release}
+Provides:	libglib2-devel = %{epoch}:%{version}-%{release}
+Provides:	lib%{name}-devel = %{epoch}:%{version}-%{release}
 #gw for %{_datadir}/glib-%{api_version}/gdb
 Conflicts:  glib-gettextize < 2.25.3
 Obsoletes:	%mklibname -d %{name}_ 0
@@ -277,9 +278,9 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %files -n %{gio}
 %{_bindir}/gio-querymodules-%{bit}
 %{_mandir}/man1/gio-querymodules-%{bit}.1*
+%if !%bootstrap
 %dir %{_libdir}/gio/
 %dir %{_libdir}/gio/modules/
-%if !%bootstrap
 %{_libdir}/gio/modules/libgiofam.so
 %endif
 %ghost %{_libdir}/gio/modules/giomodule.cache
@@ -314,3 +315,4 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_mandir}/man1/glib-gettextize.1*
 %{_datadir}/aclocal/glib-gettext.m4
 %{_datadir}/glib-%{api_version}/gettext
+
