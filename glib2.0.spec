@@ -20,12 +20,12 @@
 %define gio	gio2.0-%{bit}
 
 Summary:   GIMP Toolkit and GIMP Drawing Kit support library
-Name:      glib%{api_version}
-Epoch:     1
-Version:   2.31.2
-Release:   1
-License:   LGPLv2+
 Group:     System/Libraries
+Name:      glib%{api_version}
+Version:   2.31.2
+Release:   2
+Epoch:     1
+License:   LGPLv2+
 URL:       http://www.gtk.org
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/%{version}/glib-%{version}.tar.xz
 Source1:   glib20.sh
@@ -49,7 +49,6 @@ Requires:	shared-mime-info >= 0.70
 
 #gw this was required since 2.23.2 (new atomic OPs?)
 %define _requires_exceptions GLIBC_PRIVATE
-
 
 %description
 Glib is a handy library of utility functions. This C
@@ -93,7 +92,7 @@ linked with libglib.
 %package -n %{libgio}
 Summary:	%{summary}
 Group:		%{group}
-Conflicts:	%mklibname glib2.0 < 2.31.2-1
+Conflicts:	%{lib_name} < 1:2.31.2
 
 %description -n %{libgio}
 This package contains the library needed to run programs dynamically
@@ -102,7 +101,7 @@ linked with libgio.
 %package -n %{libgmodule}
 Summary:	%{summary}
 Group:		%{group}
-Conflicts:	%mklibname glib2.0 < 2.31.2-1
+Conflicts:	%{lib_name} < 1:2.31.2
 
 %description -n %{libgmodule}
 This package contains the library needed to run programs dynamically
@@ -111,7 +110,7 @@ linked with libgmodule.
 %package -n %{libgobject}
 Summary:	%{summary}
 Group:		%{group}
-Conflicts:	%mklibname glib2.0 < 2.31.2-1
+Conflicts:	%{lib_name} < 1:2.31.2
 
 %description -n %{libgobject}
 This package contains the library needed to run programs dynamically
@@ -120,7 +119,7 @@ linked with libgobject.
 %package -n %{libgthread}
 Summary:	%{summary}
 Group:		%{group}
-Conflicts:	%mklibname glib2.0 < 2.31.2-1
+Conflicts:	%{lib_name} < 1:2.31.2
 
 %description -n %{libgthread}
 This package contains the library needed to run programs dynamically
