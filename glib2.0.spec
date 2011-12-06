@@ -33,19 +33,19 @@ Source2:   glib20.csh
 Patch0:    glib-2.31.2-fix-str-fmt.patch
 
 %if !%bootstrap
-BuildRequires:	fam-devel
+BuildRequires:	pkgconfig(gamin)
 %endif
-BuildRequires:	libpcre-devel >= 8.11
-BuildRequires:	zlib-devel
-BuildRequires:  dbus-devel
-BuildRequires:  ffi5-devel
+BuildRequires:	pkgconfig(libpcre) >= 8.11
+BuildRequires:	pkgconfig(zlib)
+BuildRequires:  pkgconfig(dbus-1)
+BuildRequires:  pkgconfig(libffi)
 BuildRequires:  gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
 %if %enable_gtkdoc
-BuildRequires:	gtk-doc >= 0.10
+BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
-Requires:	shared-mime-info >= 0.70
+Requires:	pkgconfig(shared-mime-info) >= 0.70
 
 #gw this was required since 2.23.2 (new atomic OPs?)
 %define _requires_exceptions GLIBC_PRIVATE
