@@ -24,7 +24,7 @@ Group:     System/Libraries
 Name:      glib%{api_version}
 Epoch:     1
 Version:   2.31.2
-Release:   6
+Release:   7
 License:   LGPLv2+
 URL:       http://www.gtk.org
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/%{version}/glib-%{version}.tar.xz
@@ -178,9 +178,9 @@ packages can potentially benefict from the changes.
 %build
 %configure2_5x \
 	--with-pcre=system \
-	--enable-static \
+	--disable-static \
 	--disable-selinux \
-	--with-runtime-libdir=../../%_lib \
+	--with-runtime-libdir=../../%{_lib} \
 %if !%enable_gtkdoc
 	--enable-gtk-doc=no
 %endif
@@ -287,7 +287,6 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %doc AUTHORS ChangeLog NEWS
 %doc %{_datadir}/gtk-doc/html/*
 %{_libdir}/lib*.so
-%{_libdir}/lib*.a
 %{_libdir}/glib-%{api_version}/include/
 %{_libdir}/gdbus-%{api_version}/codegen/
 %{_libdir}/pkgconfig/*
@@ -305,12 +304,11 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_bindir}/glib-mkenums
 %{_bindir}/gobject-query
 %{_bindir}/gtester*
-%{_datadir}/gdb/auto-load/%_lib/lib*-gdb.py
-%{_datadir}/glib-%{api_version}/gdb
+%{_datadir}/gdb/auto-load/%{_lib}/lib*-gdb.py
+%{_datadir}/glib-%{api_version}/gdb/
 
 %files -n glib-gettextize
 %{_bindir}/glib-gettextize
 %{_mandir}/man1/glib-gettextize.1*
 %{_datadir}/aclocal/glib-gettext.m4
-%{_datadir}/glib-%{api_version}/gettext
-
+%{_datadir}/glib-%{api_version}/gettext/
