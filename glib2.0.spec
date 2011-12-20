@@ -23,14 +23,13 @@ Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Group:     System/Libraries
 Name:      glib%{api_version}
 Epoch:     1
-Version:   2.31.2
-Release:   7
+Version:   2.31.6
+Release:   1
 License:   LGPLv2+
 URL:       http://www.gtk.org
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/%{version}/glib-%{version}.tar.xz
 Source1:   glib20.sh
 Source2:   glib20.csh
-Patch0:    glib-2.31.2-fix-str-fmt.patch
 
 %if !%bootstrap
 BuildRequires:	pkgconfig(gamin)
@@ -173,7 +172,6 @@ packages can potentially benefict from the changes.
 
 %prep
 %setup -qn glib-%{version}
-%apply_patches
 
 %build
 %configure2_5x \
