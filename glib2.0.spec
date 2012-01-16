@@ -290,6 +290,7 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
 %{_mandir}/man1/gdbus-codegen.1*
+%{_mandir}/man1/glib-compile-resources.1*
 %{_mandir}/man1/glib-genmarshal.1*
 %{_mandir}/man1/glib-mkenums.1*
 %{_mandir}/man1/gobject-query.1*
@@ -298,6 +299,7 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_datadir}/aclocal/glib-%{api_version}.m4
 %{_datadir}/aclocal/gsettings.m4
 %{_bindir}/gdbus-codegen
+%{_bindir}/glib-compile-resources
 %{_bindir}/glib-genmarshal
 %{_bindir}/glib-mkenums
 %{_bindir}/gobject-query
