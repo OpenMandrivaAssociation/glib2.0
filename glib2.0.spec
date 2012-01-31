@@ -216,6 +216,9 @@ mv %{buildroot}%{_sysconfdir}/bash_completion.d/gdbus-bash-completion.sh \
 mv %{buildroot}%{_sysconfdir}/bash_completion.d/gsettings-bash-completion.sh \
     %{buildroot}%{_sysconfdir}/bash_completion.d/gsettings
 
+mv %{buildroot}%{_sysconfdir}/bash_completion.d/gresource-bash-completion.sh \
+    %{buildroot}%{_sysconfdir}/bash_completion.d/gresource
+
 chmod 644 %{buildroot}%{_sysconfdir}/bash_completion.d/*
 
 #gw at the moment, don't ship these:
@@ -294,6 +297,7 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_mandir}/man1/glib-genmarshal.1*
 %{_mandir}/man1/glib-mkenums.1*
 %{_mandir}/man1/gobject-query.1*
+%{_mandir}/man1/gresource.1*
 %{_mandir}/man1/gtester-report.1*
 %{_mandir}/man1/gtester.1*
 %{_datadir}/aclocal/glib-%{api_version}.m4
@@ -303,9 +307,11 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_bindir}/glib-genmarshal
 %{_bindir}/glib-mkenums
 %{_bindir}/gobject-query
+%{_bindir}/gresource
 %{_bindir}/gtester*
 %{_datadir}/gdb/auto-load/%{_lib}/lib*-gdb.py
 %{_datadir}/glib-%{api_version}/gdb/
+%{_sysconfdir}/bash_completion.d/gresource
 
 %files -n glib-gettextize
 %{_bindir}/glib-gettextize
