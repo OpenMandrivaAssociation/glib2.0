@@ -24,7 +24,7 @@ Group:     System/Libraries
 Name:      glib%{api_version}
 Epoch:     1
 Version:   2.31.16
-Release:   1
+Release:   2
 License:   LGPLv2+
 URL:       http://www.gtk.org
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.xz
