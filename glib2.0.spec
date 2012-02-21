@@ -24,7 +24,7 @@ Group:     System/Libraries
 Name:      glib%{api_version}
 Epoch:     1
 Version:   2.31.18
-Release:   1
+Release:   2
 License:   LGPLv2+
 URL:       http://www.gtk.org
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.xz
@@ -152,6 +152,7 @@ Provides:	libglib2-devel = %{version}-%{release}
 #gw for %{_datadir}/glib-%{api_version}/gdb
 Conflicts:	glib-gettextize < 2.25.3
 Obsoletes:	%mklibname -d %{name}_ 0
+Requires: %name-common = %{epoch}:%{version}-%{release}
 
 %description -n %{develname}
 Static libraries and header files for the support library for the GIMP's X
