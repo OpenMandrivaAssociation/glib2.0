@@ -23,7 +23,7 @@ Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Group:     System/Libraries
 Name:      glib%{api_version}
 Epoch:     1
-Version:   2.32.0
+Version:   2.32.1
 Release:   1
 License:   LGPLv2+
 URL:       http://www.gtk.org
