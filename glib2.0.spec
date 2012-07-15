@@ -207,18 +207,6 @@ mv %{buildroot}%{_mandir}/man1/gio-querymodules.1 %{buildroot}%{_mandir}/man1/gi
 touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache \
       %{buildroot}%{_datadir}/glib-2.0/schemas/gschemas.compiled
 
-# use consistent naming and permissions for completion scriplets
-mv %{buildroot}%{_sysconfdir}/bash_completion.d/gdbus-bash-completion.sh \
-    %{buildroot}%{_sysconfdir}/bash_completion.d/gdbus
-
-mv %{buildroot}%{_sysconfdir}/bash_completion.d/gsettings-bash-completion.sh \
-    %{buildroot}%{_sysconfdir}/bash_completion.d/gsettings
-
-mv %{buildroot}%{_sysconfdir}/bash_completion.d/gresource-bash-completion.sh \
-    %{buildroot}%{_sysconfdir}/bash_completion.d/gresource
-
-chmod 644 %{buildroot}%{_sysconfdir}/bash_completion.d/*
-
 #gw at the moment, don't ship these:
 rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 
@@ -243,18 +231,18 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %files common -f glib20.lang
 %doc README
 %config(noreplace) %{_sysconfdir}/profile.d/*
-%{_sysconfdir}/bash_completion.d/gdbus
-%{_sysconfdir}/bash_completion.d/gsettings
 %{_bindir}/gdbus
 %{_bindir}/glib-compile-schemas
 %{_bindir}/gsettings
-%{_mandir}/man1/glib-compile-schemas.1*
-%{_mandir}/man1/gsettings.1*
-%{_mandir}/man1/gdbus.1*
+%{_datadir}/bash-completion/completions/gdbus
+%{_datadir}/bash-completion/completions/gsettings
 %dir %{_datadir}/glib-2.0/
 %dir %{_datadir}/glib-2.0/schemas/
 %{_datadir}/glib-2.0/schemas/gschema.dtd
 %ghost %{_datadir}/glib-2.0/schemas/gschemas.compiled
+%{_mandir}/man1/glib-compile-schemas.1*
+%{_mandir}/man1/gsettings.1*
+%{_mandir}/man1/gdbus.1*
 
 %files -n %{libgio}
 /%{_lib}/libgio-%{api}.so.%{major}*
@@ -284,11 +272,23 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %files -n %{develname}
 %doc AUTHORS ChangeLog NEWS
 %doc %{_datadir}/gtk-doc/html/*
+%{_bindir}/gdbus-codegen
+%{_bindir}/glib-compile-resources
+%{_bindir}/glib-genmarshal
+%{_bindir}/glib-mkenums
+%{_bindir}/gobject-query
+%{_bindir}/gresource
+%{_bindir}/gtester*
 %{_libdir}/lib*.so
 %{_libdir}/glib-%{api}/include/
 %{_libdir}/gdbus-%{api}/codegen/
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
+%{_datadir}/aclocal/glib-%{api}.m4
+%{_datadir}/aclocal/gsettings.m4
+%{_datadir}/bash-completion/completions/gresource
+%{_datadir}/gdb/auto-load/%{_lib}/lib*-gdb.py
+%{_datadir}/glib-%{api}/gdb/
 %{_mandir}/man1/gdbus-codegen.1*
 %{_mandir}/man1/glib-compile-resources.1*
 %{_mandir}/man1/glib-genmarshal.1*
@@ -297,18 +297,6 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_mandir}/man1/gresource.1*
 %{_mandir}/man1/gtester-report.1*
 %{_mandir}/man1/gtester.1*
-%{_datadir}/aclocal/glib-%{api}.m4
-%{_datadir}/aclocal/gsettings.m4
-%{_bindir}/gdbus-codegen
-%{_bindir}/glib-compile-resources
-%{_bindir}/glib-genmarshal
-%{_bindir}/glib-mkenums
-%{_bindir}/gobject-query
-%{_bindir}/gresource
-%{_bindir}/gtester*
-%{_datadir}/gdb/auto-load/%{_lib}/lib*-gdb.py
-%{_datadir}/glib-%{api}/gdb/
-%{_sysconfdir}/bash_completion.d/gresource
 
 %files -n glib-gettextize
 %{_bindir}/glib-gettextize
