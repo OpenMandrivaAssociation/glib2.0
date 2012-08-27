@@ -23,15 +23,14 @@ Summary:   GIMP Toolkit and GIMP Drawing Kit support library
 Group:     System/Libraries
 Name:      glib%{api}
 Epoch:     1
-Version:   2.32.4
+Version:   2.33.4
 Release:   1
 License:   LGPLv2+
 URL:       http://www.gtk.org
 Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.xz
 Source1:   glib20.sh
 Source2:   glib20.csh
-
-BuildRequires:  gettext
+BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
 BuildRequires:  pkgconfig(dbus-1)
