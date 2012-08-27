@@ -1,40 +1,40 @@
-%define enable_gtkdoc	0
+%define enable_gtkdoc 0
 
 # gw bootstrap: fam pulls glib2, so build without fam
 %define bootstrap 0
 
 # Note that this is NOT a relocatable package
-%define api	2.0
-%define major	0
-%define libname		%mklibname %{name}_ %{major}
-%define libgio		%mklibname gio %{api} %{major}
-%define libgmodule	%mklibname gmodule %{api} %{major}
-%define libgthread	%mklibname gthread %{api} %{major}
-%define libgobject	%mklibname gobject %{api} %{major}
-%define develname	%mklibname -d %{name}
+%define api 2.0
+%define major 0
+%define libname %mklibname %{name}_ %{major}
+%define libgio %mklibname gio %{api} %{major}
+%define libgmodule %mklibname gmodule %{api} %{major}
+%define libgthread %mklibname gthread %{api} %{major}
+%define libgobject %mklibname gobject %{api} %{major}
+%define develname %mklibname -d %{name}
 %if %{_lib} == lib
-%define	bit	32
+%define bit 32
 %else
-%define	bit	64
+%define bit 64
 %endif
-%define gio	gio2.0-%{bit}
+%define gio gio2.0-%{bit}
 
-Summary:   GIMP Toolkit and GIMP Drawing Kit support library
-Group:     System/Libraries
-Name:      glib%{api}
-Epoch:     1
-Version:   2.33.4
-Release:   1
-License:   LGPLv2+
-URL:       http://www.gtk.org
-Source0:   ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.xz
-Source1:   glib20.sh
-Source2:   glib20.csh
+Summary:	GIMP Toolkit and GIMP Drawing Kit support library
+Group:		System/Libraries
+Name:		 glib%{api}
+Epoch:		1
+Version:	2.33.4
+Release:	1
+License:	LGPLv2+
+URL:		http://www.gtk.org
+Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.xz
+Source1:	glib20.sh
+Source2:	glib20.csh
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
-BuildRequires:  pkgconfig(dbus-1)
-BuildRequires:  pkgconfig(libffi)
+BuildRequires:	pkgconfig(dbus-1)
+BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
 Requires:	pkgconfig(shared-mime-info) >= 0.70
 BuildRequires:	pkgconfig(zlib)
@@ -193,6 +193,7 @@ packages can potentially benefict from the changes.
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/50glib20.sh
 install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
+
 %find_lang glib20
 
 # remove files
@@ -302,4 +303,3 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_mandir}/man1/glib-gettextize.1*
 %{_datadir}/aclocal/glib-gettext.m4
 %{_datadir}/glib-%{api}/gettext/
-
