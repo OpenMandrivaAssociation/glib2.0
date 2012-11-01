@@ -42,6 +42,7 @@ BuildRequires:	pkgconfig(zlib)
 %if %mdvver < 2012000
 BuildRequires:	pkgconfig(gamin)
 %endif
+BuildRequires:	elfutils-devel
 %endif
 %if %{enable_gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
@@ -208,7 +209,6 @@ rm -f %{buildroot}%{_datadir}/glib-2.0/gdb/*.{pyc,pyo}
 
 
 mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-%{bit}
-mv %{buildroot}%{_mandir}/man1/gio-querymodules.1 %{buildroot}%{_mandir}/man1/gio-querymodules-%{bit}.1
 
 #ghost files
 touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache \
@@ -268,7 +268,6 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 
 %files -n %{gio}
 %{_bindir}/gio-querymodules-%{bit}
-%{_mandir}/man1/gio-querymodules-%{bit}.1*
 %if !%{bootstrap}
 %dir %{_libdir}/gio/
 %dir %{_libdir}/gio/modules/
