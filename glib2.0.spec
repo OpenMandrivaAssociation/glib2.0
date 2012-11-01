@@ -294,14 +294,6 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_datadir}/bash-completion/completions/gresource
 %{_datadir}/gdb/auto-load/%{_lib}/lib*-gdb.py
 %{_datadir}/glib-%{api}/gdb/
-%{_mandir}/man1/gdbus-codegen.1*
-%{_mandir}/man1/glib-compile-resources.1*
-%{_mandir}/man1/glib-genmarshal.1*
-%{_mandir}/man1/glib-mkenums.1*
-%{_mandir}/man1/gobject-query.1*
-%{_mandir}/man1/gresource.1*
-%{_mandir}/man1/gtester-report.1*
-%{_mandir}/man1/gtester.1*
 
 %files -n glib-gettextize
 %{_bindir}/glib-gettextize
