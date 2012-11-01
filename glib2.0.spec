@@ -21,9 +21,9 @@
 
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Group:		System/Libraries
-Name:		 glib%{api}
+Name:		glib%{api}
 Epoch:		1
-Version:	2.33.4
+Version:	2.34.1
 Release:	1
 License:	LGPLv2+
 URL:		http://www.gtk.org
@@ -39,7 +39,9 @@ BuildRequires:	pkgconfig(libpcre) >= 8.11
 Requires:	pkgconfig(shared-mime-info) >= 0.70
 BuildRequires:	pkgconfig(zlib)
 %if !%{bootstrap}
+%if %mdvver < 2012000
 BuildRequires:	pkgconfig(gamin)
+%endif
 %endif
 %if %{enable_gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
@@ -59,7 +61,7 @@ You should install Glib because many of your applications
 will depend on this library.
 
 %package common
-Summary:	data files used by glib
+Summary:	Data files used by glib
 Group:		System/Libraries
 Conflicts:	gio2.0_0 < 2.28.4-2
 
@@ -126,7 +128,7 @@ linked with libgthread.
 Summary:	GIO is the input, output and streaming API of glib
 Group:		%{group}
 Conflicts:	%{name}-common < 2.23.4-2mdv2010.1
-Provides:	gio2.0
+Provides:	gio%{api}
 Obsoletes:	%{libgio} < 2.28.4-3
 
 %description -n %{gio}
@@ -177,6 +179,9 @@ packages can potentially benefict from the changes.
 	--disable-static \
 	--disable-selinux \
 	--with-runtime-libdir=../../%{_lib} \
+%if %mdvver < 2012000
+	--disable-fam \
+%endif
 %if !%{enable_gtkdoc}
 	--enable-gtk-doc=no
 %endif
@@ -199,6 +204,8 @@ install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
 # remove files
 find %{buildroot} -name "*.la" -delete
 rm -f %{buildroot}%{_libdir}/gio/modules/lib*a
+rm -f %{buildroot}%{_datadir}/glib-2.0/gdb/*.{pyc,pyo}
+
 
 mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-%{bit}
 mv %{buildroot}%{_mandir}/man1/gio-querymodules.1 %{buildroot}%{_mandir}/man1/gio-querymodules-%{bit}.1
@@ -265,7 +272,9 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %if !%{bootstrap}
 %dir %{_libdir}/gio/
 %dir %{_libdir}/gio/modules/
+%if %mdvver < 201200
 %{_libdir}/gio/modules/libgiofam.so
+%endif
 %endif
 %ghost %{_libdir}/gio/modules/giomodule.cache
 
