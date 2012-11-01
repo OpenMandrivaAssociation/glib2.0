@@ -247,9 +247,6 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %dir %{_datadir}/glib-2.0/schemas/
 %{_datadir}/glib-2.0/schemas/gschema.dtd
 %ghost %{_datadir}/glib-2.0/schemas/gschemas.compiled
-%{_mandir}/man1/glib-compile-schemas.1*
-%{_mandir}/man1/gsettings.1*
-%{_mandir}/man1/gdbus.1*
 
 %files -n %{libgio}
 /%{_lib}/libgio-%{api}.so.%{major}*
