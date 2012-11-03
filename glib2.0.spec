@@ -24,7 +24,7 @@ Group:		System/Libraries
 Name:		glib%{api}
 Epoch:		1
 Version:	2.34.1
-Release:	1
+Release:	2
 License:	LGPLv2+
 URL:		http://www.gtk.org
 Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.xz
@@ -36,8 +36,12 @@ BuildRequires:	locales-en
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
-Requires:	pkgconfig(shared-mime-info) >= 0.70
+# for sys/inotify.h
+BuildRequires:	glibc-devel
 BuildRequires:	pkgconfig(zlib)
+# for sys/sdt.h
+BuildRequires:	systemtap
+BuildRequires:	chrpath
 %if !%{bootstrap}
 %if %mdvver < 2012000
 BuildRequires:	pkgconfig(gamin)
@@ -47,6 +51,7 @@ BuildRequires:	elfutils-devel
 %if %{enable_gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
+Requires:	pkgconfig(shared-mime-info) >= 0.70
 
 #gw this was required since 2.23.2 (new atomic OPs?)
 %define _requires_exceptions GLIBC_PRIVATE
@@ -216,6 +221,9 @@ touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache \
 
 #gw at the moment, don't ship these:
 rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
+
+#(tpg) drop rpath
+chrpath --delete %{buildroot}%{_libdir}/*.so
 
 %post -n %{gio}
 %{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules 
