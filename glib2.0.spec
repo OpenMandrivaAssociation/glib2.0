@@ -1,60 +1,60 @@
-%define enable_gtkdoc 0
+#gw this was required since 2.23.2 (new atomic OPs?)
+%if %{_use_internal_dependency_generator}
+%define __noautoreq 'GLIBC_PRIVATE'
+%else
+%define _requires_exceptions GLIBC_PRIVATE
+%endif
+
+%define enable_gtkdoc	0
 
 # gw bootstrap: fam pulls glib2, so build without fam
 %define bootstrap 0
 
 # Note that this is NOT a relocatable package
-%define api 2.0
-%define major 0
-%define libname %mklibname %{name}_ %{major}
-%define libgio %mklibname gio %{api} %{major}
-%define libgmodule %mklibname gmodule %{api} %{major}
-%define libgthread %mklibname gthread %{api} %{major}
-%define libgobject %mklibname gobject %{api} %{major}
-%define develname %mklibname -d %{name}
+%define api	2.0
+%define major	0
+%define libname		%mklibname %{name}_ %{major}
+%define libgio		%mklibname gio %{api} %{major}
+%define libgmodule	%mklibname gmodule %{api} %{major}
+%define libgthread	%mklibname gthread %{api} %{major}
+%define libgobject	%mklibname gobject %{api} %{major}
+%define develname	%mklibname -d %{name}
 %if %{_lib} == lib
-%define bit 32
+%define	bit	32
 %else
-%define bit 64
+%define	bit	64
 %endif
-%define gio gio2.0-%{bit}
+%define gio	gio2.0-%{bit}
 
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
-Group:		System/Libraries
 Name:		glib%{api}
 Epoch:		1
-Version:	2.34.1
-Release:	2
+Version:	2.34.3
+Release:	1
+Group:		System/Libraries
 License:	LGPLv2+
 URL:		http://www.gtk.org
-Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/glib/glib-%{version}.tar.xz
+Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/glib/2.34/glib-%{version}.tar.xz
 Source1:	glib20.sh
 Source2:	glib20.csh
+Patch0:		glib-2.34.1-no-warnings.patch
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
+BuildRequires:	docbook-dtd412-xml
+BuildRequires:	docbook-xsl, xsltproc
+BuildRequires:	libffi-devel >= 3.0.0
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
-# for sys/inotify.h
-BuildRequires:	glibc-devel
+Requires:	pkgconfig(shared-mime-info) >= 0.70
 BuildRequires:	pkgconfig(zlib)
-# for sys/sdt.h
-BuildRequires:	systemtap
-BuildRequires:	chrpath
 %if !%{bootstrap}
-%if %mdvver < 2012000
 BuildRequires:	pkgconfig(gamin)
-%endif
-BuildRequires:	elfutils-devel
 %endif
 %if %{enable_gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
-Requires:	pkgconfig(shared-mime-info) >= 0.70
-
-#gw this was required since 2.23.2 (new atomic OPs?)
-%define _requires_exceptions GLIBC_PRIVATE
 
 %description
 Glib is a handy library of utility functions. This C
@@ -67,7 +67,7 @@ You should install Glib because many of your applications
 will depend on this library.
 
 %package common
-Summary:	Data files used by glib
+Summary:	data files used by glib
 Group:		System/Libraries
 Conflicts:	gio2.0_0 < 2.28.4-2
 
@@ -86,7 +86,7 @@ This package contains data used by glib library.
 %package -n %{libname}
 Summary:	%{summary}
 Group:		%{group}
-Provides:	glib2 = %{epoch}:%{version}-%{release}
+Provides:	glib2 = %{EVRD}
 Conflicts:	%{_lib}gio2.0_0 < 2.28.4-2
 Conflicts:	%{develname} < 1:2.31.2
 
@@ -134,7 +134,7 @@ linked with libgthread.
 Summary:	GIO is the input, output and streaming API of glib
 Group:		%{group}
 Conflicts:	%{name}-common < 2.23.4-2mdv2010.1
-Provides:	gio%{api}
+Provides:	gio2.0
 Obsoletes:	%{libgio} < 2.28.4-3
 
 %description -n %{gio}
@@ -147,17 +147,19 @@ on the network. For the latter you need to install gvfs.
 %package -n %{develname}
 Summary:	Static libraries and header files of %{name}
 Group:		Development/C
-Requires:	glib-gettextize = %{epoch}:%{version}
-Requires:	%{name}-common = %{epoch}:%{version}-%{release}
-Requires:	%{libname} = %{epoch}:%{version}
-Requires:	%{libgio} = %{epoch}:%{version}
-Requires:	%{libgmodule} = %{epoch}:%{version}
-Requires:	%{libgobject} = %{epoch}:%{version}
-Requires:	%{libgthread} = %{epoch}:%{version}
-Provides:	glib2-devel = %{epoch}:%{version}-%{release}
+Requires:	glib-gettextize = %{EVRD}
+Requires:	%{name}-common = %{EVRD}
+Requires:	%{libname} = %{EVRD}
+Requires:	%{libgio} = %{EVRD}
+Requires:	%{libgmodule} = %{EVRD}
+Requires:	%{libgobject} = %{EVRD}
+Requires:	%{libgthread} = %{EVRD}
+Provides:	glib2-devel = %{EVRD}
+Provides:	libglib2-devel = %{EVRD}
+Provides:	libglib2.0-devel = %{EVRD}
 #gw for %{_datadir}/glib-%{api}/gdb
 Conflicts:	glib-gettextize < 2.25.3
-Obsoletes:	%mklibname -d %{name}_ 0
+Obsoletes:	%{_lib}glib2.0_0-codegen < 2.32.3-4
 
 %description -n %{develname}
 Static libraries and header files for the support library for the GIMP's X
@@ -178,16 +180,15 @@ packages can potentially benefict from the changes.
 
 %prep
 %setup -qn glib-%{version}
+%patch0 -p1
 
 %build
 %configure2_5x \
 	--with-pcre=system \
+	--enable-man \
 	--disable-static \
 	--disable-selinux \
 	--with-runtime-libdir=../../%{_lib} \
-%if %mdvver < 2012000
-	--disable-fam \
-%endif
 %if !%{enable_gtkdoc}
 	--enable-gtk-doc=no
 %endif
@@ -204,16 +205,14 @@ packages can potentially benefict from the changes.
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/50glib20.sh
 install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
-
 %find_lang glib20
 
 # remove files
 find %{buildroot} -name "*.la" -delete
 rm -f %{buildroot}%{_libdir}/gio/modules/lib*a
-rm -f %{buildroot}%{_datadir}/glib-2.0/gdb/*.{pyc,pyo}
-
 
 mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-%{bit}
+mv %{buildroot}%{_mandir}/man1/gio-querymodules.1 %{buildroot}%{_mandir}/man1/gio-querymodules-%{bit}.1
 
 #ghost files
 touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache \
@@ -222,11 +221,8 @@ touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache \
 #gw at the moment, don't ship these:
 rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 
-#(tpg) drop rpath
-chrpath --delete %{buildroot}%{_libdir}/*.so
-
 %post -n %{gio}
-%{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules 
+%{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules
 
 %triggerin -n %{gio} -- %{_libdir}/gio/modules/*.so
 %{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules
@@ -246,11 +242,14 @@ chrpath --delete %{buildroot}%{_libdir}/*.so
 %files common -f glib20.lang
 %doc README
 %config(noreplace) %{_sysconfdir}/profile.d/*
+%{_datadir}/bash-completion/completions/gdbus
+%{_datadir}/bash-completion/completions/gsettings
 %{_bindir}/gdbus
 %{_bindir}/glib-compile-schemas
 %{_bindir}/gsettings
-%{_datadir}/bash-completion/completions/gdbus
-%{_datadir}/bash-completion/completions/gsettings
+%{_mandir}/man1/glib-compile-schemas.1*
+%{_mandir}/man1/gsettings.1*
+%{_mandir}/man1/gdbus.1*
 %dir %{_datadir}/glib-2.0/
 %dir %{_datadir}/glib-2.0/schemas/
 %{_datadir}/glib-2.0/schemas/gschema.dtd
@@ -273,37 +272,49 @@ chrpath --delete %{buildroot}%{_libdir}/*.so
 
 %files -n %{gio}
 %{_bindir}/gio-querymodules-%{bit}
+%{_mandir}/man1/gio-querymodules-%{bit}.1*
 %if !%{bootstrap}
 %dir %{_libdir}/gio/
 %dir %{_libdir}/gio/modules/
-%if %mdvver < 201200
 %{_libdir}/gio/modules/libgiofam.so
-%endif
 %endif
 %ghost %{_libdir}/gio/modules/giomodule.cache
 
 %files -n %{develname}
 %doc AUTHORS ChangeLog NEWS
 %doc %{_datadir}/gtk-doc/html/*
-%{_bindir}/gdbus-codegen
-%{_bindir}/glib-compile-resources
-%{_bindir}/glib-genmarshal
-%{_bindir}/glib-mkenums
-%{_bindir}/gobject-query
-%{_bindir}/gresource
-%{_bindir}/gtester*
 %{_libdir}/lib*.so
 %{_libdir}/glib-%{api}/include/
 %{_libdir}/gdbus-%{api}/codegen/
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
+%{_mandir}/man1/glib-genmarshal.1*
+%{_mandir}/man1/glib-mkenums.1*
+%{_mandir}/man1/gobject-query.1*
+%{_mandir}/man1/gtester-report.1*
+%{_mandir}/man1/gtester.1*
 %{_datadir}/aclocal/glib-%{api}.m4
 %{_datadir}/aclocal/gsettings.m4
-%{_datadir}/bash-completion/completions/gresource
+%{_bindir}/glib-genmarshal
+%{_bindir}/glib-mkenums
+%{_bindir}/gobject-query
+%{_bindir}/gtester*
 %{_datadir}/gdb/auto-load/%{_lib}/lib*-gdb.py
 %{_datadir}/glib-%{api}/gdb/
+%{_datadir}/bash-completion/completions/gresource
+%{_bindir}/gdbus-codegen
+%{_bindir}/glib-compile-resources
+%{_bindir}/gresource
+%{_mandir}/man1/gdbus-codegen.1*
+%{_mandir}/man1/glib-compile-resources.1*
+%{_mandir}/man1/gresource.1*
 
 %files -n glib-gettextize
 %{_bindir}/glib-gettextize
+%{_mandir}/man1/glib-gettextize.1*
 %{_datadir}/aclocal/glib-gettext.m4
 %{_datadir}/glib-%{api}/gettext/
+
+%changelog
+* Thu Sep 27 2012 Arkady L. Shane <ashejn@rosalab.ru> 2.34.0-1
+- update to 2.34.0
