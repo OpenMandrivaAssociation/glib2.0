@@ -29,7 +29,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.34.3
+Version:	2.35.2
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -285,7 +285,7 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %doc %{_datadir}/gtk-doc/html/*
 %{_libdir}/lib*.so
 %{_libdir}/glib-%{api}/include/
-%{_libdir}/gdbus-%{api}/codegen/
+%{_datadir}/glib-%{api}/codegen/
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
 %{_mandir}/man1/glib-genmarshal.1*
@@ -314,7 +314,3 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_mandir}/man1/glib-gettextize.1*
 %{_datadir}/aclocal/glib-gettext.m4
 %{_datadir}/glib-%{api}/gettext/
-
-%changelog
-* Thu Sep 27 2012 Arkady L. Shane <ashejn@rosalab.ru> 2.34.0-1
-- update to 2.34.0
