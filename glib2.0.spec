@@ -29,12 +29,12 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.35.3
-Release:	2
+Version:	2.35.7
+Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
 URL:		http://www.gtk.org
-Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/glib/2.34/glib-%{version}.tar.xz
+Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %version |cut -d. -f1-2)/glib-%{version}.tar.xz
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
@@ -43,7 +43,6 @@ BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-xsl, xsltproc
-BuildRequires:	libffi-devel >= 3.0.0
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
@@ -55,6 +54,13 @@ BuildRequires:	pkgconfig(gamin)
 %if %{enable_gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
+
+%track
+prog %name = {
+	version = %version
+	url = http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %version |cut -d. -f1-2)/
+	regex = glib-(__VER__)\.tar\.xz
+}
 
 %description
 Glib is a handy library of utility functions. This C
