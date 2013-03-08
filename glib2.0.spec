@@ -5,31 +5,31 @@
 %define _requires_exceptions GLIBC_PRIVATE
 %endif
 
-%define enable_gtkdoc	0
+%define enable_gtkdoc 0
 
 # gw bootstrap: fam pulls glib2, so build without fam
 %define bootstrap 0
 
 # Note that this is NOT a relocatable package
-%define api	2.0
-%define major	0
-%define libname		%mklibname %{name}_ %{major}
-%define libgio		%mklibname gio %{api} %{major}
-%define libgmodule	%mklibname gmodule %{api} %{major}
-%define libgthread	%mklibname gthread %{api} %{major}
-%define libgobject	%mklibname gobject %{api} %{major}
-%define develname	%mklibname -d %{name}
+%define api 2.0
+%define major 0
+%define libname %mklibname %{name}_ %{major}
+%define libgio %mklibname gio %{api} %{major}
+%define libgmodule %mklibname gmodule %{api} %{major}
+%define libgthread %mklibname gthread %{api} %{major}
+%define libgobject %mklibname gobject %{api} %{major}
+%define develname %mklibname -d %{name}
 %if %{_lib} == lib
-%define	bit	32
+%define bit 32
 %else
-%define	bit	64
+%define bit 64
 %endif
-%define gio	gio2.0-%{bit}
+%define gio gio2.0-%{bit}
 
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.35.7
+Version:	2.35.8
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -42,11 +42,12 @@ BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	docbook-xsl, xsltproc
+BuildRequires:	docbook-xsl
+BuildRequires:	xsltproc
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
-Requires:	pkgconfig(shared-mime-info) >= 0.70
+Requires:		pkgconfig(shared-mime-info) >= 0.70
 BuildRequires:	pkgconfig(zlib)
 %if !%{bootstrap}
 BuildRequires:	pkgconfig(gamin)
@@ -73,7 +74,7 @@ You should install Glib because many of your applications
 will depend on this library.
 
 %package common
-Summary:	data files used by glib
+Summary:	Data files used by glib
 Group:		System/Libraries
 Conflicts:	gio2.0_0 < 2.28.4-2
 
