@@ -18,7 +18,7 @@
 %define libgmodule %mklibname gmodule %{api} %{major}
 %define libgthread %mklibname gthread %{api} %{major}
 %define libgobject %mklibname gobject %{api} %{major}
-%define develname %mklibname -d %{name}
+%define devname %mklibname -d %{name}
 %if %{_lib} == lib
 %define bit 32
 %else
@@ -33,8 +33,8 @@ Version:	2.36.0
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
-URL:		http://www.gtk.org
-Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %version |cut -d. -f1-2)/glib-%{version}.tar.xz
+Url:		http://www.gtk.org
+Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. -f1-2)/glib-%{version}.tar.xz
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
@@ -47,7 +47,7 @@ BuildRequires:	xsltproc
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
-Requires:		pkgconfig(shared-mime-info) >= 0.70
+Requires:	pkgconfig(shared-mime-info) >= 0.70
 BuildRequires:	pkgconfig(zlib)
 %if !%{bootstrap}
 BuildRequires:	pkgconfig(gamin)
@@ -57,9 +57,9 @@ BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
 
 %track
-prog %name = {
-	version = %version
-	url = http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %version |cut -d. -f1-2)/
+prog %{name} = {
+	version = %{version}
+	url = http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. -f1-2)/
 	regex = glib-(__VER__)\.tar\.xz
 }
 
@@ -95,7 +95,7 @@ Summary:	%{summary}
 Group:		%{group}
 Provides:	glib2 = %{EVRD}
 Conflicts:	%{_lib}gio2.0_0 < 2.28.4-2
-Conflicts:	%{develname} < 1:2.31.2
+Conflicts:	%{devname} < 1:2.31.2
 
 %description -n %{libname}
 This package contains the library needed to run programs dynamically
@@ -151,7 +151,7 @@ sources in a convenient way and on the other hand it provides a high level
 file system abstraction to access file and directories not only local but also
 on the network. For the latter you need to install gvfs.
 
-%package -n %{develname}
+%package -n %{devname}
 Summary:	Static libraries and header files of %{name}
 Group:		Development/C
 Requires:	glib-gettextize = %{EVRD}
@@ -162,13 +162,8 @@ Requires:	%{libgmodule} = %{EVRD}
 Requires:	%{libgobject} = %{EVRD}
 Requires:	%{libgthread} = %{EVRD}
 Provides:	glib2-devel = %{EVRD}
-Provides:	libglib2-devel = %{EVRD}
-Provides:	libglib2.0-devel = %{EVRD}
-#gw for %{_datadir}/glib-%{api}/gdb
-Conflicts:	glib-gettextize < 2.25.3
-Obsoletes:	%{_lib}glib2.0_0-codegen < 2.32.3-4
 
-%description -n %{develname}
+%description -n %{devname}
 Static libraries and header files for the support library for the GIMP's X
 libraries, which are available as public libraries.  GLIB includes generally
 useful data structures.
@@ -287,7 +282,7 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %endif
 %ghost %{_libdir}/gio/modules/giomodule.cache
 
-%files -n %{develname}
+%files -n %{devname}
 %doc AUTHORS ChangeLog NEWS
 %doc %{_datadir}/gtk-doc/html/*
 %{_libdir}/lib*.so
