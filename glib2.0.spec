@@ -29,7 +29,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.36.0
+Version:	2.36.3
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -42,7 +42,7 @@ BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	docbook-xsl
+BuildRequires:	docbook-style-xsl
 BuildRequires:	xsltproc
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
@@ -141,7 +141,7 @@ linked with libgthread.
 Summary:	GIO is the input, output and streaming API of glib
 Group:		%{group}
 Conflicts:	%{name}-common < 2.23.4-2mdv2010.1
-Provides:	gio2.0
+Provides:	gio2.0 %{EVRD}
 Obsoletes:	%{libgio} < 2.28.4-3
 
 %description -n %{gio}
@@ -152,7 +152,7 @@ file system abstraction to access file and directories not only local but also
 on the network. For the latter you need to install gvfs.
 
 %package -n %{devname}
-Summary:	Static libraries and header files of %{name}
+Summary:	Development libraries and header files of %{name}
 Group:		Development/C
 Requires:	glib-gettextize = %{EVRD}
 Requires:	%{name}-common = %{EVRD}
@@ -161,10 +161,9 @@ Requires:	%{libgio} = %{EVRD}
 Requires:	%{libgmodule} = %{EVRD}
 Requires:	%{libgobject} = %{EVRD}
 Requires:	%{libgthread} = %{EVRD}
-Provides:	glib2-devel = %{EVRD}
 
 %description -n %{devname}
-Static libraries and header files for the support library for the GIMP's X
+Development libraries and header files for the support library for the GIMP's X
 libraries, which are available as public libraries.  GLIB includes generally
 useful data structures.
 
@@ -182,7 +181,8 @@ packages can potentially benefict from the changes.
 
 %prep
 %setup -qn glib-%{version}
-%patch0 -p1
+%apply_patches
+autoreconf -fi
 
 %build
 %configure2_5x \
@@ -208,10 +208,6 @@ mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/50glib20.sh
 install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
 %find_lang glib20
-
-# remove files
-find %{buildroot} -name "*.la" -delete
-rm -f %{buildroot}%{_libdir}/gio/modules/lib*a
 
 mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-%{bit}
 mv %{buildroot}%{_mandir}/man1/gio-querymodules.1 %{buildroot}%{_mandir}/man1/gio-querymodules-%{bit}.1
@@ -285,31 +281,31 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %files -n %{devname}
 %doc AUTHORS ChangeLog NEWS
 %doc %{_datadir}/gtk-doc/html/*
-%{_libdir}/lib*.so
-%{_libdir}/glib-%{api}/include/
-%{_datadir}/glib-%{api}/codegen/
-%{_libdir}/pkgconfig/*
-%{_includedir}/*
-%{_mandir}/man1/glib-genmarshal.1*
-%{_mandir}/man1/glib-mkenums.1*
-%{_mandir}/man1/gobject-query.1*
-%{_mandir}/man1/gtester-report.1*
-%{_mandir}/man1/gtester.1*
-%{_datadir}/aclocal/glib-%{api}.m4
-%{_datadir}/aclocal/gsettings.m4
+%{_bindir}/gdbus-codegen
+%{_bindir}/glib-compile-resources
 %{_bindir}/glib-genmarshal
 %{_bindir}/glib-mkenums
 %{_bindir}/gobject-query
+%{_bindir}/gresource
 %{_bindir}/gtester*
+%{_libdir}/lib*.so
+%{_libdir}/glib-%{api}/include/
+%{_libdir}/pkgconfig/*
+%{_datadir}/aclocal/glib-%{api}.m4
+%{_datadir}/aclocal/gsettings.m4
 %{_datadir}/gdb/auto-load/%{_lib}/lib*-gdb.py
+%{_datadir}/glib-%{api}/codegen/
 %{_datadir}/glib-%{api}/gdb/
 %{_datadir}/bash-completion/completions/gresource
-%{_bindir}/gdbus-codegen
-%{_bindir}/glib-compile-resources
-%{_bindir}/gresource
+%{_includedir}/*
 %{_mandir}/man1/gdbus-codegen.1*
 %{_mandir}/man1/glib-compile-resources.1*
+%{_mandir}/man1/glib-genmarshal.1*
+%{_mandir}/man1/glib-mkenums.1*
+%{_mandir}/man1/gobject-query.1*
 %{_mandir}/man1/gresource.1*
+%{_mandir}/man1/gtester-report.1*
+%{_mandir}/man1/gtester.1*
 
 %files -n glib-gettextize
 %{_bindir}/glib-gettextize
