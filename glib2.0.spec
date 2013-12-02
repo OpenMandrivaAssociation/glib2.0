@@ -10,6 +10,8 @@
 # gw bootstrap: fam pulls glib2, so build without fam
 %define bootstrap 0
 
+%bcond_with crosscompile
+
 # Note that this is NOT a relocatable package
 %define api 2.0
 %define major 0
@@ -185,6 +187,13 @@ packages can potentially benefict from the changes.
 autoreconf -fi
 
 %build
+%if %{with crosscompile}
+export glib_cv_stack_grows=no
+export glib_cv_uscore=no
+export ac_cv_func_posix_getpwuid_r=yes
+export ac_cv_func_posix_getgrgid_r=no
+%endif
+
 %configure2_5x \
 	--with-pcre=system \
 	--enable-man \
