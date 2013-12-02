@@ -1,5 +1,6 @@
 removed_sources:
   glib-2.35.8.tar.xz: e5bd5c65503c6a25bd8fa8bcb11657aa54539a0c
   glib-2.35.9.tar.xz: 12ece4659f415a33b1207dcdc7e1db407bfe0ffb
-sources:
   glib-2.36.0.tar.xz: e6a481c9d861c10691b6f8ab7b7b2690ec92af6d
+sources:
+  glib-2.36.3.tar.xz: aafba69934b9ba77cc8cb0e5d8105aa1d8463eba
