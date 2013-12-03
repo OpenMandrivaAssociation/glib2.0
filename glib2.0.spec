@@ -8,8 +8,7 @@
 %define enable_gtkdoc 0
 
 # gw bootstrap: fam pulls glib2, so build without fam
-%define bootstrap 0
-
+%bcond_with bootstrap
 %bcond_with crosscompile
 
 # Note that this is NOT a relocatable package
@@ -51,7 +50,7 @@ BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
 Requires:	pkgconfig(shared-mime-info) >= 0.70
 BuildRequires:	pkgconfig(zlib)
-%if !%{bootstrap}
+%if !%{with bootstrap}
 BuildRequires:	pkgconfig(gamin)
 %endif
 %if %{enable_gtkdoc}
@@ -200,6 +199,9 @@ export ac_cv_func_posix_getgrgid_r=no
 	--disable-static \
 	--disable-selinux \
 	--with-runtime-libdir=../../%{_lib} \
+%if %{with crosscompile}
+	--with-sysroot=$SYSROOT \
+%endif
 %if !%{enable_gtkdoc}
 	--enable-gtk-doc=no
 %endif
@@ -280,7 +282,7 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %files -n %{gio}
 %{_bindir}/gio-querymodules-%{bit}
 %{_mandir}/man1/gio-querymodules-%{bit}.1*
-%if !%{bootstrap}
+%if !%{with bootstrap}
 %dir %{_libdir}/gio/
 %dir %{_libdir}/gio/modules/
 %{_libdir}/gio/modules/libgiofam.so
