@@ -8,7 +8,8 @@
 %define enable_gtkdoc 0
 
 # gw bootstrap: fam pulls glib2, so build without fam
-%define bootstrap 0
+%bcond_with bootstrap
+%bcond_with crosscompile
 
 # Note that this is NOT a relocatable package
 %define api 2.0
@@ -29,8 +30,8 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.36.3
-Release:	7
+Version:	2.38.2
+Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -49,7 +50,7 @@ BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
 Requires:	pkgconfig(shared-mime-info) >= 0.70
 BuildRequires:	pkgconfig(zlib)
-%if !%{bootstrap}
+%if !%{with bootstrap}
 BuildRequires:	pkgconfig(gamin)
 %endif
 %if %{enable_gtkdoc}
@@ -185,12 +186,22 @@ packages can potentially benefict from the changes.
 autoreconf -fi
 
 %build
+%if %{with crosscompile}
+export glib_cv_stack_grows=no
+export glib_cv_uscore=no
+export ac_cv_func_posix_getpwuid_r=yes
+export ac_cv_func_posix_getgrgid_r=no
+%endif
+
 %configure2_5x \
 	--with-pcre=system \
 	--enable-man \
 	--disable-static \
 	--disable-selinux \
 	--with-runtime-libdir=../../%{_lib} \
+%if %{with crosscompile}
+	--with-sysroot=$SYSROOT \
+%endif
 %if !%{enable_gtkdoc}
 	--enable-gtk-doc=no
 %endif
@@ -271,7 +282,7 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %files -n %{gio}
 %{_bindir}/gio-querymodules-%{bit}
 %{_mandir}/man1/gio-querymodules-%{bit}.1*
-%if !%{bootstrap}
+%if !%{with bootstrap}
 %dir %{_libdir}/gio/
 %dir %{_libdir}/gio/modules/
 %{_libdir}/gio/modules/libgiofam.so
