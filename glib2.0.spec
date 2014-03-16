@@ -30,7 +30,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.38.2
+Version:	2.39.91
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -251,11 +251,14 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %files common -f glib20.lang
 %doc README
 %config(noreplace) %{_sysconfdir}/profile.d/*
+%{_datadir}/bash-completion/completions/gapplication
 %{_datadir}/bash-completion/completions/gdbus
 %{_datadir}/bash-completion/completions/gsettings
 %{_bindir}/gdbus
 %{_bindir}/glib-compile-schemas
 %{_bindir}/gsettings
+%{_bindir}/gapplication
+%{_mandir}/man1/gapplication.1*
 %{_mandir}/man1/glib-compile-schemas.1*
 %{_mandir}/man1/gsettings.1*
 %{_mandir}/man1/gdbus.1*
