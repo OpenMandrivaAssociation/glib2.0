@@ -1,9 +1,2 @@
-removed_sources:
-  glib-2.35.8.tar.xz: e5bd5c65503c6a25bd8fa8bcb11657aa54539a0c
-  glib-2.35.9.tar.xz: 12ece4659f415a33b1207dcdc7e1db407bfe0ffb
-  glib-2.36.0.tar.xz: e6a481c9d861c10691b6f8ab7b7b2690ec92af6d
-  glib-2.36.3.tar.xz: aafba69934b9ba77cc8cb0e5d8105aa1d8463eba
-  glib-2.37.7.tar.xz: be3cb8163a4f3691754d6d62b27677dada58370b
-  glib-2.38.2.tar.xz: 685c5a4215b776b83dd5330ab9084c5dcb0a51b8
 sources:
-  glib-2.40.0.tar.xz: 44e1442ed4d1bf3fa89138965deb35afc1335a65
+  glib-2.41.3.tar.xz: 201f94ad412be29c27f38558d5bc399e2366dbee

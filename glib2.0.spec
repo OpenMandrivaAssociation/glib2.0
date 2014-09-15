@@ -20,7 +20,7 @@
 %define libgthread %mklibname gthread %{api} %{major}
 %define libgobject %mklibname gobject %{api} %{major}
 %define devname %mklibname -d %{name}
-%if %{_lib} == lib
+%if "%{_lib}" == "lib"
 %define bit 32
 %else
 %define bit 64
@@ -30,8 +30,8 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.40.0
-Release:	5
+Version:	2.41.3
+Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -186,6 +186,10 @@ packages can potentially benefict from the changes.
 autoreconf -fi
 
 %build
+# gtk libs don't respect clang
+# http://llvm.org/bugs/show_bug.cgi?id=14406
+export CC=gcc
+export CXX=g++
 %if %{with crosscompile}
 export glib_cv_stack_grows=no
 export glib_cv_uscore=no
@@ -193,7 +197,7 @@ export ac_cv_func_posix_getpwuid_r=yes
 export ac_cv_func_posix_getgrgid_r=no
 %endif
 
-%configure2_5x \
+%configure \
 	--with-pcre=system \
 	--enable-man \
 	--enable-static \
