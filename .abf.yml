@@ -1,3 +1,4 @@
-
-sources:
+removed_sources:
   glib-2.39.4.tar.xz: 110f8d7ddd11fd4f82fe1d14d48863bd9ea50551
+sources:
+  glib-2.40.2.tar.xz: dcb8ad22b1c0e6969a844029ffb91a6def7ad240

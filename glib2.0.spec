@@ -30,12 +30,12 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.39.4
+Version:	2.40.2
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
-Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. -f1-2)/glib-%{version}.tar.xz
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. -f1-2)/glib-%{version}.tar.xz
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
@@ -196,7 +196,7 @@ export ac_cv_func_posix_getgrgid_r=no
 %configure2_5x \
 	--with-pcre=system \
 	--enable-man \
-	--disable-static \
+	--enable-static \
 	--disable-selinux \
 	--with-runtime-libdir=../../%{_lib} \
 %if %{with crosscompile}
@@ -303,6 +303,8 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 %{_bindir}/gresource
 %{_bindir}/gtester*
 %{_libdir}/lib*.so
+%{_libdir}/*.a
+%{_libdir}/gio/modules/*.a
 %{_libdir}/glib-%{api}/include/
 %{_libdir}/pkgconfig/*
 %{_datadir}/aclocal/glib-%{api}.m4
