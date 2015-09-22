@@ -30,8 +30,8 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.44.0
-Release:	3
+Version:	2.46.0
+Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -39,8 +39,6 @@ Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. -
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
-#cb - stop __alloc_size__ not defined warnings when using clang to build stuff using glib
-Patch1:		glib-2.42.0-clang.patch
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
