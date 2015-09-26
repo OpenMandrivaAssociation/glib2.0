@@ -5,6 +5,7 @@
 %define _requires_exceptions GLIBC_PRIVATE
 %endif
 
+%define _disable_lto 1
 %define enable_gtkdoc 0
 
 # gw bootstrap: fam pulls glib2, so build without fam
@@ -31,7 +32,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 Version:	2.46.0
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -39,6 +40,10 @@ Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. -
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
+# from upstream
+Patch1:		0001-Revert-list-store-Fix-a-parameter-check.patch
+# cb - this fix seems to cause perl-glib to fail
+Patch2:		glib-2.46.0-revert_quark_optim.patch
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
