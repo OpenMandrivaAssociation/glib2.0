@@ -41,7 +41,7 @@ Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
 # cb - this fix seems to cause perl-glib to fail
-Patch2:		glib-2.46.0-revert_quark_optim.patch
+#Patch2:		glib-2.46.0-revert_quark_optim.patch
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
