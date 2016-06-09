@@ -1,4 +1,2 @@
-removed_sources:
-  glib-2.46.0.tar.xz: 6234b9c3d7f2ba77abd79bb8fbda22c16266f958
 sources:
-  glib-2.46.2.tar.xz: 2bd8f8d87668635f45ccac2e9166a4c4c3d65eac
+  glib-2.48.1.tar.xz: d59b6daf51dff21c6327734a99f1fb6c5328bcf9
