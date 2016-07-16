@@ -31,7 +31,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.49.1
+Version:	2.49.2
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -48,6 +48,7 @@ BuildRequires:	locales-en
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-style-xsl
 BuildRequires:	xsltproc
+BuildRequires:	chrpath
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
@@ -236,6 +237,9 @@ touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache \
 #gw at the moment, don't ship these:
 rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 
+# (tpg) delete rpath
+chrpath --delete %{buildroot}%{_libdir}/*.so
+chrpath --delete %{buildroot}/%{_lib}/*.so.*
 %post -n %{gio}
 %{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules
 
