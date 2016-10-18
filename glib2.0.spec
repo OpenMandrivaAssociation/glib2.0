@@ -54,6 +54,7 @@ BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
 Requires:	pkgconfig(shared-mime-info) >= 0.70
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(mount)
 %if !%{with bootstrap}
 BuildRequires:	pkgconfig(gamin)
 %endif
