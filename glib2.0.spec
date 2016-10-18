@@ -296,8 +296,10 @@ chrpath --delete %{buildroot}/%{_lib}/*.so.*
 /%{_lib}/libgobject-%{api}.so.%{major}*
 
 %files -n %{gio}
+%{_bindir}/gio
 %{_bindir}/gio-querymodules-%{bit}
 %{_mandir}/man1/gio-querymodules-%{bit}.1*
+%{_mandir}/man1/gio.1.*
 %if !%{with bootstrap}
 %dir %{_libdir}/gio/
 %dir %{_libdir}/gio/modules/
