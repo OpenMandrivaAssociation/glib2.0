@@ -31,7 +31,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.50.3
+Version:	2.51.5
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -327,6 +327,7 @@ chrpath --delete %{buildroot}/%{_lib}/*.so.*
 %{_datadir}/gdb/auto-load/%{_lib}/lib*-gdb.py
 %{_datadir}/glib-%{api}/codegen/
 %{_datadir}/glib-%{api}/gdb/
+%{_datadir}/glib-%{api}/valgrind/
 %{_datadir}/bash-completion/completions/gresource
 %{_includedir}/*
 %{_mandir}/man1/gdbus-codegen.1*
