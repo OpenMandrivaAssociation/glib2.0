@@ -1,18 +1,18 @@
---- glib-2.34.1.orig/gio/glib-compile-schemas.c
-+++ glib-2.34.1/gio/glib-compile-schemas.c
-@@ -1204,12 +1204,14 @@ parse_state_start_schema (ParseState  *s
+--- glib-2.54.1/gio/glib-compile-schemas.c.0000~	2017-10-04 12:07:40.974969512 +0200
++++ glib-2.54.1/gio/glib-compile-schemas.c	2017-10-04 12:08:26.505848865 +0200
+@@ -1219,6 +1219,7 @@ parse_state_start_schema (ParseState  *s
        return;
      }
  
-+/*  
++#if 0
    if (path && (g_str_has_prefix (path, "/apps/") ||
                 g_str_has_prefix (path, "/desktop/") ||
                 g_str_has_prefix (path, "/system/")))
-     g_printerr ("warning: Schema '%s' has path '%s'.  Paths starting with "
-                 "'/apps/', '/desktop/' or '/system/' are deprecated.\n", id, path);
--
-+*/
-+  
+@@ -1231,6 +1232,7 @@ parse_state_start_schema (ParseState  *s
+       g_printerr ("%s\n", message);
+       g_free (message);
+     }
++#endif
+ 
    state->schema_state = schema_state_new (path, gettext_domain,
                                            extends, extends_name, list_of);
- 

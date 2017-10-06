@@ -31,7 +31,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.51.5
+Version:	2.54.1
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -184,6 +184,14 @@ allow better and more flexible i18n; however gettextize overwrites
 them with its own copy of files, thus nullifying the changes.
 If this replacement of gettextize is run instead, then all gnome
 packages can potentially benefict from the changes.
+
+%package systemtap
+Summary:	Systemtap integration for %{name}
+Group:		Development/Other
+BuildRequires:	systemtap-devel >= 3.0
+
+%description systemtap
+Systemtap integration for %{name}
 
 %prep
 %setup -qn glib-%{version}
@@ -344,3 +352,6 @@ chrpath --delete %{buildroot}/%{_lib}/*.so.*
 %{_mandir}/man1/glib-gettextize.1*
 %{_datadir}/aclocal/glib-gettext.m4
 %{_datadir}/glib-%{api}/gettext/
+
+%files systemtap
+%{_datadir}/systemtap/tapset/*
