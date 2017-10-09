@@ -218,7 +218,7 @@ export ac_cv_func_posix_getgrgid_r=no
 	--with-sysroot=$SYSROOT \
 %endif
 %if !%{enable_gtkdoc}
-	--enable-gtk-doc=no
+	--enable-gtk-doc=no \
 %endif
 	--enable-static
 
