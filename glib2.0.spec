@@ -212,7 +212,6 @@ export ac_cv_func_posix_getgrgid_r=no
 %configure \
 	--with-pcre=system \
 	--enable-man \
-	--enable-static \
 	--disable-selinux \
 	--with-runtime-libdir=../../%{_lib} \
 %if %{with crosscompile}
@@ -221,6 +220,7 @@ export ac_cv_func_posix_getgrgid_r=no
 %if !%{enable_gtkdoc}
 	--enable-gtk-doc=no
 %endif
+	--enable-static
 
 %make
 
