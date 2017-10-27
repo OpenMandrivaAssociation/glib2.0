@@ -48,6 +48,7 @@ Patch0:		glib-2.34.1-no-warnings.patch
 # (tpg) ClearLinux patches
 Patch10:	memory.patch
 Patch11:	madvise.patch
+
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
@@ -58,7 +59,6 @@ BuildRequires:	chrpath
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
-Requires:	pkgconfig(shared-mime-info) >= 0.70
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(mount)
 %if !%{with bootstrap}

@@ -1,17 +1,17 @@
---- glib-2.46.2/glib/gmain.c~	2015-11-06 18:12:04.000000000 +0000
-+++ glib-2.46.2/glib/gmain.c	2016-04-18 17:48:15.580416405 +0000
-@@ -52,7 +52,7 @@
- #include <sys/eventfd.h>
+diff -Naur glib-2.54.1/glib/gmain.c glib-2.54.1.tpg/glib/gmain.c
+--- glib-2.54.1/glib/gmain.c	2017-10-02 14:58:06.000000000 +0000
++++ glib-2.54.1.tpg/glib/gmain.c	2017-10-27 17:42:47.597790352 +0000
+@@ -54,6 +54,7 @@
  #endif
  #endif
--
+ 
 +#include <malloc.h>
  #include <signal.h>
  #include <sys/types.h>
  #include <time.h>
-@@ -4132,6 +4132,7 @@
+@@ -4184,6 +4185,7 @@
        poll_func = context->poll_func;
-       
+ 
        UNLOCK_CONTEXT (context);
 +      malloc_trim(0);
        ret = (*poll_func) (fds, n_fds, timeout);
