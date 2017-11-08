@@ -12,6 +12,9 @@
 %bcond_with bootstrap
 %bcond_with crosscompile
 
+# (tpg) optimize it a bit
+%global optflags %optflags -O3
+
 # Note that this is NOT a relocatable package
 %define api 2.0
 %define major 0
@@ -31,7 +34,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.54.1
+Version:	2.54.2
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -42,6 +45,10 @@ Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
 # cb - this fix seems to cause perl-glib to fail
 #Patch2:		glib-2.46.0-revert_quark_optim.patch
+# (tpg) ClearLinux patches
+Patch10:	memory.patch
+Patch11:	madvise.patch
+
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
@@ -52,7 +59,6 @@ BuildRequires:	chrpath
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
-Requires:	pkgconfig(shared-mime-info) >= 0.70
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(mount)
 %if !%{with bootstrap}
