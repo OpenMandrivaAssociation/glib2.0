@@ -35,7 +35,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 Version:	2.54.3
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -101,6 +101,14 @@ You should install Glib because many of your applications
 will depend on this library.
 
 This package contains data used by glib library.
+
+%package doc
+Summary:	Documentation for %{name}
+Group:		Books/Computer books
+Conflicts:	%{mklibname -d %{name}} < 2.54.3-2
+
+%description doc
+Documentation for %{name}.
 
 %package -n %{libname}
 Summary:	%{summary}
@@ -274,7 +282,6 @@ chrpath --delete %{buildroot}/%{_lib}/*.so.*
 %{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
 
 %files common -f glib20.lang
-%doc README
 %config(noreplace) %{_sysconfdir}/profile.d/*
 %{_datadir}/bash-completion/completions/gapplication
 %{_datadir}/bash-completion/completions/gdbus
@@ -322,8 +329,6 @@ chrpath --delete %{buildroot}/%{_lib}/*.so.*
 %ghost %{_libdir}/gio/modules/giomodule.cache
 
 %files -n %{devname}
-%doc AUTHORS NEWS
-%doc %{_datadir}/gtk-doc/html/*
 %{_bindir}/gdbus-codegen
 %{_bindir}/glib-compile-resources
 %{_bindir}/glib-genmarshal
@@ -361,3 +366,7 @@ chrpath --delete %{buildroot}/%{_lib}/*.so.*
 
 %files systemtap
 %{_datadir}/systemtap/tapset/*
+
+%files doc
+%doc AUTHORS NEWS README
+%doc %{_datadir}/gtk-doc/html/*
