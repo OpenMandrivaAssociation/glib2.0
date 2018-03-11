@@ -68,13 +68,6 @@ BuildRequires:	pkgconfig(gamin)
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
 
-%track
-prog %{name} = {
-	version = %{version}
-	url = http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. -f1-2)/
-	regex = glib-(__VER__)\.tar\.xz
-}
-
 %description
 Glib is a handy library of utility functions. This C
 library is designed to solve some portability problems
