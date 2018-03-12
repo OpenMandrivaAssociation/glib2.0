@@ -1,9 +1,6 @@
 #gw this was required since 2.23.2 (new atomic OPs?)
-%if %{_use_internal_dependency_generator}
 %define __noautoreq 'GLIBC_PRIVATE'
-%else
-%define _requires_exceptions GLIBC_PRIVATE
-%endif
+%define _python_bytecompile_build 0
 
 %define _disable_lto 1
 %define enable_gtkdoc 0
