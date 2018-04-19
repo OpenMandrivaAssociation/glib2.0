@@ -32,7 +32,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 Version:	2.56.1
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -45,6 +45,8 @@ Patch0:		glib-2.34.1-no-warnings.patch
 # (tpg) ClearLinux patches
 Patch10:	memory.patch
 Patch11:	madvise.patch
+Patch12:	wakeups.patch
+Patch13:	gerror-return-on-null.patch
 
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
@@ -204,8 +206,9 @@ Systemtap integration for %{name}
 %build
 # gtk libs don't respect clang
 # http://llvm.org/bugs/show_bug.cgi?id=14406
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
+
 %if %{with crosscompile}
 export glib_cv_stack_grows=no
 export glib_cv_uscore=no
