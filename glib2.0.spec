@@ -206,8 +206,8 @@ Systemtap integration for %{name}
 %build
 # gtk libs don't respect clang
 # http://llvm.org/bugs/show_bug.cgi?id=14406
-#export CC=gcc
-#export CXX=g++
+export CC=gcc
+export CXX=g++
 
 %if %{with crosscompile}
 export glib_cv_stack_grows=no
