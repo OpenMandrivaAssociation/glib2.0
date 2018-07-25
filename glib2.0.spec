@@ -10,7 +10,7 @@
 %bcond_with crosscompile
 
 # (tpg) optimize it a bit
-%global optflags %optflags -O3
+%global optflags %optflags -Ofast
 
 # Note that this is NOT a relocatable package
 %define api 2.0
@@ -32,7 +32,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 Version:	2.56.1
-Release:	2
+Release:	3
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
