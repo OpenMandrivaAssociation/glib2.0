@@ -31,7 +31,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.56.2
+Version:	2.57.2
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -204,6 +204,7 @@ Systemtap integration for %{name}
 %apply_patches
 
 %build
+sh autogen.sh
 # gtk libs don't respect clang
 # http://llvm.org/bugs/show_bug.cgi?id=14406
 export CC=gcc
@@ -312,8 +313,10 @@ chrpath --delete %{buildroot}/%{_lib}/*.so.*
 %files -n %{gio}
 %{_bindir}/gio
 %{_bindir}/gio-querymodules-%{bit}
+%{_bindir}/gio-launch-desktop
 %{_mandir}/man1/gio-querymodules-%{bit}.1*
 %{_mandir}/man1/gio.1.*
+%{_datadir}/bash-completion/completions/gio
 %if !%{with bootstrap}
 %dir %{_libdir}/gio/
 %dir %{_libdir}/gio/modules/
@@ -360,6 +363,8 @@ chrpath --delete %{buildroot}/%{_lib}/*.so.*
 %files systemtap
 %{_datadir}/systemtap/tapset/*
 
+%if %{enable_gtkdoc}
 %files doc
 %doc AUTHORS NEWS README
 %doc %{_datadir}/gtk-doc/html/*
+%endif
