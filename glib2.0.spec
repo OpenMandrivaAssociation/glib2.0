@@ -32,7 +32,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 Version:	2.58.1
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -257,23 +257,24 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 # (tpg) delete rpath
 chrpath --delete %{buildroot}%{_libdir}/*.so
 chrpath --delete %{buildroot}/%{_lib}/*.so.*
-%post -n %{gio}
+
+# automatic gschema compilation on rpm installs/removals
+%transfiletriggerpostun -n %{name}-common --  %{_datadir}/glib-2.0/schemas/
+if [ -x %{_bindir}/glib-compile-schemas ]; then
+	%{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
+fi
+
+%transfiletriggerin -n %{name}-common --  %_datadir/glib-2.0/schemas/
+if [ -x %{_bindir}/glib-compile-schemas ]; then
+	%{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
+fi
+
+# automatic update of gio module cache
+%transfiletriggerpostun -n %{name}-common --  %{_libdir}/gio/modules/
 %{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules
 
-%triggerin -n %{gio} -- %{_libdir}/gio/modules/*.so
+%transfiletriggerin -n %{name}-common --  %{_libdir}/gio/modules/
 %{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules
-
-%triggerpostun -n %{gio} -- %{_libdir}/gio/modules/*.so
-%{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules
-
-%post common
-%{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
-
-%triggerin common -- %{_datadir}/glib-2.0/schemas/*.xml
-%{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
-
-%triggerpostun common -- %{_datadir}/glib-2.0/schemas/*.xml
-%{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
 
 %files common -f glib20.lang
 %config(noreplace) %{_sysconfdir}/profile.d/*
