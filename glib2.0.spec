@@ -10,7 +10,7 @@
 %bcond_with crosscompile
 
 # (tpg) optimize it a bit
-%global optflags %optflags -Ofast
+%global optflags %optflags -O3
 
 # Note that this is NOT a relocatable package
 %define api 2.0
@@ -32,7 +32,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 Version:	2.58.2
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -200,8 +200,7 @@ BuildRequires:	systemtap-devel >= 3.0
 Systemtap integration for %{name}
 
 %prep
-%setup -qn glib-%{version}
-%apply_patches
+%autosetup -n glib-%{version} -p1
 
 %build
 sh autogen.sh
@@ -230,14 +229,14 @@ export ac_cv_func_posix_getgrgid_r=no
 %endif
 	--enable-static
 
-%make
+%make_build
 
 %check
 #gw http://bugzilla.gnome.org/show_bug.cgi?id=440544
 #make check
 
 %install
-%makeinstall_std
+%make_install
 
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/50glib20.sh
