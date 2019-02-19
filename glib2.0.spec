@@ -47,7 +47,7 @@ Patch10:	memory.patch
 Patch11:	madvise.patch
 Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
-
+BuildRequires:	gcc
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
@@ -204,8 +204,11 @@ Systemtap integration for %{name}
 
 %build
 sh autogen.sh
+
 # gtk libs don't respect clang
 # http://llvm.org/bugs/show_bug.cgi?id=14406
+# (tpg) asm goto support will land in LLVM-9.0
+# https://bugs.llvm.org/show_bug.cgi?id=9295
 export CC=gcc
 export CXX=g++
 
