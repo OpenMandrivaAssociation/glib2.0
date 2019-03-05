@@ -31,7 +31,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.58.3
+Version:	2.60.0
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -43,10 +43,12 @@ Patch0:		glib-2.34.1-no-warnings.patch
 # cb - this fix seems to cause perl-glib to fail
 #Patch2:		glib-2.46.0-revert_quark_optim.patch
 # (tpg) ClearLinux patches
-Patch10:	memory.patch
-Patch11:	madvise.patch
+# (tpg) Doing the malloc_trim every sleep is too much
+#Patch10:	memory.patch
+#Patch11:	madvise.patch
 Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
+Patch14:	0001-Remove-debugging-in-gspawn.c.patch
 BuildRequires:	gcc
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
@@ -197,7 +199,7 @@ Group:		Development/Other
 BuildRequires:	systemtap-devel >= 3.0
 
 %description systemtap
-Systemtap integration for %{name}
+Systemtap integration for %{name}.
 
 %prep
 %autosetup -n glib-%{version} -p1
