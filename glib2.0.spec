@@ -49,6 +49,7 @@ Patch0:		glib-2.34.1-no-warnings.patch
 Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
 Patch14:	0001-Remove-debugging-in-gspawn.c.patch
+BuildRequires:	meson
 BuildRequires:	gcc
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
@@ -205,8 +206,6 @@ Systemtap integration for %{name}.
 %autosetup -n glib-%{version} -p1
 
 %build
-sh autogen.sh
-
 # gtk libs don't respect clang
 # http://llvm.org/bugs/show_bug.cgi?id=14406
 # (tpg) asm goto support will land in LLVM-9.0
@@ -221,27 +220,16 @@ export ac_cv_func_posix_getpwuid_r=yes
 export ac_cv_func_posix_getgrgid_r=no
 %endif
 
-%configure \
-	--with-pcre=system \
-	--enable-man \
-	--disable-selinux \
-	--with-runtime-libdir=../../%{_lib} \
-%if %{with crosscompile}
-	--with-sysroot=$SYSROOT \
-%endif
-%if !%{enable_gtkdoc}
-	--enable-gtk-doc=no \
-%endif
-	--enable-static
+%meson -Dsystemtap=true
 
-%make_build
+%meson_build
 
 %check
 #gw http://bugzilla.gnome.org/show_bug.cgi?id=440544
 #make check
 
 %install
-%make_install
+%meson_install
 
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/50glib20.sh
