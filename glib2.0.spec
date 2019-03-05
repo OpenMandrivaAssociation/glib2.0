@@ -50,6 +50,7 @@ Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
 Patch14:	0001-Remove-debugging-in-gspawn.c.patch
 BuildRequires:	meson
+BuildRequires:	cmake
 BuildRequires:	gcc
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
@@ -220,7 +221,7 @@ export ac_cv_func_posix_getpwuid_r=yes
 export ac_cv_func_posix_getgrgid_r=no
 %endif
 
-%meson -Dsystemtap=true
+%meson -Dsystemtap=true -Dselinux=false
 
 %meson_build
 
