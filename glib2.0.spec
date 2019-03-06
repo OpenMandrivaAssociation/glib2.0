@@ -55,6 +55,7 @@ BuildRequires:	glibc-devel
 BuildRequires:	gettext
 BuildRequires:	locales-en
 BuildRequires:	docbook-dtd412-xml
+BuildRequires:	docbook-dtd42-xml
 BuildRequires:	docbook-style-xsl
 BuildRequires:	xsltproc
 BuildRequires:	chrpath
