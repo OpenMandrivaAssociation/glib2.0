@@ -63,6 +63,7 @@ BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(mount)
+BuildRequires:	pkgconfig(libelf)
 %if !%{with bootstrap}
 BuildRequires:	pkgconfig(gamin)
 %endif
@@ -237,7 +238,6 @@ install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
 %find_lang glib20
 
 mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-%{bit}
-mv %{buildroot}%{_mandir}/man1/gio-querymodules.1 %{buildroot}%{_mandir}/man1/gio-querymodules-%{bit}.1
 
 #ghost files
 touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache \
