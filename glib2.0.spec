@@ -51,6 +51,7 @@ Patch14:	0001-Remove-debugging-in-gspawn.c.patch
 BuildRequires:	meson
 BuildRequires:	cmake
 BuildRequires:	gcc
+BuildRequires:	glibc-devel
 BuildRequires:	gettext
 BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
@@ -58,6 +59,7 @@ BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-style-xsl
 BuildRequires:	xsltproc
 BuildRequires:	chrpath
+BuildRequires:	pkgconfig(libattr)
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre) >= 8.11
@@ -85,6 +87,8 @@ will depend on this library.
 Summary:	Data files used by glib
 Group:		System/Libraries
 Conflicts:	gio2.0_0 < 2.28.4-2
+# for GIO content-type support
+Recommends: shared-mime-info
 
 %description common
 Glib is a handy library of utility functions. This C
@@ -207,6 +211,9 @@ Systemtap integration for %{name}.
 %autosetup -n glib-%{version} -p1
 
 %build
+# (tpg) remove pcre as we use system one
+rm -rf glib/pcre/*.[ch]
+
 # gtk libs don't respect clang
 # http://llvm.org/bugs/show_bug.cgi?id=14406
 # (tpg) asm goto support will land in LLVM-9.0
@@ -221,7 +228,7 @@ export ac_cv_func_posix_getpwuid_r=yes
 export ac_cv_func_posix_getgrgid_r=no
 %endif
 
-%meson -Dsystemtap=true -Dselinux=disabled
+%meson -Dfam=true -Dsystemtap=true -Dselinux=disabled -Druntime_libdir="../../%{_lib}"
 
 %meson_build
 
@@ -241,6 +248,9 @@ mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodul
 
 #ghost files
 #touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache %{buildroot}%{_datadir}/glib-2.0/schemas/gschemas.compiled
+
+# bash-completion scripts need not be executable
+chmod 644 %{buildroot}%{_datadir}/bash-completion/completions/*
 
 #gw at the moment, don't ship these:
 rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
