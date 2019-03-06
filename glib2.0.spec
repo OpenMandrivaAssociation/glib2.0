@@ -228,16 +228,16 @@ export ac_cv_func_posix_getpwuid_r=yes
 export ac_cv_func_posix_getgrgid_r=no
 %endif
 
-%meson -Dman=true -Dfam=true -Dsystemtap=true -Dselinux=disabled -Druntime_libdir="../../lib"
+%meson -Dman=true -Dfam=true -Dsystemtap=true -Dselinux=disabled -Druntime_libdir="../../lib" --verbose
 
-%meson_build
+%meson_build --verbose
 
 %check
 #gw http://bugzilla.gnome.org/show_bug.cgi?id=440544
 #make check
 
 %install
-%meson_install
+%meson_install--verbose
 
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/50glib20.sh
