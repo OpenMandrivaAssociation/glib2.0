@@ -1,5 +1,4 @@
-#gw this was required since 2.23.2 (new atomic OPs?)
-%define __noautoreq 'GLIBC_PRIVATE'
+%global __requires_exclude bin/python3
 %define _python_bytecompile_build 0
 
 %define _disable_lto 1
@@ -221,7 +220,7 @@ export ac_cv_func_posix_getpwuid_r=yes
 export ac_cv_func_posix_getgrgid_r=no
 %endif
 
-%meson -Dsystemtap=true -Dselinux=false
+%meson -Dsystemtap=true -Dselinux=disabled
 
 %meson_build
 
