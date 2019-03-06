@@ -53,7 +53,6 @@ BuildRequires:	cmake
 BuildRequires:	gcc
 BuildRequires:	glibc-devel
 BuildRequires:	gettext
-BuildRequires:	libtool >= 1.4.2-2
 BuildRequires:	locales-en
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-style-xsl
@@ -247,7 +246,8 @@ install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
 mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-%{bit}
 
 #ghost files
-#touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache %{buildroot}%{_datadir}/glib-2.0/schemas/gschemas.compiled
+mkdir -p %{buildroot}%{_libdir}/gio/modules
+touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache %{buildroot}%{_datadir}/glib-2.0/schemas/gschemas.compiled
 
 # bash-completion scripts need not be executable
 chmod 644 %{buildroot}%{_datadir}/bash-completion/completions/*
@@ -257,7 +257,7 @@ rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 
 # (tpg) delete rpath
 chrpath --delete %{buildroot}%{_libdir}/*.so
-chrpath --delete %{buildroot}/%{_lib}/*.so.*
+#chrpath --delete %{buildroot}/%{_lib}/*.so.*
 
 # automatic gschema compilation on rpm installs/removals
 %transfiletriggerpostun -n %{name}-common --  %{_datadir}/glib-2.0/schemas/
