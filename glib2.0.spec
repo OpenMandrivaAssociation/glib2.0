@@ -240,7 +240,7 @@ install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
 mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-%{bit}
 
 #ghost files
-touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache \
+#touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache \
       %{buildroot}%{_datadir}/glib-2.0/schemas/gschemas.compiled
 
 #gw at the moment, don't ship these:
