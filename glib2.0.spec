@@ -228,7 +228,13 @@ export ac_cv_func_posix_getpwuid_r=yes
 export ac_cv_func_posix_getgrgid_r=no
 %endif
 
-%meson -Dman=true -Dfam=true -Dsystemtap=true -Dselinux=disabled -Druntime_libdir="../../lib"
+%meson -Dman=true \
+%if !%{with bootstrap}
+	-Dfam=true \
+%else
+	-dfam=false \
+%endif
+	-Dsystemtap=true -Dselinux=disabled -Druntime_libdir="../../lib"
 
 %meson_build -v
 
