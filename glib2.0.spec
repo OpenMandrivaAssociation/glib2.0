@@ -48,6 +48,8 @@ Patch0:		glib-2.34.1-no-warnings.patch
 Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
 Patch14:	0001-Remove-debugging-in-gspawn.c.patch
+Patch15:	glib-2.60.0-meson-runtime_libdir.patch
+
 BuildRequires:	meson
 BuildRequires:	cmake
 BuildRequires:	gcc
