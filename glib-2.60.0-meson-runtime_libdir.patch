@@ -10,7 +10,7 @@ diff -Naur glib-2.60.0/meson.build glib-2.60.0.tpg/meson.build
 +  glib_libdir = join_paths(glib_prefix, get_option('libdir'))
 +
 +else
-+  glib_libdir = os.path.realpath(join_paths(get_option('libdir'), get_option('runtime_libdir'))
++  glib_libdir = os.path.realpath(join_paths(glib_prefix, get_option('libdir'), get_option('runtime_libdir'))
 +endif
  glib_libexecdir = join_paths(glib_prefix, get_option('libexecdir'))
  glib_datadir = join_paths(glib_prefix, get_option('datadir'))
