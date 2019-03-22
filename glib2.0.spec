@@ -230,7 +230,7 @@ export ac_cv_func_posix_getpwuid_r=yes
 export ac_cv_func_posix_getgrgid_r=no
 %endif
 
-%meson --prefix / -Dman=true \
+%meson -Dman=true \
 %if !%{with bootstrap}
 	-Dfam=true \
 %else
