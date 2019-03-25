@@ -236,7 +236,7 @@ export ac_cv_func_posix_getgrgid_r=no
 %else
 	-Dfam=false \
 %endif
-	-Dsystemtap=true -Dselinux=disabled -Druntime_libdir="../../%{_lib}"
+	-Dsystemtap=true -Dselinux=disabled -Druntime_libdir="/%{_lib}"
 
 %meson_build
 
