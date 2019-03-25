@@ -53,6 +53,7 @@ Patch15:	glib-2.60.0-meson-runtime_libdir.patch
 BuildRequires:	meson
 BuildRequires:	cmake
 BuildRequires:	gcc
+BuildRequires:	dbus
 BuildRequires:	glibc-devel
 BuildRequires:	gettext
 BuildRequires:	locales-en
