@@ -234,12 +234,17 @@ export ac_cv_func_posix_getgrgid_r=no
 %endif
 
 %meson -Dman=true \
+       --default-library=both \
 %if !%{with bootstrap}
 	-Dfam=true \
 %else
 	-Dfam=false \
 %endif
-	-Dsystemtap=true -Dselinux=disabled -Druntime_libdir="/%{_lib}"
+	-Dsystemtap=true \
+	-Dselinux=disabled \
+	-Druntime_libdir="%{_libdir}" \
+	-Dtapset_install_dir=%{_datadir}/systemtap \
+	-Dgio_module_dir="%{_libdir}/gio/modules"
 
 %meson_build
 
@@ -265,7 +270,7 @@ touch %{buildroot}%{_libdir}/gio/modules/giomodule.cache %{buildroot}%{_datadir}
 chmod 644 %{buildroot}%{_datadir}/bash-completion/completions/*
 
 #gw at the moment, don't ship these:
-rm -f %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
+rm -fv %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 
 # (tpg) delete rpath
 chrpath --delete %{buildroot}%{_libdir}/*.so
@@ -310,25 +315,25 @@ fi
 %ghost %{_datadir}/glib-2.0/schemas/gschemas.compiled
 
 %files -n %{libgio}
-/%{_lib}/libgio-%{api}.so.%{major}*
+%{_libdir}/libgio-%{api}.so.%{major}*
 
 %files -n %{libname}
-/%{_lib}/libglib-%{api}.so.%{major}*
+%{_libdir}/libglib-%{api}.so.%{major}*
 
 %files -n %{libgmodule}
-/%{_lib}/libgmodule-%{api}.so.%{major}*
+%{_libdir}/libgmodule-%{api}.so.%{major}*
 
 %files -n %{libgthread}
-/%{_lib}/libgthread-%{api}.so.%{major}*
+%{_libdir}/libgthread-%{api}.so.%{major}*
 
 %files -n %{libgobject}
-/%{_lib}/libgobject-%{api}.so.%{major}*
+%{_libdir}/libgobject-%{api}.so.%{major}*
 
 %files -n %{gio}
 %{_bindir}/gio
 %{_bindir}/gio-querymodules-%{bit}
 %{_bindir}/gio-launch-desktop
-%{_mandir}/man1/gio-querymodules-%{bit}.1*
+%{_mandir}/man1/gio-querymodules*.1*
 %{_mandir}/man1/gio.1.*
 %{_datadir}/bash-completion/completions/gio
 %if !%{with bootstrap}
@@ -348,12 +353,11 @@ fi
 %{_bindir}/gtester*
 %{_libdir}/lib*.so
 %{_libdir}/*.a
-%{_libdir}/gio/modules/*.a
 %{_libdir}/glib-%{api}/include/
 %{_libdir}/pkgconfig/*
 %{_datadir}/aclocal/glib-%{api}.m4
+%{_datadir}/gdb/auto-load/%{_libdir}/lib*-gdb.py
 %{_datadir}/aclocal/gsettings.m4
-%{_datadir}/gdb/auto-load/%{_lib}/lib*-gdb.py
 %{_datadir}/glib-%{api}/codegen/
 %{_datadir}/glib-%{api}/gdb/
 %{_datadir}/glib-%{api}/valgrind/
@@ -375,7 +379,7 @@ fi
 %{_datadir}/glib-%{api}/gettext/
 
 %files systemtap
-%{_datadir}/systemtap/tapset/*
+#% {_datadir}/systemtap/
 
 %if %{enable_gtkdoc}
 %files doc
