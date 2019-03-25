@@ -49,6 +49,8 @@ Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
 Patch14:	0001-Remove-debugging-in-gspawn.c.patch
 Patch15:	glib-2.60.0-meson-runtime_libdir.patch
+# disable some weird tests
+Patch16:	disable-tests.patch
 
 BuildRequires:	meson
 BuildRequires:	cmake
