@@ -48,9 +48,6 @@ Patch0:		glib-2.34.1-no-warnings.patch
 Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
 Patch14:	0001-Remove-debugging-in-gspawn.c.patch
-Patch15:	glib-2.60.0-meson-runtime_libdir.patch
-# disable some weird tests
-Patch16:	disable-tests.patch
 
 BuildRequires:	meson
 BuildRequires:	cmake
@@ -242,7 +239,6 @@ export ac_cv_func_posix_getgrgid_r=no
 %endif
 	-Dsystemtap=true \
 	-Dselinux=disabled \
-	-Druntime_libdir="%{_libdir}" \
 	-Dtapset_install_dir=%{_datadir}/systemtap \
 	-Dgio_module_dir="%{_libdir}/gio/modules"
 
@@ -279,12 +275,12 @@ chrpath --delete %{buildroot}%{_libdir}/*.so
 # automatic gschema compilation on rpm installs/removals
 %transfiletriggerpostun -n %{name}-common --  %{_datadir}/glib-2.0/schemas/
 if [ -x %{_bindir}/glib-compile-schemas ]; then
-	%{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
+    %{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
 fi
 
 %transfiletriggerin -n %{name}-common --  %_datadir/glib-2.0/schemas/
 if [ -x %{_bindir}/glib-compile-schemas ]; then
-	%{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
+    %{_bindir}/glib-compile-schemas --allow-any-name %{_datadir}/glib-2.0/schemas/
 fi
 
 # automatic update of gio module cache
