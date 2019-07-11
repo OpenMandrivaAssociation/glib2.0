@@ -225,6 +225,17 @@ rm -rf glib/pcre/*.[ch]
 export CC=gcc
 export CXX=g++
 
+#FIXME (angry)
+# GCC build with ldd linker failed with this error:
+# error: gfileinfo.c:(.debug_info+0x7D514): has non-ABS relocation R_386_GOTOFF against symbol '.LC40'
+# this error is observed on many i686 packages (wine, libvirt) and appeared after changing linker to ldd.
+# as temporary solution, switch to GCC (if clang was enabled), if still won't build then use other linker like gold or bfd
+# if issue is still present (like in this case), then force "-Wl,-z,notext"
+%ifarch %{ix86}
+%global ldflags %{ldflags} -Wl,-z,notext
+%global ldflags %{ldflags} -fuse-ld=gold
+%endif
+
 %if %{with crosscompile}
 export glib_cv_stack_grows=no
 export glib_cv_uscore=no
