@@ -7,6 +7,8 @@
 # gw bootstrap: fam pulls glib2, so build without fam
 %bcond_with bootstrap
 %bcond_with crosscompile
+# (tpg) enable PGO build
+%bcond_without pgo
 
 # (tpg) optimize it a bit
 %global optflags %optflags -O3
@@ -31,7 +33,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 Version:	2.60.6
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -243,8 +245,10 @@ export ac_cv_func_posix_getpwuid_r=yes
 export ac_cv_func_posix_getgrgid_r=no
 %endif
 
-%meson -Dman=true \
-       --default-library=both \
+%if %{with pgo}
+%meson -Db_pgo=generate \
+	-Dman=false \
+	--default-library=both \
 %if !%{with bootstrap}
 	-Dfam=true \
 %else
@@ -254,6 +258,44 @@ export ac_cv_func_posix_getgrgid_r=no
 	-Dselinux=disabled \
 	-Dtapset_install_dir=%{_datadir}/systemtap \
 	-Dgio_module_dir="%{_libdir}/gio/modules"
+
+%meson_build
+
+# (tpg) run performance tests to generate data
+./build/tests/gobject/performance
+
+# (tpg) clean build
+ninja -C build -t clean
+
+%meson -Db_pgo=use \
+	-Dman=true \
+	--default-library=both \
+%if !%{with bootstrap}
+	-Dfam=true \
+%else
+	-Dfam=false \
+%endif
+	-Dsystemtap=true \
+	-Dselinux=disabled \
+	-Dtapset_install_dir=%{_datadir}/systemtap \
+	-Dgio_module_dir="%{_libdir}/gio/modules" \
+	--reconfigure
+
+%else
+
+%meson -Db_pgo=off \
+	-Dman=true \
+	--default-library=both \
+%if !%{with bootstrap}
+	-Dfam=true \
+%else
+	-Dfam=false \
+%endif
+	-Dsystemtap=true \
+	-Dselinux=disabled \
+	-Dtapset_install_dir=%{_datadir}/systemtap \
+	-Dgio_module_dir="%{_libdir}/gio/modules"
+%endif
 
 %meson_build
 
