@@ -7,8 +7,10 @@
 # gw bootstrap: fam pulls glib2, so build without fam
 %bcond_with bootstrap
 %bcond_with crosscompile
-# (tpg) enable PGO build
-%bcond_without pgo
+# As of 2019/08/14 (llvm 9.0.0-rc2),
+# PGO breaks things badly ("corrupt input file: version definition index 0 for symbol __gcov_var is out of bounds")
+# and doesn't bring much of a performance advantage.
+%bcond_with pgo
 
 # (tpg) optimize it a bit
 %global optflags %optflags -O3
@@ -33,7 +35,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 Version:	2.60.6
-Release:	2
+Release:	3
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
