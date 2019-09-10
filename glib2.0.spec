@@ -34,8 +34,8 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.60.6
-Release:	3
+Version:	2.62.0
+Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -226,8 +226,8 @@ rm -rf glib/pcre/*.[ch]
 # http://llvm.org/bugs/show_bug.cgi?id=14406
 # (tpg) asm goto support will land in LLVM-9.0
 # https://bugs.llvm.org/show_bug.cgi?id=9295
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 
 #FIXME (angry)
 # GCC build with ldd linker failed with this error:
