@@ -53,7 +53,7 @@ Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
 Patch14:	0001-Remove-debugging-in-gspawn.c.patch
 # dont remove it!!!
-Patch15:	disable-tests.patch
+#Patch15:	disable-tests.patch
 
 BuildRequires:	meson
 BuildRequires:	cmake
