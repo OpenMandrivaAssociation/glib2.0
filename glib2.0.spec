@@ -1,7 +1,6 @@
 %global __requires_exclude bin/python3
 %define _python_bytecompile_build 0
 
-%define _disable_lto 1
 %define enable_gtkdoc 0
 
 # gw bootstrap: fam pulls glib2, so build without fam
@@ -35,7 +34,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 Version:	2.62.0
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -43,8 +42,6 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. 
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
-# cb - this fix seems to cause perl-glib to fail
-#Patch2:		glib-2.46.0-revert_quark_optim.patch
 # (tpg) ClearLinux patches
 # (tpg) Doing the malloc_trim every sleep is too much
 #Patch10:	memory.patch
@@ -96,7 +93,7 @@ Summary:	Data files used by glib
 Group:		System/Libraries
 Conflicts:	gio2.0_0 < 2.28.4-2
 # for GIO content-type support
-Recommends: shared-mime-info
+Recommends:	shared-mime-info
 
 %description common
 Glib is a handy library of utility functions. This C
@@ -221,13 +218,6 @@ Systemtap integration for %{name}.
 %build
 # (tpg) remove pcre as we use system one
 rm -rf glib/pcre/*.[ch]
-
-# gtk libs don't respect clang
-# http://llvm.org/bugs/show_bug.cgi?id=14406
-# (tpg) asm goto support will land in LLVM-9.0
-# https://bugs.llvm.org/show_bug.cgi?id=9295
-#export CC=gcc
-#export CXX=g++
 
 #FIXME (angry)
 # GCC build with ldd linker failed with this error:
