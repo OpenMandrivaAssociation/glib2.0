@@ -325,6 +325,8 @@ rm -fv %{buildroot}%{_datadir}/systemtap/tapset/{glib,gobject}.stp
 chrpath --delete %{buildroot}%{_libdir}/*.so
 #chrpath --delete %{buildroot}/%{_lib}/*.so.*
 
+rm -rf  %{buildroot}%{_libexecdir}installed-tests %{buildroot}%{_datadir}/installed-tests
+
 # automatic gschema compilation on rpm installs/removals
 %transfiletriggerpostun -n %{name}-common --  %{_datadir}/glib-2.0/schemas/
 if [ -x %{_bindir}/glib-compile-schemas ]; then
