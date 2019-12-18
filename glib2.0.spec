@@ -238,7 +238,8 @@ export ac_cv_func_posix_getgrgid_r=no
 %endif
 
 %if %{with pgo}
-%meson -Db_pgo=generate \
+%meson \
+	-Db_pgo=generate \
 	-Dman=false \
 	--default-library=both \
 %if !%{with bootstrap}
@@ -248,6 +249,7 @@ export ac_cv_func_posix_getgrgid_r=no
 %endif
 	-Dsystemtap=true \
 	-Dselinux=disabled \
+	-Dinstalled_tests=false \
 	-Dtapset_install_dir=%{_datadir}/systemtap \
 	-Dgio_module_dir="%{_libdir}/gio/modules"
 
@@ -259,7 +261,8 @@ export ac_cv_func_posix_getgrgid_r=no
 # (tpg) clean build
 ninja -C build -t clean
 
-%meson -Db_pgo=use \
+%meson \
+	-Db_pgo=use \
 	-Dman=true \
 	--default-library=both \
 %if !%{with bootstrap}
@@ -269,13 +272,15 @@ ninja -C build -t clean
 %endif
 	-Dsystemtap=true \
 	-Dselinux=disabled \
+	-Dinstalled_tests=false \
 	-Dtapset_install_dir=%{_datadir}/systemtap \
 	-Dgio_module_dir="%{_libdir}/gio/modules" \
 	--reconfigure
 
 %else
 
-%meson -Db_pgo=off \
+%meson \
+	-Db_pgo=off \
 	-Dman=true \
 	--default-library=both \
 %if !%{with bootstrap}
@@ -285,6 +290,7 @@ ninja -C build -t clean
 %endif
 	-Dsystemtap=true \
 	-Dselinux=disabled \
+	-Dinstalled_tests=false \
 	-Dtapset_install_dir=%{_datadir}/systemtap \
 	-Dgio_module_dir="%{_libdir}/gio/modules"
 %endif
