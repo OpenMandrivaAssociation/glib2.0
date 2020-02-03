@@ -34,7 +34,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 Version:	2.63.4
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -179,6 +179,7 @@ on the network. For the latter you need to install gvfs.
 %package -n %{devname}
 Summary:	Development libraries and header files of %{name}
 Group:		Development/C
+Provides"	%{name}-devel = %{EVRD}
 Requires:	glib-gettextize = %{EVRD}
 Requires:	%{name}-common = %{EVRD}
 Requires:	%{libname} = %{EVRD}
