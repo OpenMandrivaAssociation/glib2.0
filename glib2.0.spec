@@ -33,7 +33,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.63.5
+Version:	2.64.0
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -384,7 +384,6 @@ fi
 %files -n %{gio}
 %{_bindir}/gio
 %{_bindir}/gio-querymodules-%{bit}
-%{_bindir}/gio-launch-desktop
 %{_mandir}/man1/gio-querymodules*.1*
 %{_mandir}/man1/gio.1.*
 %{_datadir}/bash-completion/completions/gio
