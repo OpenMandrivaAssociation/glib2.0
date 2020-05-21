@@ -1,3 +1,10 @@
+# glib2.0 is used by wine
+%ifarch %{x86_64}
+%bcond_without compat32
+%else
+%bcond_with compat32
+%endif
+
 %global __requires_exclude bin/python3
 %define _python_bytecompile_build 0
 
@@ -14,7 +21,6 @@
 # (tpg) optimize it a bit
 %global optflags %optflags -O3
 
-# Note that this is NOT a relocatable package
 %define api 2.0
 %define major 0
 %define libname %mklibname %{name}_ %{major}
@@ -30,10 +36,18 @@
 %endif
 %define gio gio2.0-%{bit}
 
+%define lib32name lib%{name}_%{major}
+%define lib32gio libgio%{api}_%{major}
+%define lib32gmodule libgmodule%{api}_%{major}
+%define lib32gthread libgthread%{api}_%{major}
+%define lib32gobject libgobject%{api}_%{major}
+%define dev32name lib%{name}-devel
+%define gio32 gio2.0-32
+
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.64.2
+Version:	2.64.3
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -42,6 +56,7 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. 
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
+Patch1:		glib-2.64.3-workaround-32bit-test-build-failure.patch
 # (tpg) ClearLinux patches
 # (tpg) Doing the malloc_trim every sleep is too much
 #Patch10:	memory.patch
@@ -76,6 +91,15 @@ BuildRequires:	pkgconfig(gamin)
 %endif
 %if %{enable_gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
+%endif
+%if %{with compat32}
+BuildRequires:	devel(libpcre)
+BuildRequires:	devel(libffi)
+BuildRequires:	devel(libmount)
+BuildRequires:	devel(libelf)
+BuildRequires:	devel(libz)
+BuildRequires:	devel(libmount)
+BuildRequires:	devel(libdbus-1)
 %endif
 
 %description
@@ -213,6 +237,76 @@ BuildRequires:	systemtap-devel >= 3.0
 %description systemtap
 Systemtap integration for %{name}.
 
+%if %{with compat32}
+%package -n %{lib32name}
+Summary:	%{summary} (32-bit)
+Group:		%{group}
+
+%description -n %{lib32name}
+This package contains the library needed to run programs dynamically
+linked with libglib.
+
+%package -n %{lib32gio}
+Summary:	%{summary} (32-bit)
+Group:		%{group}
+
+%description -n %{lib32gio}
+This package contains the library needed to run programs dynamically
+linked with libgio.
+
+%package -n %{lib32gmodule}
+Summary:	%{summary} (32-bit)
+Group:		%{group}
+
+%description -n %{lib32gmodule}
+This package contains the library needed to run programs dynamically
+linked with libgmodule.
+
+%package -n %{lib32gobject}
+Summary:	%{summary} (32-bit)
+Group:		%{group}
+
+%description -n %{lib32gobject}
+This package contains the library needed to run programs dynamically
+linked with libgobject.
+
+%package -n %{lib32gthread}
+Summary:	%{summary} (32-bit)
+Group:		%{group}
+
+%description -n %{lib32gthread}
+This package contains the library needed to run programs dynamically
+linked with libgthread.
+
+%package -n %{gio32}
+Summary:	GIO is the input, output and streaming API of glib (32-bit)
+Group:		%{group}
+
+%description -n %{gio32}
+GIO is the input, output and streaming API of glib. It on the one hand
+provides a set of various streaming classes to access data from different
+sources in a convenient way and on the other hand it provides a high level
+file system abstraction to access file and directories not only local but also
+on the network. For the latter you need to install gvfs.
+
+%package -n %{dev32name}
+Summary:	Development libraries and header files of %{name} (32-bit)
+Group:		Development/C
+Requires:	glib-gettextize = %{EVRD}
+Requires:	%{name}-common = %{EVRD}
+Requires:	%{lib32name} = %{EVRD}
+Requires:	%{lib32gio} = %{EVRD}
+Requires:	%{lib32gmodule} = %{EVRD}
+Requires:	%{lib32gobject} = %{EVRD}
+Requires:	%{lib32gthread} = %{EVRD}
+Requires:	%{devname} = %{EVRD}
+
+%description -n %{dev32name}
+Development libraries and header files for the support library for the GIMP's X
+libraries, which are available as public libraries.  GLIB includes generally
+useful data structures.
+%endif
+
 %prep
 %autosetup -n glib-%{version} -p1
 
@@ -229,6 +323,16 @@ rm -rf glib/pcre/*.[ch]
 %ifarch %{ix86}
 %global ldflags %{ldflags} -Wl,-z,notext
 %global ldflags %{ldflags} -fuse-ld=gold
+%endif
+
+%if %{with compat32}
+%meson32 \
+	-Dman=false \
+	-Dsystemtap=false \
+	-Dinstalled_tests=false \
+	-Dgio_module_dir="%{_prefix}/lib/gio/modules" \
+	-Dselinux=disabled
+%ninja_build -C build32
 %endif
 
 %if %{with crosscompile}
@@ -303,6 +407,13 @@ ninja -C build -t clean
 #make check
 
 %install
+%if %{with compat32}
+%ninja_install -C build32
+mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-32
+mkdir -p %{buildroot}%{_prefix}/lib/gio/modules
+touch %{buildroot}%{_prefix}/lib/gio/modules/giomodule.cache
+chrpath --delete %{buildroot}%{_prefix}/lib/*.so
+%endif
 %meson_install
 
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
@@ -436,4 +547,40 @@ fi
 %files doc
 %doc AUTHORS NEWS README
 %doc %{_datadir}/gtk-doc/html/*
+%endif
+
+%if %{with compat32}
+%files -n %{lib32gio}
+%{_prefix}/lib/libgio-%{api}.so.%{major}*
+
+%files -n %{lib32name}
+%{_prefix}/lib/libglib-%{api}.so.%{major}*
+
+%files -n %{lib32gmodule}
+%{_prefix}/lib/libgmodule-%{api}.so.%{major}*
+
+%files -n %{lib32gthread}
+%{_prefix}/lib/libgthread-%{api}.so.%{major}*
+
+%files -n %{lib32gobject}
+%{_prefix}/lib/libgobject-%{api}.so.%{major}*
+
+%files -n %{gio32}
+%{_bindir}/gio-querymodules-32
+%dir %{_prefix}/lib/gio/
+%dir %{_prefix}/lib/gio/modules/
+%ghost %{_prefix}/lib/gio/modules/giomodule.cache
+
+%files -n %{dev32name}
+%{_prefix}/lib/lib*.so
+%{_prefix}/lib/glib-%{api}/include/
+%{_prefix}/lib/pkgconfig/*
+%{_datadir}/gdb/auto-load/%{_prefix}/lib/lib*-gdb.py
+
+# automatic update of gio module cache
+%transfiletriggerpostun -n %{gio32} --  %{_prefix}/lib/gio/modules/
+%{_bindir}/gio-querymodules-32 %{_prefix}/lib/gio/modules
+
+%transfiletriggerin -n %{gio32} --  %{_prefix}/lib/gio/modules/
+%{_bindir}/gio-querymodules-32 %{_prefix}/lib/gio/modules
 %endif
