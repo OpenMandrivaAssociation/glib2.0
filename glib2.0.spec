@@ -86,6 +86,7 @@ BuildRequires:	pkgconfig(libpcre) >= 8.11
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
+BuildRequires:	pkgconfig(blkid)
 %if !%{with bootstrap}
 BuildRequires:	pkgconfig(gamin)
 %endif
@@ -95,6 +96,7 @@ BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %if %{with compat32}
 BuildRequires:	devel(libpcre)
 BuildRequires:	devel(libffi)
+BuildRequires:	devel(libblkid)
 BuildRequires:	devel(libmount)
 BuildRequires:	devel(libelf)
 BuildRequires:	devel(libz)
