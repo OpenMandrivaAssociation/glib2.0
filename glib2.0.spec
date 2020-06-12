@@ -48,7 +48,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 Version:	2.64.3
-Release:	2
+Release:	3
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -303,6 +303,9 @@ Requires:	%{lib32gobject} = %{EVRD}
 Requires:	%{lib32gthread} = %{EVRD}
 Requires:	%{devname} = %{EVRD}
 Requires:	devel(libpcre)
+Requires:	devel(libz)
+Requires:	devel(libmount)
+Requires:	devel(libffi)
 
 %description -n %{dev32name}
 Development libraries and header files for the support library for the GIMP's X
