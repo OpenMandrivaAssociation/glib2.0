@@ -47,8 +47,8 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-Version:	2.64.5
-Release:	2
+Version:	2.66.0
+Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -64,7 +64,7 @@ Patch2:		glib-2.64.5-clang.patch
 #Patch11:	madvise.patch
 Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
-Patch14:	0001-Remove-debugging-in-gspawn.c.patch
+#Patch14:	0001-Remove-debugging-in-gspawn.c.patch
 # dont remove it!!!
 #Patch15:	disable-tests.patch
 
