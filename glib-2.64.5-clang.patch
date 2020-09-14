@@ -1,6 +1,6 @@
-diff -up glib-2.64.5/glib/gmacros.h.omv~ glib-2.64.5/glib/gmacros.h
---- glib-2.64.5/glib/gmacros.h.omv~	2020-08-21 01:26:15.873959446 +0200
-+++ glib-2.64.5/glib/gmacros.h	2020-08-21 01:28:17.290140369 +0200
+diff -uraN glib-2.66.0/glib/gmacros.h omv-glib-2.66.0/glib/gmacros.h
+--- glib-2.66.0/glib/gmacros.h	2020-09-10 12:42:41.000000000 +0200
++++ omv-glib-2.66.0/glib/gmacros.h	2020-09-14 02:57:02.086073430 +0200
 @@ -557,7 +557,7 @@
   *
   * Since: 2.60
@@ -8,5 +8,5 @@ diff -up glib-2.64.5/glib/gmacros.h.omv~ glib-2.64.5/glib/gmacros.h
 -#if    __GNUC__ > 6
 +#if    __GNUC__ > 6 || defined(__clang__)
  #define G_GNUC_FALLTHROUGH __attribute__((fallthrough))
- #else
- #define G_GNUC_FALLTHROUGH
+ #elif g_macro__has_attribute (fallthrough)
+ #define G_GNUC_FALLTHROUGH __attribute__((fallthrough))
