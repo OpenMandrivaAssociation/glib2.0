@@ -68,7 +68,7 @@ Patch14:	0001-meson-Run-atomics-test-on-clang-as-well.patch
 #Patch14:	0001-Remove-debugging-in-gspawn.c.patch
 # dont remove it!!!
 # needed for riscv64
-Patch15:	disable-tests.patch
+# Patch15:	disable-tests.patch
 
 BuildRequires:	meson
 BuildRequires:	cmake
