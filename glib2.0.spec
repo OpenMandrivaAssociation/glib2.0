@@ -211,6 +211,8 @@ Group:		Development/C
 Provides:	%{name}-devel = %{EVRD}
 Provides:	glib2-devel = %{EVRD}
 Requires:	glib-gettextize = %{EVRD}
+Provides:	%{name}-static-devel = %{EVRD}
+Provides:	glib2-static-devel = %{EVRD}
 Requires:	%{name}-common = %{EVRD}
 Requires:	%{libname} = %{EVRD}
 Requires:	%{libgio} = %{EVRD}
