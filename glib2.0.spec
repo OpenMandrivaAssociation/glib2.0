@@ -209,6 +209,7 @@ on the network. For the latter you need to install gvfs.
 Summary:	Development libraries and header files of %{name}
 Group:		Development/C
 Provides:	%{name}-devel = %{EVRD}
+Provides:	glib2-devel = %{EVRD}
 Requires:	glib-gettextize = %{EVRD}
 Requires:	%{name}-common = %{EVRD}
 Requires:	%{libname} = %{EVRD}
