@@ -19,7 +19,8 @@
 %bcond_with pgo
 
 # (tpg) optimize it a bit
-%global optflags %optflags -O3
+%define _disable_lto 1
+%global optflags %(echo %{optflags} -O3 | sed 's/-flto//')
 
 %define api 2.0
 %define major 0
