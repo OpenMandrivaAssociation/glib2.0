@@ -18,8 +18,10 @@
 # and doesn't bring much of a performance advantage.
 %bcond_with pgo
 
-# (tpg) optimize it a bit
+# disable LTO as this package provides static libraries
 %define _disable_lto 1
+
+# (tpg) optimize it a bit
 %global optflags %(echo %{optflags} -O3 | sed 's/-flto//')
 
 %define api 2.0
