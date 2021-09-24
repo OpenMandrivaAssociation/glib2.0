@@ -60,7 +60,7 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. 
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
-Patch1:		glib-2.64.3-workaround-32bit-test-build-failure.patch
+#Patch1:		glib-2.64.3-workaround-32bit-test-build-failure.patch
 Patch2:		glib-2.64.5-clang.patch
 # (tpg) ClearLinux patches
 # (tpg) Doing the malloc_trim every sleep is too much
