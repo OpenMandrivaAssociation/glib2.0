@@ -60,12 +60,11 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. 
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
-#Patch1:		glib-2.64.3-workaround-32bit-test-build-failure.patch
-#Patch2:		glib-2.64.5-clang.patch
+Patch1:		glib-2.70.0-dont-use-lld-when-hardcoding-bfd-specific-options.patch
 # (tpg) ClearLinux patches
 # (tpg) Doing the malloc_trim every sleep is too much
 #Patch10:	memory.patch
-#Patch11:	madvise.patch
+Patch11:	madvise.patch
 Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
 Patch14:	0001-meson-Run-atomics-test-on-clang-as-well.patch
@@ -348,6 +347,8 @@ rm -rf glib/pcre/*.[ch]
 	-Dinstalled_tests=false \
 	-Dgio_module_dir="%{_prefix}/lib/gio/modules" \
 	-Dselinux=disabled
+# glib has no idea about crosscompiling
+sed -i -e 's,ld.bfd,i686-linux-gnu-ld.bfd,g' build32/build.ninja
 %ninja_build -C build32
 %endif
 
