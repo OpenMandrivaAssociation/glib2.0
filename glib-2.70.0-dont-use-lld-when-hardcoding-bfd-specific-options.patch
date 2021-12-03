@@ -1,8 +1,8 @@
-diff -up glib-2.70.0/gio/tests/meson.build.omv~ glib-2.70.0/gio/tests/meson.build
---- glib-2.70.0/gio/tests/meson.build.omv~	2021-09-25 20:24:44.231604024 +0200
-+++ glib-2.70.0/gio/tests/meson.build	2021-09-25 20:24:58.698398174 +0200
-@@ -686,7 +686,7 @@ if not meson.is_cross_build() or meson.h
-     objcopy_supports_add_symbol = run_command(objcopy, '--help').stdout().contains('--add-symbol')
+diff -uraN glib-2.70.2/gio/tests/meson.build omv-glib-2.70.2/gio/tests/meson.build
+--- glib-2.70.2/gio/tests/meson.build	2021-12-03 11:02:55.821885600 +0100
++++ omv-glib-2.70.2/gio/tests/meson.build	2021-12-03 17:46:45.807884809 +0100
+@@ -693,7 +693,7 @@
+     objcopy_supports_add_symbol = run_command(objcopy, '--help', check: false).stdout().contains('--add-symbol')
    endif
  
 -  ld = find_program('ld', required : false)
