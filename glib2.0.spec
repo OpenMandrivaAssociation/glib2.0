@@ -51,7 +51,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.66 is stable (all even), 2.67 unstable. Current unstable change ABI and is know to broke a lot of stuff.
-Version:	2.70.4
+Version:	2.72.0
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -69,9 +69,6 @@ Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
 Patch14:	0001-meson-Run-atomics-test-on-clang-as-well.patch
 #Patch14:	0001-Remove-debugging-in-gspawn.c.patch
-# dont remove it!!!
-# needed for riscv64
-Patch15:	disable-tests.patch
 
 BuildRequires:	meson
 BuildRequires:	cmake
@@ -342,6 +339,9 @@ rm -rf glib/pcre/*.[ch]
 %endif
 
 %if %{with compat32}
+# Forcing gcc is a workaround for bogus inline assembly (x86_32 only)
+export CC=gcc
+export CXX=g++
 %meson32 \
 	-Dman=false \
 	-Dsystemtap=false \
@@ -351,6 +351,8 @@ rm -rf glib/pcre/*.[ch]
 # glib has no idea about crosscompiling
 sed -i -e 's,ld.bfd,i686-linux-gnu-ld.bfd,g' build32/build.ninja
 %ninja_build -C build32
+unset CC
+unset CXX
 %endif
 
 %if %{with crosscompile}
