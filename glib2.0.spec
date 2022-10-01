@@ -10,8 +10,6 @@
 
 %define enable_gtkdoc 0
 
-# gw bootstrap: fam pulls glib2, so build without fam
-%bcond_with bootstrap
 %bcond_with crosscompile
 # As of 2019/08/14 (llvm 9.0.0-rc2),
 # PGO breaks things badly ("corrupt input file: version definition index 0 for symbol __gcov_var is out of bounds")
@@ -90,9 +88,6 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
 BuildRequires:	pkgconfig(blkid)
-%if !%{with bootstrap}
-BuildRequires:	pkgconfig(gamin)
-%endif
 %if %{enable_gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
@@ -367,11 +362,6 @@ export ac_cv_func_posix_getgrgid_r=no
 	-Db_pgo=generate \
 	-Dman=false \
 	--default-library=both \
-%if !%{with bootstrap}
-	-Dfam=true \
-%else
-	-Dfam=false \
-%endif
 	-Dsystemtap=true \
 	-Dselinux=disabled \
 	-Dinstalled_tests=false \
@@ -390,11 +380,6 @@ ninja -C build -t clean
 	-Db_pgo=use \
 	-Dman=true \
 	--default-library=both \
-%if !%{with bootstrap}
-	-Dfam=true \
-%else
-	-Dfam=false \
-%endif
 	-Dsystemtap=true \
 	-Dselinux=disabled \
 	-Dinstalled_tests=false \
@@ -408,11 +393,6 @@ ninja -C build -t clean
 	-Db_pgo=off \
 	-Dman=true \
 	--default-library=both \
-%if !%{with bootstrap}
-	-Dfam=true \
-%else
-	-Dfam=false \
-%endif
 	-Dsystemtap=true \
 	-Dselinux=disabled \
 	-Dinstalled_tests=false \
