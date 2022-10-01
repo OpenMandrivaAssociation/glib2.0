@@ -98,7 +98,7 @@ BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
 %if %{with compat32}
 BuildRequires:	cross-i686-openmandriva-linux-gnu-binutils
-BuildRequires:	devel(libpcre)
+BuildRequires:	devel(libpcre2-8)
 BuildRequires:	devel(libffi)
 BuildRequires:	devel(libblkid)
 BuildRequires:	devel(libmount)
