@@ -50,7 +50,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-# Do not upgrade to unstable release. 2.72 is stable, 2.71 unstable. Current unstable change ABI and is know to broke a lot of stuff.
+# Do not upgrade to unstable release. 2.74 is stable, 2.75 unstable. Current unstable change ABI and is know to broke a lot of stuff.
 Version:	2.74.0
 Release:	1
 Group:		System/Libraries
@@ -85,7 +85,7 @@ BuildRequires:	chrpath
 BuildRequires:	pkgconfig(libattr)
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
-BuildRequires:	pkgconfig(libpcre) >= 8.11
+BuildRequires:  pkgconfig(libpcre2-8)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
