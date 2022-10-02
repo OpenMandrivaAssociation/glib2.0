@@ -83,6 +83,8 @@ BuildRequires:	docbook-dtd42-xml
 BuildRequires:	docbook-style-xsl
 BuildRequires:	xsltproc
 BuildRequires:	chrpath
+BuildRequires:	bash-completion
+BuildRequires:	dbus-daemon
 BuildRequires:	pkgconfig(libattr)
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
