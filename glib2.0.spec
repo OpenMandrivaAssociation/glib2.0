@@ -10,8 +10,6 @@
 
 %define enable_gtkdoc 0
 
-# gw bootstrap: fam pulls glib2, so build without fam
-%bcond_with bootstrap
 %bcond_with crosscompile
 # As of 2019/08/14 (llvm 9.0.0-rc2),
 # PGO breaks things badly ("corrupt input file: version definition index 0 for symbol __gcov_var is out of bounds")
@@ -50,8 +48,8 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-# Do not upgrade to unstable release. 2.72 is stable, 2.71 unstable. Current unstable change ABI and is know to broke a lot of stuff.
-Version:	2.72.3
+# Do not upgrade to unstable release. 2.74 is stable, 2.75 unstable. Current unstable change ABI and is know to broke a lot of stuff.
+Version:	2.74.0
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -70,6 +68,10 @@ Patch13:	gerror-return-on-null.patch
 Patch14:	0001-meson-Run-atomics-test-on-clang-as-well.patch
 #Patch14:	0001-Remove-debugging-in-gspawn.c.patch
 
+# Upstream
+Patch15:	https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2898.patch
+Patch16:	2921.patch
+
 BuildRequires:	meson
 BuildRequires:	cmake
 BuildRequires:	gcc
@@ -82,23 +84,22 @@ BuildRequires:	docbook-dtd42-xml
 BuildRequires:	docbook-style-xsl
 BuildRequires:	xsltproc
 BuildRequires:	chrpath
+BuildRequires:	bash-completion
+BuildRequires:	dbus-daemon
 BuildRequires:	pkgconfig(libattr)
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
-BuildRequires:	pkgconfig(libpcre) >= 8.11
+BuildRequires:  pkgconfig(libpcre2-8)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
 BuildRequires:	pkgconfig(blkid)
-%if !%{with bootstrap}
-BuildRequires:	pkgconfig(gamin)
-%endif
 %if %{enable_gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
 %if %{with compat32}
 BuildRequires:	cross-i686-openmandriva-linux-gnu-binutils
-BuildRequires:	devel(libpcre)
+BuildRequires:	devel(libpcre2-8)
 BuildRequires:	devel(libffi)
 BuildRequires:	devel(libblkid)
 BuildRequires:	devel(libmount)
@@ -367,11 +368,6 @@ export ac_cv_func_posix_getgrgid_r=no
 	-Db_pgo=generate \
 	-Dman=false \
 	--default-library=both \
-%if !%{with bootstrap}
-	-Dfam=true \
-%else
-	-Dfam=false \
-%endif
 	-Dsystemtap=true \
 	-Dselinux=disabled \
 	-Dinstalled_tests=false \
@@ -390,11 +386,6 @@ ninja -C build -t clean
 	-Db_pgo=use \
 	-Dman=true \
 	--default-library=both \
-%if !%{with bootstrap}
-	-Dfam=true \
-%else
-	-Dfam=false \
-%endif
 	-Dsystemtap=true \
 	-Dselinux=disabled \
 	-Dinstalled_tests=false \
@@ -408,11 +399,6 @@ ninja -C build -t clean
 	-Db_pgo=off \
 	-Dman=true \
 	--default-library=both \
-%if !%{with bootstrap}
-	-Dfam=true \
-%else
-	-Dfam=false \
-%endif
 	-Dsystemtap=true \
 	-Dselinux=disabled \
 	-Dinstalled_tests=false \
@@ -486,6 +472,7 @@ fi
 %{_bindir}/glib-compile-schemas
 %{_bindir}/gsettings
 %{_bindir}/gapplication
+%{_libexecdir}/gio-launch-desktop
 %{_mandir}/man1/gapplication.1*
 %{_mandir}/man1/glib-compile-schemas.1*
 %{_mandir}/man1/gsettings.1*
@@ -518,11 +505,6 @@ fi
 %{_mandir}/man1/gio-querymodules*.1*
 %{_mandir}/man1/gio.1.*
 %{_datadir}/bash-completion/completions/gio
-%if !%{with bootstrap}
-%dir %{_libdir}/gio/
-%dir %{_libdir}/gio/modules/
-%{_libdir}/gio/modules/libgiofam.so
-%endif
 %ghost %{_libdir}/gio/modules/giomodule.cache
 
 %files -n %{devname}
