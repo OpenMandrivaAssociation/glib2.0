@@ -469,6 +469,7 @@ fi
 %{_bindir}/glib-compile-schemas
 %{_bindir}/gsettings
 %{_bindir}/gapplication
+%{_libexecdir}/gio-launch-desktop
 %{_mandir}/man1/gapplication.1*
 %{_mandir}/man1/glib-compile-schemas.1*
 %{_mandir}/man1/gsettings.1*
