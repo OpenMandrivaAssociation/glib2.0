@@ -501,11 +501,6 @@ fi
 %{_mandir}/man1/gio-querymodules*.1*
 %{_mandir}/man1/gio.1.*
 %{_datadir}/bash-completion/completions/gio
-%if !%{with bootstrap}
-%dir %{_libdir}/gio/
-%dir %{_libdir}/gio/modules/
-%{_libdir}/gio/modules/libgiofam.so
-%endif
 %ghost %{_libdir}/gio/modules/giomodule.cache
 
 %files -n %{devname}
