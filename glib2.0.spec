@@ -50,7 +50,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.74 is stable, 2.75 unstable. Current unstable change ABI and is know to broke a lot of stuff.
 Version:	2.74.0
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -221,6 +221,7 @@ Requires:	%{libgio} = %{EVRD}
 Requires:	%{libgmodule} = %{EVRD}
 Requires:	%{libgobject} = %{EVRD}
 Requires:	%{libgthread} = %{EVRD}
+Requires:	pkgconfig(libpcre2-8)
 
 %description -n %{devname}
 Development libraries and header files for the support library for the GIMP's X
@@ -310,7 +311,7 @@ Requires:	%{lib32gmodule} = %{EVRD}
 Requires:	%{lib32gobject} = %{EVRD}
 Requires:	%{lib32gthread} = %{EVRD}
 Requires:	%{devname} = %{EVRD}
-Requires:	devel(libpcre)
+Requires:	devel(libpcre2-8)
 Requires:	devel(libz)
 Requires:	devel(libmount)
 Requires:	devel(libffi)
