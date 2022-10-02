@@ -70,6 +70,7 @@ Patch14:	0001-meson-Run-atomics-test-on-clang-as-well.patch
 
 # Upstream
 Patch15:	https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2898.patch
+Patch16:	2921.patch
 
 BuildRequires:	meson
 BuildRequires:	cmake
