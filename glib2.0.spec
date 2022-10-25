@@ -49,8 +49,8 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.74 is stable, 2.75 unstable. Current unstable change ABI and is know to broke a lot of stuff.
-Version:	2.74.0
-Release:	2
+Version:	2.74.1
+Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -66,11 +66,8 @@ Patch11:	madvise.patch
 Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
 Patch14:	0001-meson-Run-atomics-test-on-clang-as-well.patch
-#Patch14:	0001-Remove-debugging-in-gspawn.c.patch
+#Patch15:	0001-Remove-debugging-in-gspawn.c.patch
 
-# Upstream
-Patch15:	https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2898.patch
-Patch16:	2921.patch
 
 BuildRequires:	meson
 BuildRequires:	cmake
