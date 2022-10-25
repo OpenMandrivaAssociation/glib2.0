@@ -65,10 +65,10 @@ Patch1:		glib-2.70.0-dont-use-lld-when-hardcoding-bfd-specific-options.patch
 Patch11:	madvise.patch
 Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
-#Patch14:	0001-Remove-debugging-in-gspawn.c.patch
+Patch14:	0001-meson-Run-atomics-test-on-clang-as-well.patch
+#Patch15:	0001-Remove-debugging-in-gspawn.c.patch
 
 # Upstream
-Patch15:	https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2898.patch
 Patch16:	2921.patch
 
 BuildRequires:	meson
