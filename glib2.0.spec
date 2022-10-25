@@ -68,8 +68,6 @@ Patch13:	gerror-return-on-null.patch
 Patch14:	0001-meson-Run-atomics-test-on-clang-as-well.patch
 #Patch15:	0001-Remove-debugging-in-gspawn.c.patch
 
-# Upstream
-Patch16:	2921.patch
 
 BuildRequires:	meson
 BuildRequires:	cmake
