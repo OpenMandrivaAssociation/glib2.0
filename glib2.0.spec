@@ -50,7 +50,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.74 is stable, 2.75 unstable. Current unstable change ABI and is know to broke a lot of stuff.
 Version:	2.74.1
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -443,6 +443,36 @@ chrpath --delete %{buildroot}%{_libdir}/*.so
 
 rm -rf  %{buildroot}%{_libexecdir}/installed-tests %{buildroot}%{_datadir}/installed-tests
 
+# (tpg) strip LTO from "LLVM IR bitcode" files
+check_convert_bitcode() {
+    printf '%s\n' "Checking for LLVM IR bitcode"
+    llvm_file_name=$(realpath ${1})
+    llvm_file_type=$(file ${llvm_file_name})
+
+    if printf '%s\n' "${llvm_file_type}" | grep -q "LLVM IR bitcode"; then
+# recompile without LTO
+    clang %{optflags} -fno-lto -Wno-unused-command-line-argument -x ir ${llvm_file_name} -c -o ${llvm_file_name}
+    elif printf '%s\n' "${llvm_file_type}" | grep -q "current ar archive"; then
+    printf '%s\n' "Unpacking ar archive ${llvm_file_name} to check for LLVM bitcode components."
+# create archive stage for objects
+    archive_stage=$(mktemp -d)
+    archive=${llvm_file_name}
+    cd ${archive_stage}
+    ar x ${archive}
+    for archived_file in $(find -not -type d); do
+        check_convert_bitcode ${archived_file}
+        printf '%s\n' "Repacking ${archived_file} into ${archive}."
+        ar r ${archive} ${archived_file}
+    done
+    ranlib ${archive}
+    cd ..
+    fi
+}
+
+for i in $(find %{buildroot} -type f -name "*.[ao]"); do
+    check_convert_bitcode ${i}
+done
+
 # automatic gschema compilation on rpm installs/removals
 %transfiletriggerpostun -n %{name}-common --  %{_datadir}/glib-2.0/schemas/
 if [ -x %{_bindir}/glib-compile-schemas ]; then
@@ -471,10 +501,10 @@ fi
 %{_bindir}/gsettings
 %{_bindir}/gapplication
 %{_libexecdir}/gio-launch-desktop
-%{_mandir}/man1/gapplication.1*
-%{_mandir}/man1/glib-compile-schemas.1*
-%{_mandir}/man1/gsettings.1*
-%{_mandir}/man1/gdbus.1*
+%doc %{_mandir}/man1/gapplication.1*
+%doc %{_mandir}/man1/glib-compile-schemas.1*
+%doc %{_mandir}/man1/gsettings.1*
+%doc %{_mandir}/man1/gdbus.1*
 %dir %{_datadir}/glib-2.0/
 %dir %{_datadir}/glib-2.0/schemas/
 %{_datadir}/glib-2.0/schemas/gschema.dtd
@@ -500,8 +530,8 @@ fi
 %files -n %{gio}
 %{_bindir}/gio
 %{_bindir}/gio-querymodules-%{bit}
-%{_mandir}/man1/gio-querymodules*.1*
-%{_mandir}/man1/gio.1.*
+%doc %{_mandir}/man1/gio-querymodules*.1*
+%doc %{_mandir}/man1/gio.1.*
 %{_datadir}/bash-completion/completions/gio
 %ghost %{_libdir}/gio/modules/giomodule.cache
 
@@ -525,18 +555,18 @@ fi
 %{_datadir}/glib-%{api}/valgrind/
 %{_datadir}/bash-completion/completions/gresource
 %{_includedir}/*
-%{_mandir}/man1/gdbus-codegen.1*
-%{_mandir}/man1/glib-compile-resources.1*
-%{_mandir}/man1/glib-genmarshal.1*
-%{_mandir}/man1/glib-mkenums.1*
-%{_mandir}/man1/gobject-query.1*
-%{_mandir}/man1/gresource.1*
-%{_mandir}/man1/gtester-report.1*
-%{_mandir}/man1/gtester.1*
+%doc %{_mandir}/man1/gdbus-codegen.1*
+%doc %{_mandir}/man1/glib-compile-resources.1*
+%doc %{_mandir}/man1/glib-genmarshal.1*
+%doc %{_mandir}/man1/glib-mkenums.1*
+%doc %{_mandir}/man1/gobject-query.1*
+%doc %{_mandir}/man1/gresource.1*
+%doc %{_mandir}/man1/gtester-report.1*
+%doc %{_mandir}/man1/gtester.1*
 
 %files -n glib-gettextize
 %{_bindir}/glib-gettextize
-%{_mandir}/man1/glib-gettextize.1*
+%doc %{_mandir}/man1/glib-gettextize.1*
 %{_datadir}/aclocal/glib-gettext.m4
 %{_datadir}/glib-%{api}/gettext/
 
