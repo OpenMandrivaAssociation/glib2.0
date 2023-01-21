@@ -67,8 +67,6 @@ Patch12:	wakeups.patch
 Patch13:	gerror-return-on-null.patch
 Patch14:	0001-meson-Run-atomics-test-on-clang-as-well.patch
 #Patch15:	0001-Remove-debugging-in-gspawn.c.patch
-# Fix cross-compiling
-Patch16:	https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3165.patch
 
 
 BuildRequires:	meson
