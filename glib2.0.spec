@@ -49,7 +49,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.74 is stable, 2.75 unstable. Current unstable change ABI and is know to broke a lot of stuff.
-Version:	2.74.6
+Version:	2.76.0
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -339,8 +339,8 @@ rm -rf glib/pcre/*.[ch]
 
 %if %{with compat32}
 # Forcing gcc is a workaround for bogus inline assembly (x86_32 only)
-export CC=gcc
-export CXX=g++
+export CC="gcc -m32"
+export CXX="g++ -m32"
 %meson32 \
 	-Dman=false \
 	-Dsystemtap=false \
@@ -555,6 +555,7 @@ fi
 %{_datadir}/glib-%{api}/valgrind/
 %{_datadir}/bash-completion/completions/gresource
 %{_includedir}/*
+%doc %{_docdir}/glib-2.0
 %doc %{_mandir}/man1/gdbus-codegen.1*
 %doc %{_mandir}/man1/glib-compile-resources.1*
 %doc %{_mandir}/man1/glib-genmarshal.1*
