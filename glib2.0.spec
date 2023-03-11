@@ -8,7 +8,7 @@
 %global __requires_exclude bin/python3
 %define _python_bytecompile_build 0
 
-%define enable_gtkdoc 1
+%define enable_gtkdoc 0
 
 %bcond_with crosscompile
 # As of 2019/08/14 (llvm 9.0.0-rc2),
@@ -556,7 +556,6 @@ fi
 %{_datadir}/glib-%{api}/valgrind/
 %{_datadir}/bash-completion/completions/gresource
 %{_includedir}/*
-%doc %{_docdir}/glib-2.0
 %doc %{_mandir}/man1/gdbus-codegen.1*
 %doc %{_mandir}/man1/glib-compile-resources.1*
 %doc %{_mandir}/man1/glib-genmarshal.1*
@@ -577,8 +576,8 @@ fi
 
 %if %{enable_gtkdoc}
 %files doc
-%doc AUTHORS NEWS README
-%doc %{_datadir}/gtk-doc/html/*
+%doc NEWS
+%doc %{_docdir}/glib-2.0
 %endif
 
 %if %{with compat32}
