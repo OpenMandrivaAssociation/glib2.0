@@ -8,7 +8,7 @@
 %global __requires_exclude bin/python3
 %define _python_bytecompile_build 0
 
-%define enable_gtkdoc 0
+%define enable_gtkdoc 1
 
 %bcond_with crosscompile
 # As of 2019/08/14 (llvm 9.0.0-rc2),
@@ -91,6 +91,7 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
 BuildRequires:	pkgconfig(blkid)
+BuildRequires:	pkgconfig(libattr)
 %if %{enable_gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
