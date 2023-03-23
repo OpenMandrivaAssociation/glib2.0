@@ -48,8 +48,8 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-# Do not upgrade to unstable release. 2.74 is stable, 2.75 unstable. Current unstable change ABI and is know to broke a lot of stuff.
-Version:	2.76.0
+# Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
+Version:	2.76.1
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
