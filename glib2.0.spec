@@ -17,10 +17,10 @@
 %bcond_with pgo
 
 # disable LTO as this package provides static libraries
-%define _disable_lto 1
+#define _disable_lto 1
 
 # (tpg) optimize it a bit
-%global optflags %(echo %{optflags} -O3 | sed 's/-flto//')
+%global optflags %{optflags} -O3
 
 %define api 2.0
 %define major 0
@@ -59,6 +59,8 @@ Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
 Patch1:		glib-2.70.0-dont-use-lld-when-hardcoding-bfd-specific-options.patch
+# Workaround for -Wcast-function-type-strict strictness with clang >= 16
+Patch2:		glib-2.76.1-clang-16.patch
 # (tpg) ClearLinux patches
 # (tpg) Doing the malloc_trim every sleep is too much
 #Patch10:	memory.patch

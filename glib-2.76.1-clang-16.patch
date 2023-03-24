@@ -1,0 +1,13 @@
+diff -up glib-2.76.1/glib/gmain.h.omv~ glib-2.76.1/glib/gmain.h
+--- glib-2.76.1/glib/gmain.h.omv~	2023-03-24 19:24:31.911252015 +0100
++++ glib-2.76.1/glib/gmain.h	2023-03-24 19:26:20.232083902 +0100
+@@ -224,7 +224,7 @@ typedef void (* GSourceOnceFunc) (gpoint
+  *
+  * Since: 2.58
+  */
+-#define G_SOURCE_FUNC(f) ((GSourceFunc) (void (*)(void)) (f)) GLIB_AVAILABLE_MACRO_IN_2_58
++#define G_SOURCE_FUNC(f) ((GSourceFunc) (void*)(f)) GLIB_AVAILABLE_MACRO_IN_2_58
+ 
+ /**
+  * GChildWatchFunc:
+diff -up glib-2.76.1/glib/tests/mainloop.c.omv~ glib-2.76.1/glib/tests/mainloop.c
