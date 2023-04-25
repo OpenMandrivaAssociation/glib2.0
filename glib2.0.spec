@@ -8,13 +8,9 @@
 %global __requires_exclude bin/python3
 %define _python_bytecompile_build 0
 
-%define enable_gtkdoc 0
+%bcond_with gtkdoc
 
-%bcond_with crosscompile
-# As of 2019/08/14 (llvm 9.0.0-rc2),
-# PGO breaks things badly ("corrupt input file: version definition index 0 for symbol __gcov_var is out of bounds")
-# and doesn't bring much of a performance advantage.
-%bcond_with pgo
+%bcond_without pgo
 
 # disable LTO as this package provides static libraries
 #define _disable_lto 1
@@ -94,7 +90,7 @@ BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
 BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(libattr)
-%if %{enable_gtkdoc}
+%if %{with gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
 %if %{with compat32}
@@ -349,19 +345,14 @@ export CXX="g++ -m32"
 	-Dsystemtap=false \
 	-Dinstalled_tests=false \
 	-Dgio_module_dir="%{_prefix}/lib/gio/modules" \
+	-Dbsymbolic_functions=true \
+	-Dgtk_doc=false \
 	-Dselinux=disabled
 # glib has no idea about crosscompiling
 sed -i -e 's,ld.bfd,i686-linux-gnu-ld.bfd,g' build32/build.ninja
 %ninja_build -C build32
 unset CC
 unset CXX
-%endif
-
-%if %{with crosscompile}
-export glib_cv_stack_grows=no
-export glib_cv_uscore=no
-export ac_cv_func_posix_getpwuid_r=yes
-export ac_cv_func_posix_getgrgid_r=no
 %endif
 
 %if %{with pgo}
@@ -373,12 +364,16 @@ export ac_cv_func_posix_getgrgid_r=no
 	-Dselinux=disabled \
 	-Dinstalled_tests=false \
 	-Dtapset_install_dir=%{_datadir}/systemtap \
+%if ! %{with gtkdoc}
+	-Dgtk_doc=false \
+%endif
+	-Dbsymbolic_functions=true \
 	-Dgio_module_dir="%{_libdir}/gio/modules"
 
 %meson_build
 
 # (tpg) run performance tests to generate data
-./build/tests/gobject/performance
+./build/gobject/tests/performance/performance
 
 # (tpg) clean build
 ninja -C build -t clean
@@ -391,6 +386,10 @@ ninja -C build -t clean
 	-Dselinux=disabled \
 	-Dinstalled_tests=false \
 	-Dtapset_install_dir=%{_datadir}/systemtap \
+%if ! %{with gtkdoc}
+	-Dgtk_doc=false \
+%endif
+	-Dbsymbolic_functions=true \
 	-Dgio_module_dir="%{_libdir}/gio/modules" \
 	--reconfigure
 
@@ -402,6 +401,10 @@ ninja -C build -t clean
 	--default-library=both \
 	-Dsystemtap=true \
 	-Dselinux=disabled \
+%if ! %{with gtkdoc}
+	-Dgtk_doc=false \
+%endif
+	-Dbsymbolic_functions=true \
 	-Dinstalled_tests=false \
 	-Dtapset_install_dir=%{_datadir}/systemtap \
 	-Dgio_module_dir="%{_libdir}/gio/modules"
@@ -422,6 +425,13 @@ touch %{buildroot}%{_prefix}/lib/gio/modules/giomodule.cache
 chrpath --delete %{buildroot}%{_prefix}/lib/*.so
 %endif
 %meson_install
+
+%if ! %{with gtkdoc}
+# If all dependencies are there, the build process builds part
+# of the documentation even if told not to, causing "Installed
+# but unpackaged files found" errors.
+rm -rf %{buildroot}%{_docdir}/glib-2.0
+%endif
 
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d
 install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/50glib20.sh
@@ -576,7 +586,7 @@ fi
 %files systemtap
 #% {_datadir}/systemtap/
 
-%if %{enable_gtkdoc}
+%if %{with gtkdoc}
 %files doc
 %doc NEWS
 %doc %{_docdir}/glib-2.0
