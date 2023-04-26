@@ -84,7 +84,7 @@ BuildRequires:	dbus-daemon
 BuildRequires:	pkgconfig(libattr)
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
-BuildRequires:  pkgconfig(libpcre2-8)
+BuildRequires:	pkgconfig(libpcre2-8)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
@@ -356,6 +356,13 @@ unset CXX
 %endif
 
 %if %{with pgo}
+# (tpg) 2023-04-26
+# LLVM Profile Warning: Unable to track new values:
+# Running out of static counters.
+# Consider using option -mllvm -vp-counters-per-site=<n> to allocate more value profile counters at compile time.
+%global __cc %{__cc} -mllvm -vp-counters-per-site=8
+%global __cxx %{__cxx} -mllvm -vp-counters-per-site=8
+
 %meson \
 	-Db_pgo=generate \
 	-Dman=false \
