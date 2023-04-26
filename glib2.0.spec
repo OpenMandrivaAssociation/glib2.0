@@ -47,7 +47,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.76.2
-Release:	3
+Release:	4
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -59,14 +59,8 @@ Patch1:		glib-2.70.0-dont-use-lld-when-hardcoding-bfd-specific-options.patch
 # Workaround for -Wcast-function-type-strict strictness with clang >= 16
 Patch2:		glib-2.76.1-clang-16.patch
 # (tpg) ClearLinux patches
-# (tpg) Doing the malloc_trim every sleep is too much
-#Patch10:	memory.patch
-Patch11:	madvise.patch
-Patch12:	wakeups.patch
-Patch13:	gerror-return-on-null.patch
-Patch14:	0001-meson-Run-atomics-test-on-clang-as-well.patch
-#Patch15:	0001-Remove-debugging-in-gspawn.c.patch
-
+Patch12:	https://raw.githubusercontent.com/clearlinux-pkgs/glib/main/0003-wakeups.patch
+Patch13:	https://raw.githubusercontent.com/clearlinux-pkgs/glib/main/0004-gerror-return-on-null.patch
 
 BuildRequires:	meson
 BuildRequires:	cmake
