@@ -12,9 +12,6 @@
 
 %bcond_without pgo
 
-# disable LTO as this package provides static libraries
-#define _disable_lto 1
-
 # (tpg) optimize it a bit
 %global optflags %{optflags} -O3
 
@@ -46,7 +43,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.76.2
-Release:	2
+Release:	3
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -360,20 +357,17 @@ unset CXX
 # LLVM Profile Warning: Unable to track new values:
 # Running out of static counters.
 # Consider using option -mllvm -vp-counters-per-site=<n> to allocate more value profile counters at compile time.
-%global __cc %{__cc} -mllvm -vp-counters-per-site=8
-%global __cxx %{__cxx} -mllvm -vp-counters-per-site=8
-
+CFLAGS="%{optflags} -fprofile-generate -mllvm -vp-counters-per-site=16" \
+CXXFLAGS="%{optflags} -fprofile-generate -mllvm -vp-counters-per-site=16" \
+LDFLAGS="%{build_ldflags} -fprofile-generate" \
 %meson \
-	-Db_pgo=generate \
 	-Dman=false \
 	--default-library=both \
 	-Dsystemtap=true \
 	-Dselinux=disabled \
 	-Dinstalled_tests=false \
 	-Dtapset_install_dir=%{_datadir}/systemtap \
-%if ! %{with gtkdoc}
 	-Dgtk_doc=false \
-%endif
 	-Dbsymbolic_functions=true \
 	-Dgio_module_dir="%{_libdir}/gio/modules"
 
@@ -382,28 +376,17 @@ unset CXX
 # (tpg) run performance tests to generate data
 ./build/gobject/tests/performance/performance
 
+llvm-profdata merge --output=%{name}-llvm.profdata $(find ./build -name "*.profraw" -type f)
+PROFDATA="$(realpath %{name}-llvm.profdata)"
+find . -name "*.profraw" -type f -delete
+rm -rf build
+
 # (tpg) clean build
-ninja -C build -t clean
-
-%meson \
-	-Db_pgo=use \
-	-Dman=true \
-	--default-library=both \
-	-Dsystemtap=true \
-	-Dselinux=disabled \
-	-Dinstalled_tests=false \
-	-Dtapset_install_dir=%{_datadir}/systemtap \
-%if ! %{with gtkdoc}
-	-Dgtk_doc=false \
+CFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
+CXXFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
+LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 %endif
-	-Dbsymbolic_functions=true \
-	-Dgio_module_dir="%{_libdir}/gio/modules" \
-	--reconfigure
-
-%else
-
 %meson \
-	-Db_pgo=off \
 	-Dman=true \
 	--default-library=both \
 	-Dsystemtap=true \
@@ -415,13 +398,8 @@ ninja -C build -t clean
 	-Dinstalled_tests=false \
 	-Dtapset_install_dir=%{_datadir}/systemtap \
 	-Dgio_module_dir="%{_libdir}/gio/modules"
-%endif
 
 %meson_build
-
-%check
-#gw http://bugzilla.gnome.org/show_bug.cgi?id=440544
-#make check
 
 %install
 %if %{with compat32}
