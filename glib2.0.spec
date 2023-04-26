@@ -10,7 +10,11 @@
 
 %bcond_with gtkdoc
 
-%bcond_without pgo
+# (tpg) 2023-04-26 fails on meson
+# DEBUG: Checking if "GCC size_t typedef is long" compiles: NO
+# DEBUG: Checking if "GCC size_t typedef is long long" compiles: NO
+# DEBUG: meson.build:1648:2: ERROR: Problem encountered: Could not determine size of size_t.
+%bcond_with pgo
 
 # (tpg) optimize it a bit
 %global optflags %{optflags} -O3
