@@ -77,6 +77,7 @@ BuildRequires:	chrpath
 BuildRequires:	bash-completion
 BuildRequires:	dbus-daemon
 BuildRequires:	pkgconfig(libattr)
+BuildRequires:	pkgconfig(bash-completion)
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(libffi)
 BuildRequires:	pkgconfig(libpcre2-8)
