@@ -517,6 +517,7 @@ fi
 %{_datadir}/gdb/auto-load/%{_libdir}/lib*-gdb.py
 %{_datadir}/aclocal/gsettings.m4
 %{_datadir}/glib-%{api}/codegen/
+%{_datadir}/glib-%{api}/dtds/gresource.dtd
 %{_datadir}/glib-%{api}/gdb/
 %{_datadir}/glib-%{api}/valgrind/
 %{_datadir}/bash-completion/completions/gresource
