@@ -47,7 +47,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.78.0
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -404,6 +404,7 @@ LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 %if %{with compat32}
 %ninja_install -C build32
 mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-32
+sed -i -e 's,gio-querymodules,gio-querymodules-32,g' %{buildroot}%{_prefix}/lib/pkgconfig/gio-2.0.pc
 mkdir -p %{buildroot}%{_prefix}/lib/gio/modules
 touch %{buildroot}%{_prefix}/lib/gio/modules/giomodule.cache
 chrpath --delete %{buildroot}%{_prefix}/lib/*.so
@@ -423,6 +424,7 @@ install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
 %find_lang glib20
 
 mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-%{bit}
+sed -i -e 's,gio-querymodules,gio-querymodules-%{bit},g' %{buildroot}%{_libdir}/pkgconfig/gio-2.0.pc
 
 #ghost files
 mkdir -p %{buildroot}%{_libdir}/gio/modules
