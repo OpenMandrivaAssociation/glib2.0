@@ -47,7 +47,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.78.3
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -410,6 +410,9 @@ touch %{buildroot}%{_prefix}/lib/gio/modules/giomodule.cache
 chrpath --delete %{buildroot}%{_prefix}/lib/*.so
 %endif
 %meson_install
+
+# Don't allow pkgconfig files to add -L/usr/lib64 and -I/usr/include brokenness
+sed -i -e 's,-L\${libdir} ,,g' -e 's, -I\${includedir}$,,' -e 's, -I\${includedir} , ,g' -e '/^Cflags:\s*$/d' %{buildroot}%{_libdir}/pkgconfig/*.pc
 
 %if ! %{with gtkdoc}
 # If all dependencies are there, the build process builds part
