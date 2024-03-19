@@ -55,7 +55,7 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. 
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
-Patch1:		glib-2.70.0-dont-use-lld-when-hardcoding-bfd-specific-options.patch
+#Patch1:		glib-2.70.0-dont-use-lld-when-hardcoding-bfd-specific-options.patch
 # Workaround for -Wcast-function-type-strict strictness with clang >= 16
 Patch2:		glib-2.76.1-clang-16.patch
 # (tpg) ClearLinux patches
