@@ -1,6 +1,6 @@
 # glib2.0 is used by wine
 %ifarch %{x86_64}
-%bcond_without compat32
+%bcond_with compat32
 %else
 %bcond_with compat32
 %endif
