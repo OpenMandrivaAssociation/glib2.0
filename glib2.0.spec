@@ -1,6 +1,6 @@
 # glib2.0 is used by wine
 %ifarch %{x86_64}
-%bcond_with compat32
+%bcond_without compat32
 %else
 %bcond_with compat32
 %endif
@@ -87,6 +87,7 @@ BuildRequires:	pkgconfig(libelf)
 BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(libattr)
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
+BuildRequires:  python3dist(docutils)
 %if %{with gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
