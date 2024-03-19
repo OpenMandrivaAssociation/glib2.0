@@ -86,6 +86,7 @@ BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
 BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(libattr)
+BuildRequires:	pkgconfig(gobject-introspection-1.0)
 %if %{with gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
