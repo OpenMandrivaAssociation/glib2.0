@@ -155,6 +155,10 @@ Group:		%{group}
 Provides:	glib2 = %{EVRD}
 Conflicts:	%{_lib}gio2.0_0 < 2.28.4-2
 Conflicts:	%{devname} < 1:2.31.2
+Requires:       %{libgirepo_name} = %{EVRD}
+Requires:       %{girglibname} = %{EVRD}
+Requires:       %{girgioname} = %{EVRD}
+Requires:       %{girgireponame} = %{EVRD}
 
 %description -n %{libname}
 This package contains the library needed to run programs dynamically
@@ -225,6 +229,10 @@ Requires:	%{libgio} = %{EVRD}
 Requires:	%{libgmodule} = %{EVRD}
 Requires:	%{libgobject} = %{EVRD}
 Requires:	%{libgthread} = %{EVRD}
+Requires:       %{libgirepo_name} = %{EVRD}
+Requires:       %{girglibname} = %{EVRD}
+Requires:       %{girgioname} = %{EVRD}
+Requires:       %{girgireponame} = %{EVRD}
 Requires:	pkgconfig(libpcre2-8)
 
 %description -n %{devname}
@@ -256,11 +264,11 @@ Systemtap integration for %{name}.
 %package -n     %{girglibname}
 Summary:        GObject Introspection interface description for Glib
 Group:          System/Libraries
-Requires:       libglib-2.0.so.0%{mark64}
-Requires:       libgmodule-2.0.so.0%{mark64}
-Requires:       libgobject-2.0.so.0%{mark64}
+Requires:       %{_lib}glib2.0_0
+Requires:       %{_lib}lib64gmodule2.0_0
+Requires:       %{_lib}lib64gobject2.0_0
 
-# glib typelib files moved from gobject-introspection to glib2 in mga10
+# Upstream decided to merge typelibs from gobject-introspection in glib2.0
 Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
  
 %description -n %{girglibname}
@@ -269,9 +277,9 @@ GObject Introspection interface description for Glib.
 %package -n     %{girgioname}
 Summary:        GObject Introspection interface description for Gio
 Group:          System/Libraries
-Requires:       libgio-2.0.so.0%{mark64}
+Requires:       lib64gio2.0_0
  
-# glib typelib files moved from gobject-introspection to glib2 in mga10
+# Upstream decided to merge typelibs from gobject-introspection in glib2.0
 Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
 
 %description -n %{girgioname}
@@ -287,7 +295,7 @@ Library for handling GObject introspection data (runtime library).
 %package -n     %{girgireponame}
 Summary:        GObject Introspection interface description for GIRepository
 Group:          System/Libraries
-Requires:       %{libgirepo_name} = %{version}-%{release}
+Requires:       %{libgirepo_name} = %{EVRD}
 
 %description -n %{girgireponame}
 GObject Introspection interface description for GIRepository.
