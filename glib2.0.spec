@@ -346,7 +346,7 @@ export CXX="g++ -m32"
 	-Dgio_module_dir="%{_prefix}/lib/gio/modules" \
 	-Dbsymbolic_functions=true \
 	-Dgtk_doc=false \
- 	-Dintrospection=false \
+ 	-Dintrospection=disabled \
 	-Dselinux=disabled
 # glib has no idea about crosscompiling
 sed -i -e 's,ld.bfd,i686-linux-gnu-ld.bfd,g' build32/build.ninja
