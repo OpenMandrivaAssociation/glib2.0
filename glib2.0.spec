@@ -27,6 +27,15 @@
 %define libgthread %mklibname gthread %{api} %{major}
 %define libgobject %mklibname gobject %{api} %{major}
 %define devname %mklibname -d %{name}
+#----------------------------------------------------#
+# From gobject-introscpection
+%define api3            3.0
+%define libgirepo_name  %mklibname girepository%{api}_ %{lib}
+%define girglibname     %mklibname glib-gir %{api}
+%define girgioname      %mklibname gio-gir %{api}
+%define girgireponame   %mklibname girepository-gir %{api3}
+#----------------------------------------------------#
+
 %if "%{_lib}" == "lib"
 %define bit 32
 %else
@@ -242,6 +251,36 @@ BuildRequires:	systemtap-devel >= 3.0
 
 %description systemtap
 Systemtap integration for %{name}.
+
+#----------------------------------------------------#
+
+%package -n     %{girgioname}
+Summary:        GObject Introspection interface description for Gio
+Group:          System/Libraries
+Requires:       libgio-2.0.so.0%{mark64}
+ 
+# glib typelib files moved from gobject-introspection to glib2 in mga10
+Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
+
+%description -n %{girgioname}
+GObject Introspection interface description for Gio.
+ 
+  	 
+%package -n %{libgirepo_name}
+Summary:        GObject Introspection shared library
+Group:          System/Libraries
+ 
+%description -n %{libgirepo_name}
+Library for handling GObject introspection data (runtime library).
+ 
+%package -n     %{girgireponame}
+Summary:        GObject Introspection interface description for GIRepository
+Group:          System/Libraries
+Requires:       %{libgirepo_name} = %{version}-%{release}
+
+%description -n %{girgireponame}
+GObject Introspection interface description for GIRepository.
+#----------------------------------------------------#
 
 %if %{with compat32}
 %package -n %{lib32name}
@@ -519,6 +558,9 @@ fi
 %{_bindir}/gobject-query
 %{_bindir}/gresource
 %{_bindir}/gtester*
+%{_bindir}/gi-compile-repository
+%{_bindir}/gi-decompile-typelib
+%{_bindir}/gi-inspect-typelib
 %{_libdir}/lib*.so
 %{_libdir}/*.a
 %{_libdir}/glib-%{api}/include/
@@ -531,6 +573,13 @@ fi
 %{_datadir}/glib-%{api}/gdb/
 %{_datadir}/glib-%{api}/valgrind/
 %{_datadir}/bash-completion/completions/gresource
+%{_datadir}/gir-1.0/GIRepository-3.0.gir
+%{_datadir}/gir-1.0/GLib-%{api}.gir
+%{_datadir}/gir-1.0/GLibUnix-%{api}.gir
+%{_datadir}/gir-1.0/GModule-%{api}.gir
+%{_datadir}/gir-1.0/GObject-%{api}.gir
+%{_datadir}/gir-1.0/Gio-%{api}.gir
+%{_datadir}/gir-1.0/GioUnix-%{api}.gir
 %{_includedir}/*
 %doc %{_mandir}/man1/gdbus-codegen.1*
 %doc %{_mandir}/man1/glib-compile-resources.1*
@@ -540,6 +589,9 @@ fi
 %doc %{_mandir}/man1/gresource.1*
 %doc %{_mandir}/man1/gtester-report.1*
 %doc %{_mandir}/man1/gtester.1*
+%doc %{_mandir}/man1/gi-compile-repository.1.*
+%doc %{_mandir}/man1/gi-decompile-typelib.1.*
+%doc %{_mandir}/man1/gi-inspect-typelib.1.*
 
 %files -n glib-gettextize
 %{_bindir}/glib-gettextize
@@ -555,6 +607,23 @@ fi
 %doc NEWS
 %doc %{_docdir}/glib-2.0
 %endif
+
+%files -n %{girglibname}
+%{_libdir}/girepository-1.0/GLib-%{api}.typelib
+%{_libdir}/girepository-1.0/GLibUnix-%{api}.typelib
+%{_libdir}/girepository-1.0/GModule-%{api}.typelib
+%{_libdir}/girepository-1.0/GObject-%{api}.typelib
+
+%files -n %{girgioname}
+%{_libdir}/girepository-1.0/Gio-%{api}.typelib
+%{_libdir}/girepository-1.0/GioUnix-%{api}.typelib
+
+%files -n %{libgirepo_name}
+%{_libdir}/libgirepository-%{api}.so.%{major}{,.*}
+ 
+%files -n %{girgireponame}
+%{_libdir}/girepository-1.0/GIRepository-%{api3}.typelib
+
 
 %if %{with compat32}
 %files -n %{lib32gio}
