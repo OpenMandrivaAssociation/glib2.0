@@ -30,7 +30,7 @@
 #----------------------------------------------------#
 # From gobject-introscpection
 %define api3            3.0
-%define libgirepo_name  %mklibname girepository%{api}_ %{lib}
+%define libgirepo_name  %mklibname girepository%{api}_ %{major}
 %define girglibname     %mklibname glib-gir %{api}
 %define girgioname      %mklibname gio-gir %{api}
 %define girgireponame   %mklibname girepository-gir %{api3}
@@ -253,6 +253,18 @@ BuildRequires:	systemtap-devel >= 3.0
 Systemtap integration for %{name}.
 
 #----------------------------------------------------#
+%package -n     %{girglibname}
+Summary:        GObject Introspection interface description for Glib
+Group:          System/Libraries
+Requires:       libglib-2.0.so.0%{mark64}
+Requires:       libgmodule-2.0.so.0%{mark64}
+Requires:       libgobject-2.0.so.0%{mark64}
+
+# glib typelib files moved from gobject-introspection to glib2 in mga10
+Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
+ 
+%description -n %{girglibname}
+GObject Introspection interface description for Glib.
 
 %package -n     %{girgioname}
 Summary:        GObject Introspection interface description for Gio
@@ -265,7 +277,6 @@ Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
 %description -n %{girgioname}
 GObject Introspection interface description for Gio.
  
-  	 
 %package -n %{libgirepo_name}
 Summary:        GObject Introspection shared library
 Group:          System/Libraries
