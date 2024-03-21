@@ -265,8 +265,8 @@ Systemtap integration for %{name}.
 Summary:        GObject Introspection interface description for Glib
 Group:          System/Libraries
 Requires:       %{_lib}glib2.0_0
-Requires:       %{_lib}lib64gmodule2.0_0
-Requires:       %{_lib}lib64gobject2.0_0
+Requires:       %{_lib}gmodule2.0_0
+Requires:       %{_lib}gobject2.0_0
 
 # Upstream decided to merge typelibs from gobject-introspection in glib2.0
 Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
