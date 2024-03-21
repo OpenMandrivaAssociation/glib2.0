@@ -50,6 +50,7 @@
 %define lib32gobject libgobject%{api}_%{major}
 %define dev32name lib%{name}-devel
 %define gio32 gio2.0-32
+%define lib32girepo_name libgirepository%{api}_ %{major}
 
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
@@ -353,6 +354,14 @@ sources in a convenient way and on the other hand it provides a high level
 file system abstraction to access file and directories not only local but also
 on the network. For the latter you need to install gvfs.
 
+%package -n %{lib32girepo_name}
+Summary:	%{summary} (32-bit)
+Group:		%{group}
+
+%description -n %{lib32girepo_name}
+This package contains the library needed to run programs dynamically
+linked with libglib.
+
 %package -n %{dev32name}
 Summary:	Development libraries and header files of %{name} (32-bit)
 Group:		Development/C
@@ -363,6 +372,7 @@ Requires:	%{lib32gio} = %{EVRD}
 Requires:	%{lib32gmodule} = %{EVRD}
 Requires:	%{lib32gobject} = %{EVRD}
 Requires:	%{lib32gthread} = %{EVRD}
+Requires:	%{lib32girepo_name} = %{EVRD}
 Requires:	%{devname} = %{EVRD}
 Requires:	devel(libpcre2-8)
 Requires:	devel(libz)
@@ -665,6 +675,9 @@ fi
 %dir %{_prefix}/lib/gio/
 %dir %{_prefix}/lib/gio/modules/
 %ghost %{_prefix}/lib/gio/modules/giomodule.cache
+
+%files -n %{lib32girepo_name}
+%{_prefix}/lib/libgirepository-%{api}.so.%{major}*
 
 %files -n %{dev32name}
 %{_prefix}/lib/lib*.so
