@@ -270,7 +270,7 @@ Requires:       %{_lib}gmodule2.0_0
 Requires:       %{_lib}gobject2.0_0
 
 # Upstream decided to merge typelibs from gobject-introspection in glib2.0
-Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
+#Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
  
 %description -n %{girglibname}
 GObject Introspection interface description for Glib.
@@ -281,7 +281,7 @@ Group:          System/Libraries
 Requires:       lib64gio2.0_0
  
 # Upstream decided to merge typelibs from gobject-introspection in glib2.0
-Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
+#Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
 
 %description -n %{girgioname}
 GObject Introspection interface description for Gio.
