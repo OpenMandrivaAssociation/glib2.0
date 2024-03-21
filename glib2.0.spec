@@ -50,7 +50,7 @@
 %define lib32gobject libgobject%{api}_%{major}
 %define dev32name lib%{name}-devel
 %define gio32 gio2.0-32
-%define lib32girepo_name libgirepository%{api}_ %{major}
+%define lib32girepo_name libgirepository%{api}_%{major}
 
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
