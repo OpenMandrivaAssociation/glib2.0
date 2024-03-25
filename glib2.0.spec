@@ -57,7 +57,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.80.0
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -230,10 +230,10 @@ Requires:	%{libgio} = %{EVRD}
 Requires:	%{libgmodule} = %{EVRD}
 Requires:	%{libgobject} = %{EVRD}
 Requires:	%{libgthread} = %{EVRD}
-#Requires:       %{libgirepo_name} = %{EVRD}
-#Requires:       %{girglibname} = %{EVRD}
-#Requires:       %{girgioname} = %{EVRD}
-#Requires:       %{girgireponame} = %{EVRD}
+Requires:       %{libgirepo_name} = %{EVRD}
+Requires:       %{girglibname} = %{EVRD}
+Requires:       %{girgioname} = %{EVRD}
+Requires:       %{girgireponame} = %{EVRD}
 Requires:	pkgconfig(libpcre2-8)
 
 %description -n %{devname}
