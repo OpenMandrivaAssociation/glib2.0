@@ -57,7 +57,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.80.0
-Release:	2
+Release:	3
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -265,6 +265,7 @@ Systemtap integration for %{name}.
 %package -n     %{girglibname}
 Summary:        GObject Introspection interface description for Glib
 Group:          System/Libraries
+Probides:	glib-gir
 Requires:       %{_lib}glib2.0_0
 Requires:       %{_lib}gmodule2.0_0
 Requires:       %{_lib}gobject2.0_0
