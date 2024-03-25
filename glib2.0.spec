@@ -27,6 +27,15 @@
 %define libgthread %mklibname gthread %{api} %{major}
 %define libgobject %mklibname gobject %{api} %{major}
 %define devname %mklibname -d %{name}
+#----------------------------------------------------#
+# From gobject-introscpection
+%define api3            3.0
+%define libgirepo_name  %mklibname girepository%{api}_ %{major}
+%define girglibname     %mklibname glib-gir %{api}
+%define girgioname      %mklibname gio-gir %{api}
+%define girgireponame   %mklibname girepository-gir %{api3}
+#----------------------------------------------------#
+
 %if "%{_lib}" == "lib"
 %define bit 32
 %else
@@ -41,13 +50,14 @@
 %define lib32gobject libgobject%{api}_%{major}
 %define dev32name lib%{name}-devel
 %define gio32 gio2.0-32
+%define lib32girepo_name libgirepository%{api}_%{major}
 
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
-Version:	2.78.4
-Release:	2
+Version:	2.80.0
+Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -55,7 +65,7 @@ Source0:	http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. 
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
-Patch1:		glib-2.70.0-dont-use-lld-when-hardcoding-bfd-specific-options.patch
+#Patch1:		glib-2.70.0-dont-use-lld-when-hardcoding-bfd-specific-options.patch
 # Workaround for -Wcast-function-type-strict strictness with clang >= 16
 Patch2:		glib-2.76.1-clang-16.patch
 # (tpg) ClearLinux patches
@@ -86,6 +96,8 @@ BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
 BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(libattr)
+BuildRequires:	pkgconfig(gobject-introspection-1.0)
+BuildRequires:  python3dist(docutils)
 %if %{with gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
@@ -144,6 +156,10 @@ Group:		%{group}
 Provides:	glib2 = %{EVRD}
 Conflicts:	%{_lib}gio2.0_0 < 2.28.4-2
 Conflicts:	%{devname} < 1:2.31.2
+Requires:       %{libgirepo_name} = %{EVRD}
+Requires:       %{girglibname} = %{EVRD}
+Requires:       %{girgioname} = %{EVRD}
+Requires:       %{girgireponame} = %{EVRD}
 
 %description -n %{libname}
 This package contains the library needed to run programs dynamically
@@ -214,6 +230,10 @@ Requires:	%{libgio} = %{EVRD}
 Requires:	%{libgmodule} = %{EVRD}
 Requires:	%{libgobject} = %{EVRD}
 Requires:	%{libgthread} = %{EVRD}
+#Requires:       %{libgirepo_name} = %{EVRD}
+#Requires:       %{girglibname} = %{EVRD}
+#Requires:       %{girgioname} = %{EVRD}
+#Requires:       %{girgireponame} = %{EVRD}
 Requires:	pkgconfig(libpcre2-8)
 
 %description -n %{devname}
@@ -240,6 +260,47 @@ BuildRequires:	systemtap-devel >= 3.0
 
 %description systemtap
 Systemtap integration for %{name}.
+
+#----------------------------------------------------#
+%package -n     %{girglibname}
+Summary:        GObject Introspection interface description for Glib
+Group:          System/Libraries
+Requires:       %{_lib}glib2.0_0
+Requires:       %{_lib}gmodule2.0_0
+Requires:       %{_lib}gobject2.0_0
+
+# Upstream decided to merge typelibs from gobject-introspection in glib2.0
+Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
+ 
+%description -n %{girglibname}
+GObject Introspection interface description for Glib.
+
+%package -n     %{girgioname}
+Summary:        GObject Introspection interface description for Gio
+Group:          System/Libraries
+Requires:       lib64gio2.0_0
+ 
+# Upstream decided to merge typelibs from gobject-introspection in glib2.0
+Conflicts:      %{_lib}glib-gir2.0 < 1.80.0-1
+
+%description -n %{girgioname}
+GObject Introspection interface description for Gio.
+ 
+%package -n %{libgirepo_name}
+Summary:        GObject Introspection shared library
+Group:          System/Libraries
+ 
+%description -n %{libgirepo_name}
+Library for handling GObject introspection data (runtime library).
+ 
+%package -n     %{girgireponame}
+Summary:        GObject Introspection interface description for GIRepository
+Group:          System/Libraries
+Requires:       %{libgirepo_name} = %{EVRD}
+
+%description -n %{girgireponame}
+GObject Introspection interface description for GIRepository.
+#----------------------------------------------------#
 
 %if %{with compat32}
 %package -n %{lib32name}
@@ -293,6 +354,14 @@ sources in a convenient way and on the other hand it provides a high level
 file system abstraction to access file and directories not only local but also
 on the network. For the latter you need to install gvfs.
 
+%package -n %{lib32girepo_name}
+Summary:	%{summary} (32-bit)
+Group:		%{group}
+
+%description -n %{lib32girepo_name}
+This package contains the library needed to run programs dynamically
+linked with libglib.
+
 %package -n %{dev32name}
 Summary:	Development libraries and header files of %{name} (32-bit)
 Group:		Development/C
@@ -303,6 +372,7 @@ Requires:	%{lib32gio} = %{EVRD}
 Requires:	%{lib32gmodule} = %{EVRD}
 Requires:	%{lib32gobject} = %{EVRD}
 Requires:	%{lib32gthread} = %{EVRD}
+Requires:	%{lib32girepo_name} = %{EVRD}
 Requires:	%{devname} = %{EVRD}
 Requires:	devel(libpcre2-8)
 Requires:	devel(libz)
@@ -344,6 +414,7 @@ export CXX="g++ -m32"
 	-Dgio_module_dir="%{_prefix}/lib/gio/modules" \
 	-Dbsymbolic_functions=true \
 	-Dgtk_doc=false \
+ 	-Dintrospection=disabled \
 	-Dselinux=disabled
 # glib has no idea about crosscompiling
 sed -i -e 's,ld.bfd,i686-linux-gnu-ld.bfd,g' build32/build.ninja
@@ -516,6 +587,9 @@ fi
 %{_bindir}/gobject-query
 %{_bindir}/gresource
 %{_bindir}/gtester*
+%{_bindir}/gi-compile-repository
+%{_bindir}/gi-decompile-typelib
+%{_bindir}/gi-inspect-typelib
 %{_libdir}/lib*.so
 %{_libdir}/*.a
 %{_libdir}/glib-%{api}/include/
@@ -528,6 +602,13 @@ fi
 %{_datadir}/glib-%{api}/gdb/
 %{_datadir}/glib-%{api}/valgrind/
 %{_datadir}/bash-completion/completions/gresource
+%{_datadir}/gir-1.0/GIRepository-3.0.gir
+%{_datadir}/gir-1.0/GLib-%{api}.gir
+%{_datadir}/gir-1.0/GLibUnix-%{api}.gir
+%{_datadir}/gir-1.0/GModule-%{api}.gir
+%{_datadir}/gir-1.0/GObject-%{api}.gir
+%{_datadir}/gir-1.0/Gio-%{api}.gir
+%{_datadir}/gir-1.0/GioUnix-%{api}.gir
 %{_includedir}/*
 %doc %{_mandir}/man1/gdbus-codegen.1*
 %doc %{_mandir}/man1/glib-compile-resources.1*
@@ -537,6 +618,9 @@ fi
 %doc %{_mandir}/man1/gresource.1*
 %doc %{_mandir}/man1/gtester-report.1*
 %doc %{_mandir}/man1/gtester.1*
+%doc %{_mandir}/man1/gi-compile-repository.1.*
+%doc %{_mandir}/man1/gi-decompile-typelib.1.*
+%doc %{_mandir}/man1/gi-inspect-typelib.1.*
 
 %files -n glib-gettextize
 %{_bindir}/glib-gettextize
@@ -552,6 +636,23 @@ fi
 %doc NEWS
 %doc %{_docdir}/glib-2.0
 %endif
+
+%files -n %{girglibname}
+%{_libdir}/girepository-1.0/GLib-%{api}.typelib
+%{_libdir}/girepository-1.0/GLibUnix-%{api}.typelib
+%{_libdir}/girepository-1.0/GModule-%{api}.typelib
+%{_libdir}/girepository-1.0/GObject-%{api}.typelib
+
+%files -n %{girgioname}
+%{_libdir}/girepository-1.0/Gio-%{api}.typelib
+%{_libdir}/girepository-1.0/GioUnix-%{api}.typelib
+
+%files -n %{libgirepo_name}
+%{_libdir}/libgirepository-%{api}.so.%{major}{,.*}
+ 
+%files -n %{girgireponame}
+%{_libdir}/girepository-1.0/GIRepository-%{api3}.typelib
+
 
 %if %{with compat32}
 %files -n %{lib32gio}
@@ -574,6 +675,9 @@ fi
 %dir %{_prefix}/lib/gio/
 %dir %{_prefix}/lib/gio/modules/
 %ghost %{_prefix}/lib/gio/modules/giomodule.cache
+
+%files -n %{lib32girepo_name}
+%{_prefix}/lib/libgirepository-%{api}.so.%{major}*
 
 %files -n %{dev32name}
 %{_prefix}/lib/lib*.so
