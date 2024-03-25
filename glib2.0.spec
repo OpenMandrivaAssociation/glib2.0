@@ -265,7 +265,7 @@ Systemtap integration for %{name}.
 %package -n     %{girglibname}
 Summary:        GObject Introspection interface description for Glib
 Group:          System/Libraries
-Probides:	glib-gir
+Provides:	glib-gir
 Requires:       %{_lib}glib2.0_0
 Requires:       %{_lib}gmodule2.0_0
 Requires:       %{_lib}gobject2.0_0
