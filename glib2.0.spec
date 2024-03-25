@@ -290,6 +290,7 @@ GObject Introspection interface description for Gio.
 %package -n %{libgirepo_name}
 Summary:        GObject Introspection shared library
 Group:          System/Libraries
+Requires:	%{_lib}girepository-gir2.0
  
 %description -n %{libgirepo_name}
 Library for handling GObject introspection data (runtime library).
