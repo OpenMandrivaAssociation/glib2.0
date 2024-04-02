@@ -4,6 +4,7 @@
 %else
 %bcond_with compat32
 %endif
+%bcond_without introspection
 
 %global __requires_exclude bin/python3
 %define _python_bytecompile_build 0
@@ -434,6 +435,9 @@ CFLAGS="%{optflags} -fprofile-generate -mllvm -vp-counters-per-site=16" \
 CXXFLAGS="%{optflags} -fprofile-generate -mllvm -vp-counters-per-site=16" \
 LDFLAGS="%{build_ldflags} -fprofile-generate" \
 %meson \
+%if %{without introspection}
+	-Dintrospection=disabled \
+%endif
 	-Dman=false \
 	--default-library=both \
 	-Dsystemtap=true \
@@ -460,6 +464,9 @@ CXXFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
 LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 %endif
 %meson \
+%if %{without introspection}
+	-Dintrospection=disabled \
+%endif
 	-Dman=true \
 	--default-library=both \
 	-Dsystemtap=true \
@@ -604,6 +611,7 @@ fi
 %{_datadir}/glib-%{api}/gdb/
 %{_datadir}/glib-%{api}/valgrind/
 %{_datadir}/bash-completion/completions/gresource
+%if %{with introspection}
 %{_datadir}/gir-1.0/GIRepository-3.0.gir
 %{_datadir}/gir-1.0/GLib-%{api}.gir
 %{_datadir}/gir-1.0/GLibUnix-%{api}.gir
@@ -611,6 +619,7 @@ fi
 %{_datadir}/gir-1.0/GObject-%{api}.gir
 %{_datadir}/gir-1.0/Gio-%{api}.gir
 %{_datadir}/gir-1.0/GioUnix-%{api}.gir
+%endif
 %{_includedir}/*
 %doc %{_mandir}/man1/gdbus-codegen.1*
 %doc %{_mandir}/man1/glib-compile-resources.1*
@@ -639,6 +648,7 @@ fi
 %doc %{_docdir}/glib-2.0
 %endif
 
+%if %{with introspection}
 %files -n %{girglibname}
 %{_libdir}/girepository-1.0/GLib-%{api}.typelib
 %{_libdir}/girepository-1.0/GLibUnix-%{api}.typelib
@@ -649,12 +659,12 @@ fi
 %{_libdir}/girepository-1.0/Gio-%{api}.typelib
 %{_libdir}/girepository-1.0/GioUnix-%{api}.typelib
 
-%files -n %{libgirepo_name}
-%{_libdir}/libgirepository-%{api}.so.%{major}{,.*}
- 
 %files -n %{girgireponame}
 %{_libdir}/girepository-1.0/GIRepository-%{api3}.typelib
+%endif
 
+%files -n %{libgirepo_name}
+%{_libdir}/libgirepository-%{api}.so.%{major}{,.*}
 
 %if %{with compat32}
 %files -n %{lib32gio}
