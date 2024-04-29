@@ -11,11 +11,11 @@
 
 %bcond_with gtkdoc
 
-# (tpg) 2023-04-26 fails on meson
-# DEBUG: Checking if "GCC size_t typedef is long" compiles: NO
-# DEBUG: Checking if "GCC size_t typedef is long long" compiles: NO
-# DEBUG: meson.build:1648:2: ERROR: Problem encountered: Could not determine size of size_t.
+%if %{cross_compiling}
 %bcond_with pgo
+%else
+%bcond_without pgo
+%endif
 
 # (tpg) optimize it a bit
 %global optflags %{optflags} -O3
@@ -58,7 +58,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.80.0
-Release:	3
+Release:	4
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		http://www.gtk.org
@@ -97,7 +97,9 @@ BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
 BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(libattr)
+%if %{with introspection}
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
+%endif
 BuildRequires:  python3dist(docutils)
 %if %{with gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
@@ -157,10 +159,6 @@ Group:		%{group}
 Provides:	glib2 = %{EVRD}
 Conflicts:	%{_lib}gio2.0_0 < 2.28.4-2
 Conflicts:	%{devname} < 1:2.31.2
-Requires:       %{libgirepo_name} = %{EVRD}
-Requires:       %{girglibname} = %{EVRD}
-Requires:       %{girgioname} = %{EVRD}
-Requires:       %{girgireponame} = %{EVRD}
 
 %description -n %{libname}
 This package contains the library needed to run programs dynamically
@@ -231,11 +229,10 @@ Requires:	%{libgio} = %{EVRD}
 Requires:	%{libgmodule} = %{EVRD}
 Requires:	%{libgobject} = %{EVRD}
 Requires:	%{libgthread} = %{EVRD}
-Requires:       %{libgirepo_name} = %{EVRD}
-Requires:       %{girglibname} = %{EVRD}
-Requires:       %{girgioname} = %{EVRD}
-Requires:       %{girgireponame} = %{EVRD}
 Requires:	pkgconfig(libpcre2-8)
+%if %{with introspection}
+Suggests:       %{libgirepo_name} = %{EVRD}
+%endif
 
 %description -n %{devname}
 Development libraries and header files for the support library for the GIMP's X
@@ -292,6 +289,12 @@ GObject Introspection interface description for Gio.
 Summary:        GObject Introspection shared library
 Group:          System/Libraries
 Requires:	%{_lib}girepository-gir2.0
+%if %{with introspection}
+Requires:       %{libgirepo_name} = %{EVRD}
+Requires:       %{girglibname} = %{EVRD}
+Requires:       %{girgioname} = %{EVRD}
+Requires:       %{girgireponame} = %{EVRD}
+%endif
  
 %description -n %{libgirepo_name}
 Library for handling GObject introspection data (runtime library).
@@ -459,9 +462,9 @@ find . -name "*.profraw" -type f -delete
 rm -rf build
 
 # (tpg) clean build
-CFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
-CXXFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
-LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
+CFLAGS="%{optflags} -fprofile-use=$PROFDATA -Wno-error=backend-plugin" \
+CXXFLAGS="%{optflags} -fprofile-use=$PROFDATA -Wno-error=backend-plugin" \
+LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA -Wno-error=backend-plugin" \
 %endif
 %meson \
 %if %{without introspection}
