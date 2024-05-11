@@ -57,12 +57,12 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
-Version:	2.80.0
-Release:	4
+Version:	2.80.2
+Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
-Url:		http://www.gtk.org
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. -f1-2)/glib-%{version}.tar.xz
+Url:		https://www.gtk.org
+Source0:	https://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. -f1-2)/glib-%{version}.tar.xz
 Source1:	glib20.sh
 Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
