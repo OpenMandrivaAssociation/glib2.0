@@ -60,13 +60,13 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.80.3
-Release:	3
+Release:	4
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		https://www.gtk.org
 Source0:	https://ftp.gnome.org/pub/GNOME/sources/glib/%(echo %{version} |cut -d. -f1-2)/glib-%{version}.tar.xz
-Source1:	glib20.sh
-Source2:	glib20.csh
+#Source1:	glib20.sh
+#Source2:	glib20.csh
 Patch0:		glib-2.34.1-no-warnings.patch
 #Patch1:		glib-2.70.0-dont-use-lld-when-hardcoding-bfd-specific-options.patch
 # Workaround for -Wcast-function-type-strict strictness with clang >= 16
@@ -507,9 +507,9 @@ sed -i -e 's,-L\${libdir} ,,g' -e 's, -I\${includedir}$,,' -e 's, -I\${includedi
 rm -rf %{buildroot}%{_docdir}/glib-2.0
 %endif
 
-mkdir -p %{buildroot}%{_sysconfdir}/profile.d
-install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/50glib20.sh
-install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
+#mkdir -p %{buildroot}%{_sysconfdir}/profile.d
+#install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/50glib20.sh
+#install -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/50glib20.csh
 %find_lang glib20
 
 mv %{buildroot}%{_bindir}/gio-querymodules %{buildroot}%{_bindir}/gio-querymodules-%{bit}
@@ -550,7 +550,7 @@ fi
 %{_bindir}/gio-querymodules-%{bit} %{_libdir}/gio/modules
 
 %files common -f glib20.lang
-%config(noreplace) %{_sysconfdir}/profile.d/*
+#config(noreplace) %{_sysconfdir}/profile.d/*
 %{_datadir}/bash-completion/completions/gapplication
 %{_datadir}/bash-completion/completions/gdbus
 %{_datadir}/bash-completion/completions/gsettings
