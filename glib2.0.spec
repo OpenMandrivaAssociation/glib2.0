@@ -14,7 +14,7 @@
 %if %{cross_compiling}
 %bcond_with pgo
 %else
-%bcond_without pgo
+%bcond_with pgo
 %endif
 
 # (tpg) optimize it a bit
@@ -55,7 +55,7 @@
 
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
-Epoch:		1
+Epoch:		2
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.80.3
 Release:	1
