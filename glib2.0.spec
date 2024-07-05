@@ -1,3 +1,5 @@
+%define _disable_lto 1
+
 # glib2.0 is used by wine
 %ifarch %{x86_64}
 %bcond_without compat32
@@ -18,7 +20,7 @@
 %endif
 
 # (tpg) optimize it a bit
-%global optflags %{optflags} -O3
+#global optflags %{optflags} -O3
 
 %define api 2.0
 %define major 0
@@ -58,7 +60,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.76 is stable, 2.77 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.80.3
-Release:	2
+Release:	3
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		https://www.gtk.org
@@ -70,8 +72,8 @@ Patch0:		glib-2.34.1-no-warnings.patch
 # Workaround for -Wcast-function-type-strict strictness with clang >= 16
 Patch2:		glib-2.76.1-clang-16.patch
 # (tpg) ClearLinux patches
-Patch12:	https://raw.githubusercontent.com/clearlinux-pkgs/glib/main/0003-wakeups.patch
-Patch13:	https://raw.githubusercontent.com/clearlinux-pkgs/glib/main/0004-gerror-return-on-null.patch
+#Patch12:	https://raw.githubusercontent.com/clearlinux-pkgs/glib/main/0003-wakeups.patch
+#Patch13:	https://raw.githubusercontent.com/clearlinux-pkgs/glib/main/0004-gerror-return-on-null.patch
 
 BuildRequires:	meson
 BuildRequires:	cmake
