@@ -97,6 +97,7 @@ BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
 BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(libattr)
+BuildRequires:	pkgconfig(sysprof-capture-4)
 %if %{with introspection}
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
 %endif
