@@ -646,7 +646,7 @@ fi
 %{_datadir}/glib-%{api}/gettext/
 
 %files systemtap
-#% {_datadir}/systemtap/
+%{_datadir}/systemtap/*.stp
 
 %if %{with gtkdoc}
 %files doc
