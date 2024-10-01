@@ -58,7 +58,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.82 is stable, 2.83 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.82.1
-Release:	1
+Release:	3
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		https://www.gtk.org
