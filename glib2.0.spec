@@ -414,6 +414,7 @@ rm -rf glib/pcre/*.[ch]
 
 # Try link with mold
 export LD=mold
+%global ldflags %{ldflags} -fuse-ld=mold
 
 %if %{with compat32}
 # Forcing gcc is a workaround for bogus inline assembly (x86_32 only)
