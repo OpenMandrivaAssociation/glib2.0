@@ -56,7 +56,7 @@
 Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
-# Do not upgrade to unstable release. 2.82 is stable, 2.83 unstable. Unstable may change ABI and break a lot of stuff.
+# Do not upgrade to unstable release. 2.84 is stable, 2.85 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.84.0
 Release:	1
 Group:		System/Libraries
@@ -74,6 +74,7 @@ Patch12:	https://raw.githubusercontent.com/clearlinux-pkgs/glib/main/0003-wakeup
 Patch13:	https://raw.githubusercontent.com/clearlinux-pkgs/glib/main/0004-gerror-return-on-null.patch
 
 BuildRequires:	meson
+BuildRequires:  mold
 BuildRequires:	cmake
 BuildRequires:	gcc
 BuildRequires:	dbus
@@ -410,6 +411,9 @@ rm -rf glib/pcre/*.[ch]
 %global ldflags %{ldflags} -Wl,-z,notext
 %global ldflags %{ldflags} -fuse-ld=gold
 %endif
+
+# Try link with mold
+export LD=mold
 
 %if %{with compat32}
 # Forcing gcc is a workaround for bogus inline assembly (x86_32 only)
