@@ -11,6 +11,7 @@
 
 %bcond_with gtkdoc
 %bcond_without systemtap
+%bcond_without sysprof
 
 %if %{cross_compiling}
 %bcond_with pgo
@@ -98,7 +99,9 @@ BuildRequires:	pkgconfig(mount)
 BuildRequires:	pkgconfig(libelf)
 BuildRequires:	pkgconfig(blkid)
 BuildRequires:	pkgconfig(libattr)
+%if %{with sysprof}
 BuildRequires:	pkgconfig(sysprof-capture-4)
+%endif
 %if %{with introspection}
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
 %endif
@@ -446,6 +449,9 @@ LDFLAGS="%{build_ldflags} -fprofile-generate" \
 %if %{without introspection}
 	-Dintrospection=disabled \
 %endif
+%if %{without sysprof}
+	-Dsysprof=disabled \
+%endif
 	-Dman-pages=disabled \
 	--default-library=both \
 %if %{with systemtap}
@@ -479,6 +485,9 @@ LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA -Wno-error=backend-plugin" \
 %meson \
 %if %{without introspection}
 	-Dintrospection=disabled \
+%endif
+%if %{without sysprof}
+	-Dsysprof=disabled \
 %endif
 	-Dman-pages=enabled \
 	--default-library=both \
