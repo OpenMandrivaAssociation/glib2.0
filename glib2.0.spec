@@ -10,6 +10,7 @@
 %define _python_bytecompile_build 0
 
 %bcond_with gtkdoc
+%bcond_without systemtap
 
 %if %{cross_compiling}
 %bcond_with pgo
@@ -416,14 +417,14 @@ rm -rf glib/pcre/*.[ch]
 export CC="cc -m32"
 export CXX="c++ -m32"
 %meson32 \
-	-Dman=false \
-	-Ddtrace=false \
-	-Dsystemtap=false \
+	-Dman-pages=disabled \
+	-Ddtrace=disabled \
+	-Dsystemtap=disabled \
 	-Dinstalled_tests=false \
 	-Dsysprof=disabled \
 	-Dgio_module_dir="%{_prefix}/lib/gio/modules" \
 	-Dbsymbolic_functions=true \
-	-Dgtk_doc=false \
+	-Ddocumentation=false \
  	-Dintrospection=disabled \
 	-Dselinux=disabled
 # glib has no idea about crosscompiling
@@ -445,13 +446,18 @@ LDFLAGS="%{build_ldflags} -fprofile-generate" \
 %if %{without introspection}
 	-Dintrospection=disabled \
 %endif
-	-Dman=false \
+	-Dman-pages=disabled \
 	--default-library=both \
-	-Dsystemtap=true \
+%if %{with systemtap}
+	-Dsystemtap=enabled \
+	-Dtapset_install_dir=%{_datadir}/systemtap \
+%else
+	-Dsystemtap=disabled \
+	-Ddtrace=disabled \
+%endif
 	-Dselinux=disabled \
 	-Dinstalled_tests=false \
-	-Dtapset_install_dir=%{_datadir}/systemtap \
-	-Dgtk_doc=false \
+	-Ddocumentation=false \
 	-Dbsymbolic_functions=true \
 	-Dgio_module_dir="%{_libdir}/gio/modules"
 
@@ -474,16 +480,21 @@ LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA -Wno-error=backend-plugin" \
 %if %{without introspection}
 	-Dintrospection=disabled \
 %endif
-	-Dman=true \
+	-Dman-pages=enabled \
 	--default-library=both \
-	-Dsystemtap=true \
+%if %{with systemtap}
+	-Dsystemtap=enabled \
+	-Dtapset_install_dir=%{_datadir}/systemtap \
+%else
+	-Dsystemtap=disabled \
+	-Ddtrace=disabled \
+%endif
 	-Dselinux=disabled \
 %if ! %{with gtkdoc}
-	-Dgtk_doc=false \
+	-Ddocumentation=false \
 %endif
 	-Dbsymbolic_functions=true \
 	-Dinstalled_tests=false \
-	-Dtapset_install_dir=%{_datadir}/systemtap \
 	-Dgio_module_dir="%{_libdir}/gio/modules"
 
 %meson_build
@@ -646,8 +657,10 @@ fi
 %{_datadir}/aclocal/glib-gettext.m4
 %{_datadir}/glib-%{api}/gettext/
 
+%if %{with systemtap}
 %files systemtap
 %{_datadir}/systemtap/*.stp
+%endif
 
 %if %{with gtkdoc}
 %files doc
