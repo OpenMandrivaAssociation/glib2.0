@@ -59,7 +59,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.82 is stable, 2.83 unstable. Unstable may change ABI and break a lot of stuff.
-Version:	2.84.4
+Version:	2.85.4
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -429,6 +429,7 @@ export CXX="c++ -m32"
 	-Dbsymbolic_functions=true \
 	-Ddocumentation=false \
  	-Dintrospection=disabled \
+  	-Dglib_debug=disabled \
 	-Dselinux=disabled
 # glib has no idea about crosscompiling
 sed -i -e 's,ld.bfd,i686-linux-gnu-ld.bfd,g' build32/build.ninja
@@ -462,6 +463,7 @@ LDFLAGS="%{build_ldflags} -fprofile-generate" \
 	-Ddtrace=disabled \
 %endif
 	-Dselinux=disabled \
+ 	-Dglib_debug=disabled \
 	-Dinstalled_tests=false \
 	-Ddocumentation=false \
 	-Dbsymbolic_functions=true \
@@ -499,6 +501,7 @@ LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA -Wno-error=backend-plugin" \
 	-Ddtrace=disabled \
 %endif
 	-Dselinux=disabled \
+ 	-Dglib_debug=disabled \
 %if ! %{with gtkdoc}
 	-Ddocumentation=false \
 %endif
