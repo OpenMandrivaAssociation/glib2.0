@@ -59,7 +59,7 @@ Summary:	GIMP Toolkit and GIMP Drawing Kit support library
 Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.82 is stable, 2.83 unstable. Unstable may change ABI and break a lot of stuff.
-Version:	2.88.2
+Version:	2.88.3
 Release:	1
 Group:		System/Libraries
 License:	LGPLv2+
@@ -109,6 +109,7 @@ BuildRequires:  python3dist(docutils)
 %if %{with gtkdoc}
 BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
+BuildRequires:	atomic-devel
 %if %{with compat32}
 BuildRequires:	cross-i686-openmandriva-linux-gnu-binutils
 BuildRequires:	devel(libpcre2-8)
