@@ -60,7 +60,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.82 is stable, 2.83 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.88.3
-Release:	1
+Release:	2
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		https://www.gtk.org
@@ -400,6 +400,11 @@ useful data structures.
 
 %prep
 %autosetup -n glib-%{version} -p1
+%if %{cross_compiling}
+# meson passes --define-variable=datadir=share into bash-completion.pc;
+# PKG_CONFIG_SYSROOT_DIR then joins that relative path as .../linux-gnushare/...
+sed -i -e "s/bash_comp_inst_dir = bash_comp_dep.get_variable.*/bash_comp_inst_dir = join_paths(get_option('datadir'), 'bash-completion\\/completions')/" gio/meson.build
+%endif
 
 %build
 # (tpg) remove pcre as we use system one
