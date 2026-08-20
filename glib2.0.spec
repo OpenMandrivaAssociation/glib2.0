@@ -60,7 +60,7 @@ Name:		glib%{api}
 Epoch:		1
 # Do not upgrade to unstable release. 2.82 is stable, 2.83 unstable. Unstable may change ABI and break a lot of stuff.
 Version:	2.88.3
-Release:	2
+Release:	3
 Group:		System/Libraries
 License:	LGPLv2+
 Url:		https://www.gtk.org
@@ -295,8 +295,8 @@ GObject Introspection interface description for Gio.
 %package -n %{libgirepo_name}
 Summary:        GObject Introspection shared library
 Group:          System/Libraries
-Requires:	%{_lib}girepository-gir2.0
 %if %{with introspection}
+Requires:	%{_lib}girepository-gir2.0
 Requires:       %{libgirepo_name} = %{EVRD}
 Requires:       %{girglibname} = %{EVRD}
 Requires:       %{girgioname} = %{EVRD}
