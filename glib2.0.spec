@@ -111,6 +111,10 @@ BuildRequires:	pkgconfig(gtk-doc) >= 0.10
 %endif
 BuildRequires:	atomic-devel
 %if %{with compat32}
+BuildRequires:	cross-i686-openmandriva-linux-gnu-libc
+BuildRequires:	cross-i686-openmandriva-linux-gnu-gcc
+BuildRequires:	cross-i686-openmandriva-linux-gnu-kernel-headers
+BuildRequires:	cross-i686-openmandriva-linux-gnu-clang
 BuildRequires:	cross-i686-openmandriva-linux-gnu-binutils
 BuildRequires:	devel(libpcre2-8)
 BuildRequires:	devel(libffi)
