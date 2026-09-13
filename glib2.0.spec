@@ -432,6 +432,7 @@ export CC="cc -m32"
 export CXX="c++ -m32"
 export CPPFLAGS="${CPPFLAGS:+$CPPFLAGS }-I/usr/include"
 export CFLAGS="${CFLAGS:+$CFLAGS }-Wno-missing-format-attribute"
+export LIBRARY_PATH="/usr/lib${LIBRARY_PATH:+:$LIBRARY_PATH}"
 %meson32 \
 	-Dman-pages=disabled \
 	-Ddtrace=disabled \
