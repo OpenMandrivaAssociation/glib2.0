@@ -430,6 +430,7 @@ rm -rf glib/pcre/*.[ch]
 # Forcing gcc is a workaround for bogus inline assembly (x86_32 only)
 export CC="cc -m32"
 export CXX="c++ -m32"
+export CPPFLAGS="-I/usr/include"
 %meson32 \
 	-Dman-pages=disabled \
 	-Ddtrace=disabled \
@@ -444,6 +445,7 @@ export CXX="c++ -m32"
 	-Dselinux=disabled
 # glib has no idea about crosscompiling
 sed -i -e 's,ld.bfd,i686-linux-gnu-ld.bfd,g' build32/build.ninja
+export CPPFLAGS="-I/usr/include"
 %ninja_build -C build32
 unset CC
 unset CXX
