@@ -1,6 +1,6 @@
 # glib2.0 is used by wine
 %ifarch %{x86_64}
-%bcond_with compat32
+%bcond_without compat32
 %else
 %bcond_with compat32
 %endif
@@ -16,7 +16,7 @@
 %if %{cross_compiling}
 %bcond_with pgo
 %else
-%bcond_without pgo
+%bcond_with pgo
 %endif
 
 # (tpg) optimize it a bit
