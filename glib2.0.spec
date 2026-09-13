@@ -124,6 +124,7 @@ BuildRequires:	devel(libelf)
 BuildRequires:	devel(libz)
 BuildRequires:	devel(libmount)
 BuildRequires:	devel(libdbus-1)
+BuildRequires:	devel(libzstd)
 %endif
 
 %description
