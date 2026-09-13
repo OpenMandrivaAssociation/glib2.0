@@ -430,7 +430,8 @@ rm -rf glib/pcre/*.[ch]
 # Forcing gcc is a workaround for bogus inline assembly (x86_32 only)
 export CC="cc -m32"
 export CXX="c++ -m32"
-export CPPFLAGS="-I/usr/include"
+export CPPFLAGS="${CPPFLAGS:+$CPPFLAGS }-I/usr/include"
+export CFLAGS="${CFLAGS:+$CFLAGS }-Wno-missing-format-attribute"
 %meson32 \
 	-Dman-pages=disabled \
 	-Ddtrace=disabled \
