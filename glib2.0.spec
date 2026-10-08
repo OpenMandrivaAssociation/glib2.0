@@ -1,3 +1,5 @@
+%global optflags %(echo %{optflags} | sed 's/-Werror=sign-conversion//g')
+
 # glib2.0 is used by wine
 %ifarch %{x86_64}
 %bcond_without compat32
