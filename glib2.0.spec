@@ -415,7 +415,10 @@ sed -i -e "s/bash_comp_inst_dir = bash_comp_dep.get_variable.*/bash_comp_inst_di
 # (tpg) remove pcre as we use system one
 rm -rf glib/pcre/*.[ch]
 
+# workaround for arm build failure: ./glib/tests/string.c:351:36: error: implicit conversion changes signedness: 'int' to 'gchar' (aka 'char') [-Werror,-Wsign-conversion]
+%ifarch aarch64
 sed -i "s/g_string_prepend_c (string, 'a'+(i%26));/g_string_prepend_c (string, (gchar) ('a' + (i % 26)));/" glib/tests/string.c
+%endif
 
 #FIXME (angry)
 # GCC build with ldd linker failed with this error:
