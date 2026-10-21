@@ -415,6 +415,8 @@ sed -i -e "s/bash_comp_inst_dir = bash_comp_dep.get_variable.*/bash_comp_inst_di
 # (tpg) remove pcre as we use system one
 rm -rf glib/pcre/*.[ch]
 
+export CFLAGS="%{optflags} -Wno-sign-conversion"
+
 #FIXME (angry)
 # GCC build with ldd linker failed with this error:
 # error: gfileinfo.c:(.debug_info+0x7D514): has non-ABS relocation R_386_GOTOFF against symbol '.LC40'
